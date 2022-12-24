@@ -7,7 +7,8 @@ class JobsDataProvider {
 
   JobsDataProvider(this._dio);
 
-  Future<Response> getJobs(String order, int limit, int skip) async {
+  Future<Response> getJobs(
+      [int limit = 10, int skip = 0, String order = "creationDateDESC"]) async {
     try {
       final response = await _dio.request(
         '/jobs/v2',

@@ -1,10 +1,11 @@
+import 'package:data_table_2/data_table_2.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'bloc/jobs_bloc.dart';
+import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
 
 class JobsPage extends StatefulWidget {
-  const JobsPage({Key? key}) : super(key: key);
+  final Dio dio;
+  const JobsPage({Key? key, required this.dio}) : super(key: key);
 
   @override
   State<JobsPage> createState() => _JobsPageState();
@@ -14,23 +15,21 @@ class _JobsPageState extends State<JobsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<JobsBloc>().add(const JobsRequested(skip: 0));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<JobsBloc, JobsState>(
-      builder: (context, state) {
-        if (state is JobsLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (state is JobsLoaded) {
-          return Center(
-            child: Text(state.items.toString()),
-          );
-        }
-        return Container();
-      },
+    return AsyncPaginatedDataTable2(
+      columns: const [
+        DataColumn2(label: Text("Job Id")),
+        DataColumn2(label: Text("Status")),
+        DataColumn2(label: Text("Created")),
+        DataColumn2(label: Text("Run")),
+        DataColumn2(label: Text("Compute Resource")),
+        DataColumn2(label: Text("Provider")),
+        DataColumn2(label: Text("Tags")),
+      ],
+      source: JobsDataTableSource(widget.dio),
     );
   }
 }

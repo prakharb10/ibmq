@@ -34,4 +34,9 @@ class Provider extends Equatable {
       _$ProviderFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProviderToJson(this);
+
+  @override
+  String toString() {
+    return '$hub/$group/$project';
+  }
 }
