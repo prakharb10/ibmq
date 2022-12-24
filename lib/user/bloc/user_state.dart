@@ -13,12 +13,12 @@ class UserInitial extends UserState {}
 ///
 /// [cookie] is the cookie to use for authenticated requests
 class UserLoggedIn extends UserState {
-  final Cookie user;
+  final Cookie cookie;
 
-  const UserLoggedIn(this.user);
+  const UserLoggedIn(this.cookie);
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [cookie];
 }
 
 /// State when [User] data has been fetched

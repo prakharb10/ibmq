@@ -1,5 +1,15 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ibmq/jobs/bloc/jobs_bloc.dart';
+import 'package:ibmq/jobs/data/jobs_data_provider.dart';
+import 'package:ibmq/jobs/data/jobs_repository.dart';
+import 'package:ibmq/jobs/jobs.dart';
 import 'package:ibmq/user/model/user.dart';
 import 'package:ibmq/user/views/login_page.dart';
 import 'package:ibmq/user/views/user_page.dart';
@@ -40,6 +50,9 @@ class IBMQAppState extends ChangeNotifier {
   /// This is set when the user is logged in
   /// and user data is fetched
   User? _user;
+
+  /// Cookie for API requests
+  Cookie? _cookie;
 
   /// Whether to show the profile page
   bool _showProfile = false;
@@ -83,6 +96,15 @@ class IBMQAppState extends ChangeNotifier {
   /// Whether to show the profile page
   set showProfile(bool showProfile) {
     _showProfile = showProfile;
+    notifyListeners();
+  }
+
+  /// Cookie for API requests
+  Cookie? get cookie => _cookie;
+
+  /// Cookie for API requests
+  set cookie(Cookie? cookie) {
+    _cookie = cookie;
     notifyListeners();
   }
 
@@ -205,6 +227,8 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<IBMQRoutePath> {
   /// App state
   IBMQAppState _appState;
+  final Dio _dio = Dio();
+  final CookieJar _cookieJar = CookieJar();
 
   IBMQAppState get appState => _appState;
 
@@ -220,24 +244,41 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
   InnerRouterDelegate(this._appState)
       : navigatorKey = GlobalKey<NavigatorState>() {
     _appState.addListener(notifyListeners);
+    _dio.options.baseUrl = _appState.user!.urls.http;
+    _cookieJar.saveFromResponse(
+        Uri.parse(_appState.user!.urls.http), [_appState.cookie!]);
+    _dio.interceptors.add(CookieManager(_cookieJar));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: const [
-        MaterialPage(child: Scaffold(body: Center(child: Text('Jobs')))),
-      ],
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-        if (appState.showProfile) {
-          appState.showProfile = false;
-        }
-        return true;
-      },
+    return BlocProvider(
+      create: (context) => JobsBloc(
+        jobsRepository: JobsRepository(
+          JobsDataProvider(_dio),
+        ),
+      ),
+      child: Navigator(
+        key: navigatorKey,
+        pages: [
+          _appState.pageIndex == 0
+              ? const MaterialPage(
+                  key: ValueKey('JobsPage'),
+                  child: JobsPage(),
+                )
+              : const MaterialPage(
+                  child: Scaffold(body: Center(child: Text('Backends')))),
+        ],
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
+          if (appState.showProfile) {
+            appState.showProfile = false;
+          }
+          return true;
+        },
+      ),
     );
   }
 
