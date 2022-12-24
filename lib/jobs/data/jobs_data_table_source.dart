@@ -13,6 +13,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
   Future<AsyncRowsResponse> getRows(int start, int end) async {
     final jobsDataProvider = JobsDataProvider(dio);
     final response = await jobsDataProvider.getJobs(end - start, start);
+    final totalRows = response.data['meta']['count'] as int;
     final items = response.data['items'] as List;
     // TODO: Compute this in a separate isolate
     final jobs = items.map((e) => Job.fromJson(e)).toList();
@@ -32,6 +33,6 @@ class JobsDataTableSource extends AsyncDataTableSource {
           ),
         )
         .toList();
-    return AsyncRowsResponse(jobs.length, rows);
+    return AsyncRowsResponse(totalRows, rows);
   }
 }
