@@ -10,6 +10,7 @@ abstract class UserState extends Equatable {
 class UserInitial extends UserState {}
 
 /// State when a user is logged in
+///
 /// [cookie] is the cookie to use for authenticated requests
 class UserLoggedIn extends UserState {
   final Cookie user;

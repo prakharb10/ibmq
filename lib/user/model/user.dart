@@ -27,8 +27,9 @@ class User extends Equatable {
   final String institution;
 
   /// The user's urls
-  /// `http` is the base url for all API calls
-  final Map<String, dynamic> urls;
+  ///
+  /// See [UserUrls] for more info
+  final UserUrls urls;
 
   const User({
     required this.id,
@@ -54,4 +55,35 @@ class User extends Equatable {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+}
+
+/// The model for [User] urls
+@JsonSerializable()
+class UserUrls extends Equatable {
+  /// The base url for all API calls
+  final String http;
+
+  /// The url for websockets
+  final String ws;
+
+  /// The urls for other services
+  final Map<String, String> services;
+
+  const UserUrls({
+    required this.http,
+    required this.ws,
+    required this.services,
+  });
+
+  @override
+  List<Object> get props => [
+        http,
+        ws,
+        services,
+      ];
+
+  factory UserUrls.fromJson(Map<String, dynamic> json) =>
+      _$UserUrlsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserUrlsToJson(this);
 }

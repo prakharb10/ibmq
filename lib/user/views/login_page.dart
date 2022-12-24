@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:ibmq/router.dart';
 import 'package:ibmq/user/bloc/user_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  /// App state
+  final IBMQAppState appState;
+
+  /// Token to use for login
+  ///
+  /// If this is null, the user will be prompted to enter a token
+  final String? token;
+  const LoginPage({
+    super.key,
+    required this.appState,
+    this.token,
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _controller = TextEditingController();
+  late TextEditingController _controller;
   bool _valid = false;
 
   @override
   void initState() {
     super.initState();
+    _controller = TextEditingController(text: widget.token);
     _controller.addListener(() {
       setState(() {
         _valid = _controller.text.isNotEmpty;
       });
     });
+    if (widget.token != null) {
+      context.read<UserBloc>().add(Login(widget.token!));
+    }
   }
 
   @override
@@ -60,6 +77,11 @@ class _LoginPageState extends State<LoginPage> {
               listener: (context, state) {
                 if (state is UserLoggedIn) {
                   context.read<UserBloc>().add(GetProfile());
+                  final box = Hive.box('ibmq');
+                  box.put('token', _controller.text);
+                }
+                if (state is UserLoaded) {
+                  widget.appState.user = state.user;
                 }
               },
               builder: (context, state) {
