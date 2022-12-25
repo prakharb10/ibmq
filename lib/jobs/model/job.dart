@@ -42,7 +42,7 @@ class Job extends Equatable {
   final Provider provider;
 
   /// The job run mode
-  final String runMode;
+  final String? runMode;
 
   /// The user id
   final String userId;
@@ -62,7 +62,7 @@ class Job extends Equatable {
     required this.tags,
     required this.liveDataEnabled,
     required this.provider,
-    required this.runMode,
+    this.runMode,
     required this.userId,
     this.endDate,
     required this.createdBy,

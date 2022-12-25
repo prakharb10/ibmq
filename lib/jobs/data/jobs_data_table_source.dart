@@ -12,14 +12,14 @@ class JobsDataTableSource extends AsyncDataTableSource {
   @override
   Future<AsyncRowsResponse> getRows(int start, int end) async {
     final jobsDataProvider = JobsDataProvider(dio);
-    final response = await jobsDataProvider.getJobs(end - start, start);
+    final response = await jobsDataProvider.getJobs(start);
     final totalRows = response.data['meta']['count'] as int;
     final items = response.data['items'] as List;
     // TODO: Compute this in a separate isolate
     final jobs = items.map((e) => Job.fromJson(e)).toList();
     final rows = jobs
         .map(
-          (e) => DataRow2.byIndex(
+          (e) => DataRow2(
             cells: [
               DataCell(Text(e.id)),
               DataCell(Text(e.status.name)),
@@ -29,7 +29,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
               DataCell(Text(e.provider.toString())),
               DataCell(Text(e.tags.toString())),
             ],
-            index: jobs.indexOf(e),
+            key: ValueKey(e.id),
           ),
         )
         .toList();

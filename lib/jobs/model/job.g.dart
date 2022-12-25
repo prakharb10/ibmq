@@ -15,7 +15,7 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       liveDataEnabled: json['liveDataEnabled'] as bool,
       provider: Provider.fromJson(json['provider'] as Map<String, dynamic>),
-      runMode: json['runMode'] as String,
+      runMode: json['runMode'] as String?,
       userId: json['userId'] as String,
       endDate: json['endDate'] == null
           ? null
