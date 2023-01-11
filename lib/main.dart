@@ -8,10 +8,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('ibmq');
-  runApp(BlocProvider(
-    create: (context) => UserBloc(),
-    child: const MyApp(),
-  ));
+  runApp(
+    BlocProvider(
+      create: (context) => UserBloc(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

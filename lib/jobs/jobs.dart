@@ -12,11 +12,7 @@ class JobsPage extends StatefulWidget {
 }
 
 class _JobsPageState extends State<JobsPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  int _rowsPerPage = 10;
   @override
   Widget build(BuildContext context) {
     return AsyncPaginatedDataTable2(
@@ -25,11 +21,24 @@ class _JobsPageState extends State<JobsPage> {
         DataColumn2(label: Text("Status")),
         DataColumn2(label: Text("Created")),
         DataColumn2(label: Text("Run")),
-        DataColumn2(label: Text("Compute Resource")),
-        DataColumn2(label: Text("Provider")),
+        DataColumn2(
+          label: Text("Compute Resource"),
+          size: ColumnSize.L,
+        ),
+        DataColumn2(
+          label: Text("Provider"),
+          size: ColumnSize.L,
+        ),
         DataColumn2(label: Text("Tags")),
       ],
       source: JobsDataTableSource(widget.dio),
+      wrapInCard: false,
+      fixedLeftColumns: 1,
+      minWidth: 1200,
+      sortColumnIndex: 2,
+      rowsPerPage: _rowsPerPage,
+      availableRowsPerPage: const [10, 20, 50],
+      onRowsPerPageChanged: (value) => _rowsPerPage = value!,
     );
   }
 }
