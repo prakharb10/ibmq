@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:ibmq/jobs/model/job_backend.dart';
 import 'package:ibmq/jobs/model/provider.dart';
 import 'package:ibmq/utils/job_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'job.g.dart';
 
-/// Model class for a job in th jobs list
+/// Model class for a job in the jobs list
 ///
 /// This class is used to display a job in the jobs list
 /// and to navigate to the job details page.
@@ -87,27 +88,4 @@ class Job extends Equatable {
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);
 
   Map<String, dynamic> toJson() => _$JobToJson(this);
-}
-
-/// Model class for a backend for a job
-@JsonSerializable()
-class JobBackend extends Equatable {
-  /// The backend name
-  final String name;
-
-  /// The backend id
-  final String id;
-
-  const JobBackend({
-    required this.name,
-    required this.id,
-  });
-
-  @override
-  List<Object?> get props => [name, id];
-
-  factory JobBackend.fromJson(Map<String, dynamic> json) =>
-      _$JobBackendFromJson(json);
-
-  Map<String, dynamic> toJson() => _$JobBackendToJson(this);
 }

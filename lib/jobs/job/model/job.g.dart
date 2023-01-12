@@ -7,34 +7,36 @@ part of 'job.dart';
 // **************************************************************************
 
 Job _$JobFromJson(Map<String, dynamic> json) => Job(
-      id: json['id'] as String,
+      kind: json['kind'] as String,
       backend: JobBackend.fromJson(json['backend'] as Map<String, dynamic>),
       status: $enumDecode(_$JobStatusEnumMap, json['status']),
       creationDate: DateTime.parse(json['creationDate'] as String),
-      name: json['name'] as String?,
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      liveDataEnabled: json['liveDataEnabled'] as bool,
-      provider: Provider.fromJson(json['provider'] as Map<String, dynamic>),
-      runMode: json['runMode'] as String?,
-      userId: json['userId'] as String,
+      deleted: json['deleted'] as bool,
+      summaryData:
+          SummaryData.fromJson(json['summaryData'] as Map<String, dynamic>),
+      timePerStep:
+          TimePerStep.fromJson(json['timePerStep'] as Map<String, dynamic>),
       endDate: json['endDate'] == null
           ? null
           : DateTime.parse(json['endDate'] as String),
+      runMode: json['runMode'] as String?,
+      id: json['id'] as String,
+      userId: json['userId'] as String,
       createdBy: json['createdBy'] as String,
     );
 
 Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
-      'id': instance.id,
+      'kind': instance.kind,
       'backend': instance.backend,
       'status': _$JobStatusEnumMap[instance.status]!,
       'creationDate': instance.creationDate.toIso8601String(),
-      'name': instance.name,
-      'tags': instance.tags,
-      'liveDataEnabled': instance.liveDataEnabled,
-      'provider': instance.provider,
-      'runMode': instance.runMode,
-      'userId': instance.userId,
+      'deleted': instance.deleted,
+      'summaryData': instance.summaryData,
+      'timePerStep': instance.timePerStep,
       'endDate': instance.endDate?.toIso8601String(),
+      'runMode': instance.runMode,
+      'id': instance.id,
+      'userId': instance.userId,
       'createdBy': instance.createdBy,
     };
 
@@ -57,3 +59,24 @@ const _$JobStatusEnumMap = {
   JobStatus.errorTranspilingJob: 'ERROR_TRANSPILING_JOB',
   JobStatus.errorRunningJob: 'ERROR_RUNNING_JOB',
 };
+
+TimePerStep _$TimePerStepFromJson(Map<String, dynamic> json) => TimePerStep(
+      creating: DateTime.parse(json['CREATING'] as String),
+      created: DateTime.parse(json['CREATED'] as String),
+      validating: DateTime.parse(json['VALIDATING'] as String),
+      validated: DateTime.parse(json['VALIDATED'] as String),
+      queued: DateTime.parse(json['QUEUED'] as String),
+      running: DateTime.parse(json['RUNNING'] as String),
+      completed: DateTime.parse(json['COMPLETED'] as String),
+    );
+
+Map<String, dynamic> _$TimePerStepToJson(TimePerStep instance) =>
+    <String, dynamic>{
+      'CREATING': instance.creating.toIso8601String(),
+      'CREATED': instance.created.toIso8601String(),
+      'VALIDATING': instance.validating.toIso8601String(),
+      'VALIDATED': instance.validated.toIso8601String(),
+      'QUEUED': instance.queued.toIso8601String(),
+      'RUNNING': instance.running.toIso8601String(),
+      'COMPLETED': instance.completed.toIso8601String(),
+    };

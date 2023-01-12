@@ -4,7 +4,9 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ibmq/jobs/job/cubit/job_cubit.dart';
 import 'package:ibmq/jobs/jobs.dart';
 import 'package:ibmq/user/model/user.dart';
 import 'package:ibmq/user/views/login_page.dart';
@@ -248,28 +250,31 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: [
-        _appState.pageIndex == 0
-            ? MaterialPage(
-                key: const ValueKey('JobsPage'),
-                child: JobsPage(
-                  dio: _dio,
-                ),
-              )
-            : const MaterialPage(
-                child: Scaffold(body: Center(child: Text('Backends')))),
-      ],
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-        if (appState.showProfile) {
-          appState.showProfile = false;
-        }
-        return true;
-      },
+    return BlocProvider(
+      create: (context) => JobCubit(_dio),
+      child: Navigator(
+        key: navigatorKey,
+        pages: [
+          _appState.pageIndex == 0
+              ? MaterialPage(
+                  key: const ValueKey('JobsPage'),
+                  child: JobsPage(
+                    dio: _dio,
+                  ),
+                )
+              : const MaterialPage(
+                  child: Scaffold(body: Center(child: Text('Backends')))),
+        ],
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
+          if (appState.showProfile) {
+            appState.showProfile = false;
+          }
+          return true;
+        },
+      ),
     );
   }
 
