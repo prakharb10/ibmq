@@ -11,13 +11,14 @@ void main() async {
   runApp(
     BlocProvider(
       create: (context) => UserBloc(),
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final _appState = IBMQAppState();
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: const Color(0xFF491d8b),
       ),
       routerConfig: RouterConfig(
-        routerDelegate: IBMQRouterDelegate(IBMQAppState()),
+        routerDelegate: IBMQRouterDelegate(_appState),
       ),
     );
   }

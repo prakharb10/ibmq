@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ibmq/jobs/job/cubit/job_cubit.dart';
-import 'package:ibmq/jobs/jobs.dart';
+import 'package:ibmq/jobs/job/job_page.dart';
+import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/user/model/user.dart';
 import 'package:ibmq/user/views/login_page.dart';
 import 'package:ibmq/user/views/user_page.dart';
@@ -35,6 +36,15 @@ class JobsPagePath extends IBMQRoutePath {}
 /// Route path for the backends page
 class BackendsPagePath extends IBMQRoutePath {}
 
+/// Route path for the Job page
+class JobPagePath extends IBMQRoutePath {
+  /// Job ID
+  final String jobId;
+
+  /// Constructor
+  JobPagePath({required this.jobId});
+}
+
 /// Appstate for the router
 class IBMQAppState extends ChangeNotifier {
   /// User token for API requests
@@ -57,6 +67,11 @@ class IBMQAppState extends ChangeNotifier {
 
   /// User token for API requests
   String? get token => _token;
+
+  /// Job id for the job page
+  ///
+  /// This is set when the user navigates to the job page
+  String? _jobId;
 
   /// User token for API requests
   set token(String? token) {
@@ -106,6 +121,19 @@ class IBMQAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Job id for the job page
+  ///
+  /// This is set when the user navigates to the job page
+  String? get jobId => _jobId;
+
+  /// Job id for the job page
+  ///
+  /// This is set when the user navigates to the job page
+  set jobId(String? jobId) {
+    _jobId = jobId;
+    notifyListeners();
+  }
+
   /// Check if token is set
   void init() {
     final box = Hive.box('ibmq');
@@ -148,6 +176,9 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
       }
       switch (appState.pageIndex) {
         case 0:
+          if (appState.jobId != null) {
+            return JobPagePath(jobId: appState.jobId!);
+          }
           return JobsPagePath();
         case 1:
           return BackendsPagePath();
@@ -156,6 +187,16 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
       }
     }
     return null;
+  }
+
+  Dio initDio() {
+    final dio = Dio();
+    final cookieJar = CookieJar();
+    dio.options.baseUrl = appState.user!.urls.http;
+    cookieJar.saveFromResponse(
+        Uri.parse(appState.user!.urls.http), [appState.cookie!]);
+    dio.interceptors.add(CookieManager(cookieJar));
+    return dio;
   }
 
   @override
@@ -177,6 +218,16 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
                 key: const ValueKey('AppShell'),
                 child: AppShell(appState: appState),
               ),
+              if (appState.jobId != null)
+                MaterialPage(
+                  key: const ValueKey('JobPage'),
+                  child: BlocProvider(
+                    create: (context) => JobCubit(initDio()),
+                    child: JobPage(
+                      jobId: appState.jobId!,
+                    ),
+                  ),
+                ),
               if (appState.showProfile)
                 MaterialPage(
                   key: const ValueKey('UserPage'),
@@ -204,6 +255,9 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
     if (configuration is UserPagePath) {
       appState.showProfile = true;
       appState.user = configuration.user;
+    }
+    if (configuration is JobPagePath) {
+      appState.jobId = configuration.jobId;
     }
     if (configuration is JobsPagePath) {
       appState.pageIndex = 0;
@@ -250,31 +304,32 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => JobCubit(_dio),
-      child: Navigator(
-        key: navigatorKey,
-        pages: [
-          _appState.pageIndex == 0
-              ? MaterialPage(
-                  key: const ValueKey('JobsPage'),
-                  child: JobsPage(
-                    dio: _dio,
-                  ),
-                )
-              : const MaterialPage(
-                  child: Scaffold(body: Center(child: Text('Backends')))),
-        ],
-        onPopPage: (route, result) {
-          if (!route.didPop(result)) {
-            return false;
-          }
-          if (appState.showProfile) {
-            appState.showProfile = false;
-          }
-          return true;
-        },
-      ),
+    return Navigator(
+      key: navigatorKey,
+      pages: [
+        _appState.pageIndex == 0
+            ? MaterialPage(
+                key: const ValueKey('JobsPage'),
+                child: JobsPage(
+                  dio: _dio,
+                  appState: _appState,
+                ),
+              )
+            : const MaterialPage(
+                child: Scaffold(body: Center(child: Text('Backends')))),
+      ],
+      onPopPage: (route, result) {
+        if (!route.didPop(result)) {
+          return false;
+        }
+        if (appState.showProfile) {
+          appState.showProfile = false;
+        }
+        if (appState.jobId != null) {
+          appState.jobId = null;
+        }
+        return true;
+      },
     );
   }
 

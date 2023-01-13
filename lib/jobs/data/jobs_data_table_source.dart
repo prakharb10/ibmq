@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ibmq/router.dart';
 import 'package:intl/intl.dart';
 
 import '../model/job.dart';
@@ -9,8 +10,9 @@ import 'jobs_data_provider.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
   final Dio dio;
+  final IBMQAppState appState;
 
-  JobsDataTableSource(this.dio);
+  JobsDataTableSource({required this.dio, required this.appState});
   // `start` is the number of rows to be skipped
   // `end` is the number of rows to be fetched i.e. limit
   @override
@@ -42,6 +44,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
               DataCell(Text(e.tags.toString())),
             ],
             key: ValueKey(e.id),
+            onTap: () => appState.jobId = e.id,
           ),
         )
         .toList();

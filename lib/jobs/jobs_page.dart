@@ -2,10 +2,13 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
+import 'package:ibmq/router.dart';
 
 class JobsPage extends StatefulWidget {
   final Dio dio;
-  const JobsPage({Key? key, required this.dio}) : super(key: key);
+  final IBMQAppState appState;
+  const JobsPage({Key? key, required this.dio, required this.appState})
+      : super(key: key);
 
   @override
   State<JobsPage> createState() => _JobsPageState();
@@ -31,7 +34,10 @@ class _JobsPageState extends State<JobsPage> {
         ),
         DataColumn2(label: Text("Tags")),
       ],
-      source: JobsDataTableSource(widget.dio),
+      source: JobsDataTableSource(
+        dio: widget.dio,
+        appState: widget.appState,
+      ),
       wrapInCard: false,
       fixedLeftColumns: 1,
       minWidth: 1200,
