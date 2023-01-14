@@ -47,6 +47,7 @@ dependencies:
   hive_flutter: ^1.1.0
   data_table_2: ^2.3.10
   intl: ^0.18.0
+  timelines: ^0.1.0
 
 dev_dependencies:
   flutter_test:
