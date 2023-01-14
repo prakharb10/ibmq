@@ -71,6 +71,12 @@ TimePerStep _$TimePerStepFromJson(Map<String, dynamic> json) => TimePerStep(
       created: json['CREATED'] == null
           ? null
           : DateTime.parse(json['CREATED'] as String),
+      transpiling: json['TRANSPILING'] == null
+          ? null
+          : DateTime.parse(json['TRANSPILING'] as String),
+      transpiled: json['TRANSPILED'] == null
+          ? null
+          : DateTime.parse(json['TRANSPILED'] as String),
       validating: json['VALIDATING'] == null
           ? null
           : DateTime.parse(json['VALIDATING'] as String),
@@ -92,6 +98,8 @@ Map<String, dynamic> _$TimePerStepToJson(TimePerStep instance) =>
     <String, dynamic>{
       'CREATING': instance.creating?.toIso8601String(),
       'CREATED': instance.created?.toIso8601String(),
+      'TRANSPILING': instance.transpiling?.toIso8601String(),
+      'TRANSPILED': instance.transpiled?.toIso8601String(),
       'VALIDATING': instance.validating?.toIso8601String(),
       'VALIDATED': instance.validated?.toIso8601String(),
       'QUEUED': instance.queued?.toIso8601String(),

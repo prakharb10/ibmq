@@ -115,6 +115,8 @@ class Job extends Equatable {
 class TimePerStep extends Equatable {
   final DateTime? creating;
   final DateTime? created;
+  final DateTime? transpiling;
+  final DateTime? transpiled;
   final DateTime? validating;
   final DateTime? validated;
   final DateTime? queued;
@@ -124,6 +126,8 @@ class TimePerStep extends Equatable {
   const TimePerStep({
     required this.creating,
     required this.created,
+    required this.transpiling,
+    required this.transpiled,
     required this.validating,
     required this.validated,
     required this.queued,
@@ -135,6 +139,8 @@ class TimePerStep extends Equatable {
   List<Object?> get props => [
         creating,
         created,
+        transpiling,
+        transpiled,
         validating,
         validated,
         queued,
