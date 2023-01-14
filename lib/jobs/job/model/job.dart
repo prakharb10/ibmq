@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ibmq/jobs/job/model/info_queue.dart';
 import 'package:ibmq/jobs/job/model/summary_data.dart';
 import 'package:ibmq/jobs/model/job_backend.dart';
 import 'package:ibmq/utils/job_status.dart';
@@ -60,6 +61,12 @@ class Job extends Equatable {
   /// The user id
   final String userId;
 
+  /// The job queue info
+  ///
+  /// If `status` is [JobStatus.QUEUED], this field will be populated.
+  /// See [InfoQueue] for more information
+  final InfoQueue? infoQueue;
+
   /// The job was created locally or remotely
   final String createdBy;
 
@@ -75,6 +82,7 @@ class Job extends Equatable {
     required this.runMode,
     required this.id,
     required this.userId,
+    required this.infoQueue,
     required this.createdBy,
   });
 
@@ -91,6 +99,7 @@ class Job extends Equatable {
         runMode,
         id,
         userId,
+        infoQueue,
         createdBy,
       ];
 
@@ -104,13 +113,13 @@ class Job extends Equatable {
 /// Used in [Job]
 @JsonSerializable(fieldRename: FieldRename.screamingSnake)
 class TimePerStep extends Equatable {
-  final DateTime creating;
-  final DateTime created;
-  final DateTime validating;
-  final DateTime validated;
-  final DateTime queued;
-  final DateTime running;
-  final DateTime completed;
+  final DateTime? creating;
+  final DateTime? created;
+  final DateTime? validating;
+  final DateTime? validated;
+  final DateTime? queued;
+  final DateTime? running;
+  final DateTime? completed;
 
   const TimePerStep({
     required this.creating,
@@ -123,7 +132,7 @@ class TimePerStep extends Equatable {
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         creating,
         created,
         validating,

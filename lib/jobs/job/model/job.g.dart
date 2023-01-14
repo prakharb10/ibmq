@@ -22,6 +22,9 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       runMode: json['runMode'] as String?,
       id: json['id'] as String,
       userId: json['userId'] as String,
+      infoQueue: json['infoQueue'] == null
+          ? null
+          : InfoQueue.fromJson(json['infoQueue'] as Map<String, dynamic>),
       createdBy: json['createdBy'] as String,
     );
 
@@ -37,6 +40,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'runMode': instance.runMode,
       'id': instance.id,
       'userId': instance.userId,
+      'infoQueue': instance.infoQueue,
       'createdBy': instance.createdBy,
     };
 
@@ -61,22 +65,36 @@ const _$JobStatusEnumMap = {
 };
 
 TimePerStep _$TimePerStepFromJson(Map<String, dynamic> json) => TimePerStep(
-      creating: DateTime.parse(json['CREATING'] as String),
-      created: DateTime.parse(json['CREATED'] as String),
-      validating: DateTime.parse(json['VALIDATING'] as String),
-      validated: DateTime.parse(json['VALIDATED'] as String),
-      queued: DateTime.parse(json['QUEUED'] as String),
-      running: DateTime.parse(json['RUNNING'] as String),
-      completed: DateTime.parse(json['COMPLETED'] as String),
+      creating: json['CREATING'] == null
+          ? null
+          : DateTime.parse(json['CREATING'] as String),
+      created: json['CREATED'] == null
+          ? null
+          : DateTime.parse(json['CREATED'] as String),
+      validating: json['VALIDATING'] == null
+          ? null
+          : DateTime.parse(json['VALIDATING'] as String),
+      validated: json['VALIDATED'] == null
+          ? null
+          : DateTime.parse(json['VALIDATED'] as String),
+      queued: json['QUEUED'] == null
+          ? null
+          : DateTime.parse(json['QUEUED'] as String),
+      running: json['RUNNING'] == null
+          ? null
+          : DateTime.parse(json['RUNNING'] as String),
+      completed: json['COMPLETED'] == null
+          ? null
+          : DateTime.parse(json['COMPLETED'] as String),
     );
 
 Map<String, dynamic> _$TimePerStepToJson(TimePerStep instance) =>
     <String, dynamic>{
-      'CREATING': instance.creating.toIso8601String(),
-      'CREATED': instance.created.toIso8601String(),
-      'VALIDATING': instance.validating.toIso8601String(),
-      'VALIDATED': instance.validated.toIso8601String(),
-      'QUEUED': instance.queued.toIso8601String(),
-      'RUNNING': instance.running.toIso8601String(),
-      'COMPLETED': instance.completed.toIso8601String(),
+      'CREATING': instance.creating?.toIso8601String(),
+      'CREATED': instance.created?.toIso8601String(),
+      'VALIDATING': instance.validating?.toIso8601String(),
+      'VALIDATED': instance.validated?.toIso8601String(),
+      'QUEUED': instance.queued?.toIso8601String(),
+      'RUNNING': instance.running?.toIso8601String(),
+      'COMPLETED': instance.completed?.toIso8601String(),
     };

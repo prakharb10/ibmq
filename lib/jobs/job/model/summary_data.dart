@@ -18,7 +18,7 @@ class SummaryData extends Equatable {
   final Summary summary;
 
   /// The time taken for the result
-  final double resultTime;
+  final double? resultTime;
 
   const SummaryData({
     required this.size,

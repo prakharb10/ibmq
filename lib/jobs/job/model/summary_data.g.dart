@@ -10,7 +10,7 @@ SummaryData _$SummaryDataFromJson(Map<String, dynamic> json) => SummaryData(
       size: Map<String, int>.from(json['size'] as Map),
       success: json['success'] as bool,
       summary: Summary.fromJson(json['summary'] as Map<String, dynamic>),
-      resultTime: (json['resultTime'] as num).toDouble(),
+      resultTime: (json['resultTime'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$SummaryDataToJson(SummaryData instance) =>
