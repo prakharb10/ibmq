@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ibmq/utils/job_status.dart';
+import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'info_queue.g.dart';

@@ -80,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   final box = Hive.box('ibmq');
                   box.put('token', _controller.text);
                   widget.appState.cookie = state.cookie;
+                  widget.appState.accessToken = state.accessToken;
                 }
                 if (state is UserLoaded) {
                   widget.appState.user = state.user;

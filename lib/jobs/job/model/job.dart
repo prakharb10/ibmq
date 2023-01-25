@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:ibmq/jobs/job/model/info_queue.dart';
 import 'package:ibmq/jobs/job/model/summary_data.dart';
 import 'package:ibmq/jobs/model/job_backend.dart';
-import 'package:ibmq/utils/job_status.dart';
+import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'job.g.dart';

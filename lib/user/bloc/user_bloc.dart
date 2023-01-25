@@ -15,8 +15,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<Login>((event, emit) async {
       emit(UserLoading());
       try {
-        final cookie = await _userRepository.tokenLogin(event.token);
-        emit(UserLoggedIn(cookie));
+        final vals = await _userRepository.tokenLogin(event.token);
+        emit(UserLoggedIn(cookie: vals.first, accessToken: vals.last));
       } catch (e) {
         emit(UserError(e.toString()));
       }

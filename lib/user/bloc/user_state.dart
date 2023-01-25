@@ -12,10 +12,15 @@ class UserInitial extends UserState {}
 /// State when a user is logged in
 ///
 /// [cookie] is the cookie to use for authenticated requests
+/// [accessToken] is the access token to use for Runtime API requests
 class UserLoggedIn extends UserState {
   final Cookie cookie;
+  final String accessToken;
 
-  const UserLoggedIn(this.cookie);
+  const UserLoggedIn({
+    required this.cookie,
+    required this.accessToken,
+  });
 
   @override
   List<Object> get props => [cookie];

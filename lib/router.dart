@@ -6,6 +6,8 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ibmq/jobs/cubit/jobs_cache_cubit.dart';
+import 'package:ibmq/jobs/cursor/bloc/cursors_bloc.dart';
 import 'package:ibmq/jobs/job/cubit/job_cubit.dart';
 import 'package:ibmq/jobs/job/job_page.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
@@ -62,16 +64,19 @@ class IBMQAppState extends ChangeNotifier {
   /// Cookie for API requests
   Cookie? _cookie;
 
+  /// Access token for Runtime API requests
+  String? _accessToken;
+
   /// Whether to show the profile page
   bool _showProfile = false;
-
-  /// User token for API requests
-  String? get token => _token;
 
   /// Job id for the job page
   ///
   /// This is set when the user navigates to the job page
   String? _jobId;
+
+  /// User token for API requests
+  String? get token => _token;
 
   /// User token for API requests
   set token(String? token) {
@@ -100,6 +105,15 @@ class IBMQAppState extends ChangeNotifier {
   /// and user data is fetched
   set user(User? user) {
     _user = user;
+    notifyListeners();
+  }
+
+  /// Access token for Runtime API requests
+  String? get accessToken => _accessToken;
+
+  /// Access token for Runtime API requests
+  set accessToken(String? accessToken) {
+    _accessToken = accessToken;
     notifyListeners();
   }
 
@@ -189,6 +203,7 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
     return null;
   }
 
+  /// Function to initialize a [Dio] instance for API calls
   Dio initDio() {
     final dio = Dio();
     final cookieJar = CookieJar();
@@ -196,6 +211,14 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
     cookieJar.saveFromResponse(
         Uri.parse(appState.user!.urls.http), [appState.cookie!]);
     dio.interceptors.add(CookieManager(cookieJar));
+    return dio;
+  }
+
+  /// Function to initialize a [Dio] instance for Runtime API calls
+  Dio initRuntimeDio() {
+    final dio = Dio();
+    dio.options.baseUrl = appState.user!.urls.services['runtime']!;
+    dio.options.headers['x-access-token'] = appState.accessToken;
     return dio;
   }
 
@@ -216,7 +239,11 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
           : [
               MaterialPage(
                 key: const ValueKey('AppShell'),
-                child: AppShell(appState: appState),
+                child: AppShell(
+                  appState: appState,
+                  dio: initDio(),
+                  runtimeDio: initRuntimeDio(),
+                ),
               ),
               if (appState.jobId != null)
                 MaterialPage(
@@ -279,8 +306,12 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<IBMQRoutePath> {
   /// App state
   IBMQAppState _appState;
-  final Dio _dio = Dio();
-  final CookieJar _cookieJar = CookieJar();
+
+  /// Dio instance for API calls
+  final Dio _dio;
+
+  /// Dio instance for Runtime API calls
+  final Dio _runtimeDio;
 
   IBMQAppState get appState => _appState;
 
@@ -293,13 +324,9 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
   final GlobalKey<NavigatorState> navigatorKey;
 
   /// Constructor
-  InnerRouterDelegate(this._appState)
+  InnerRouterDelegate(this._appState, this._dio, this._runtimeDio)
       : navigatorKey = GlobalKey<NavigatorState>() {
     _appState.addListener(notifyListeners);
-    _dio.options.baseUrl = _appState.user!.urls.http;
-    _cookieJar.saveFromResponse(
-        Uri.parse(_appState.user!.urls.http), [_appState.cookie!]);
-    _dio.interceptors.add(CookieManager(_cookieJar));
   }
 
   @override
@@ -310,9 +337,20 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
         _appState.pageIndex == 0
             ? MaterialPage(
                 key: const ValueKey('JobsPage'),
-                child: JobsPage(
-                  dio: _dio,
-                  appState: _appState,
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => CursorsBloc(),
+                    ),
+                    BlocProvider(
+                      create: (context) => JobsCacheCubit(),
+                    ),
+                  ],
+                  child: JobsPage(
+                    dio: _dio,
+                    runtimeDio: _runtimeDio,
+                    appState: _appState,
+                  ),
                 ),
               )
             : const MaterialPage(

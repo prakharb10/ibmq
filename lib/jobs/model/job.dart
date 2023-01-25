@@ -1,10 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:ibmq/jobs/model/job_backend.dart';
 import 'package:ibmq/jobs/model/provider.dart';
-import 'package:ibmq/utils/job_status.dart';
+import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'job.g.dart';
+
+/// Base class for all jobs.
+///
+/// Two types of jobs are supported:
+/// - [Job] - A legacy job type
+/// - [RuntimeJob] - A runtime job type
+abstract class BaseJob extends Equatable {
+  const BaseJob();
+
+  @override
+  List<Object?> get props => [];
+}
 
 /// Model class for a job in the jobs list
 ///
@@ -12,7 +24,7 @@ part 'job.g.dart';
 /// and to navigate to the job details page.
 /// Contains limited information about the job.
 @JsonSerializable()
-class Job extends Equatable {
+class Job extends BaseJob {
   /// The job id
   final String id;
 

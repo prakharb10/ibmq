@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -49,7 +50,19 @@ class MyApp extends StatelessWidget {
 /// The [InnerRouterDelegate] is used to build the body of the app.
 class AppShell extends StatefulWidget {
   final IBMQAppState appState;
-  const AppShell({Key? key, required this.appState}) : super(key: key);
+
+  /// Dio instance to use for API requests
+  final Dio dio;
+
+  /// Dio instance to use for Runtime API requests
+  final Dio runtimeDio;
+
+  const AppShell({
+    super.key,
+    required this.appState,
+    required this.dio,
+    required this.runtimeDio,
+  });
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -62,7 +75,8 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
-    _routerDelegate = InnerRouterDelegate(widget.appState);
+    _routerDelegate =
+        InnerRouterDelegate(widget.appState, widget.dio, widget.runtimeDio);
   }
 
   @override
