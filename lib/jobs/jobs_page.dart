@@ -49,6 +49,7 @@ class _JobsPageState extends State<JobsPage> {
           label: Text("Provider"),
           size: ColumnSize.L,
         ),
+        DataColumn2(label: Text("QR Usage")),
         DataColumn2(label: Text("Tags")),
       ],
       source: JobsDataTableSource(
@@ -60,7 +61,7 @@ class _JobsPageState extends State<JobsPage> {
       ),
       wrapInCard: false,
       fixedLeftColumns: 1,
-      minWidth: 1200,
+      minWidth: 1600,
       sortColumnIndex: 2,
       // TODO: Handle changing rows per page
       // rowsPerPage: _rowsPerPage,
