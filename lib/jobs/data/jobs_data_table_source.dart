@@ -13,6 +13,7 @@ import 'package:ibmq/router.dart';
 import 'package:intl/intl.dart';
 
 import '../model/job.dart';
+import '../model/runtime_data.dart';
 import 'jobs_data_provider.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
@@ -215,7 +216,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
               DataCell(Text(e.tags.toString())),
             ],
             key: ValueKey(e.id),
-            onTap: () => appState.jobId = e.id,
+            onTap: () => appState.job = e,
           );
         } else {
           final ee = e as RuntimeJob;
@@ -241,7 +242,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
               DataCell(Text(ee.tags.toString())),
             ],
             key: ValueKey(ee.id),
-            onTap: () => appState.jobId = ee.id,
+            onTap: () => appState.job = RuntimeData(job: ee, metrics: metric),
           );
         }
       },

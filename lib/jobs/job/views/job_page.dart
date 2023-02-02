@@ -21,29 +21,25 @@ class _JobPageState extends State<JobPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<JobCubit, JobState>(
-      builder: (context, state) {
-        if (state is JobLoading) {
-          return const Scaffold(
-            body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.jobId),
+      ),
+      body: BlocBuilder<JobCubit, JobState>(
+        builder: (context, state) {
+          if (state is JobLoading) {
+            return const Center(
               child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        if (state is JobLoadFailed) {
-          return Scaffold(
-            body: Center(
+            );
+          }
+          if (state is JobLoadFailed) {
+            return Center(
               child: Text(state.message),
-            ),
-          );
-        }
-        if (state is JobLoaded) {
-          final job = state.job;
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(job.id),
-            ),
-            body: ListView(
+            );
+          }
+          if (state is JobLoaded) {
+            final job = state.job;
+            return ListView(
               children: [
                 if (job.infoQueue != null)
                   Column(
@@ -144,16 +140,17 @@ class _JobPageState extends State<JobPage> {
                     ),
                   ),
                 ),
+                const Divider(),
                 JobTimeline(
                   timePerStep: job.timePerStep,
                   resultTime: job.summaryData.resultTime,
                 ),
               ],
-            ),
-          );
-        }
-        return Container();
-      },
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }

@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 
 class JobDataProvider {
-  final Dio _dio;
+  final Dio dio;
 
-  JobDataProvider(this._dio);
+  JobDataProvider(this.dio);
 
   Future<Response> getJobInfo(String jobId) async {
     try {
-      final response = await _dio.get('/jobs/$jobId');
+      final response = await dio.get('/jobs/$jobId');
       return response;
     } catch (e) {
       log(e.toString());

@@ -14,7 +14,6 @@ class RuntimeJobsDataProvider {
         queryParameters: {
           'limit': limit,
           'offset': offset,
-          'exclude_params': true,
         },
       );
       return response;

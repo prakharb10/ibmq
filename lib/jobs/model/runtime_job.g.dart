@@ -19,6 +19,8 @@ RuntimeJob _$RuntimeJobFromJson(Map<String, dynamic> json) => RuntimeJob(
       cost: json['cost'] as int?,
       tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
       sessionId: json['session_id'] as String?,
+      shots: RuntimeJob._readShots(json, 'shots') as int,
+      circuits: RuntimeJob._readCircuits(json, 'circuits') as int,
     );
 
 Map<String, dynamic> _$RuntimeJobToJson(RuntimeJob instance) =>
@@ -35,6 +37,8 @@ Map<String, dynamic> _$RuntimeJobToJson(RuntimeJob instance) =>
       'cost': instance.cost,
       'tags': instance.tags,
       'session_id': instance.sessionId,
+      'shots': instance.shots,
+      'circuits': instance.circuits,
     };
 
 const _$RuntimeJobStatusEnumMap = {

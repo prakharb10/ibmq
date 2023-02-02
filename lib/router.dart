@@ -9,12 +9,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ibmq/jobs/cubit/jobs_cache_cubit.dart';
 import 'package:ibmq/jobs/cursor/bloc/cursors_bloc.dart';
 import 'package:ibmq/jobs/job/cubit/job_cubit.dart';
-import 'package:ibmq/jobs/job/job_page.dart';
+import 'package:ibmq/jobs/job/data/runtime_data_provider.dart';
+import 'package:ibmq/jobs/job/job_shell.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
+import 'package:ibmq/jobs/model/job.dart';
 import 'package:ibmq/user/model/user.dart';
 import 'package:ibmq/user/views/login_page.dart';
 import 'package:ibmq/user/views/user_page.dart';
 
+import 'jobs/job/bloc/runtime_bloc.dart';
+import 'jobs/job/data/runtime_repository.dart';
 import 'main.dart';
 
 /// Abstract class for all pages.
@@ -40,11 +44,11 @@ class BackendsPagePath extends IBMQRoutePath {}
 
 /// Route path for the Job page
 class JobPagePath extends IBMQRoutePath {
-  /// Job ID
-  final String jobId;
+  /// Job
+  final BaseJob job;
 
   /// Constructor
-  JobPagePath({required this.jobId});
+  JobPagePath({required this.job});
 }
 
 /// Appstate for the router
@@ -70,10 +74,10 @@ class IBMQAppState extends ChangeNotifier {
   /// Whether to show the profile page
   bool _showProfile = false;
 
-  /// Job id for the job page
+  /// Job for the job page
   ///
   /// This is set when the user navigates to the job page
-  String? _jobId;
+  BaseJob? _job;
 
   /// User token for API requests
   String? get token => _token;
@@ -135,16 +139,16 @@ class IBMQAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Job id for the job page
+  /// Job for the job page
   ///
   /// This is set when the user navigates to the job page
-  String? get jobId => _jobId;
+  BaseJob? get job => _job;
 
-  /// Job id for the job page
+  /// Job for the job page
   ///
   /// This is set when the user navigates to the job page
-  set jobId(String? jobId) {
-    _jobId = jobId;
+  set job(BaseJob? job) {
+    _job = job;
     notifyListeners();
   }
 
@@ -190,8 +194,8 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
       }
       switch (appState.pageIndex) {
         case 0:
-          if (appState.jobId != null) {
-            return JobPagePath(jobId: appState.jobId!);
+          if (appState.job != null) {
+            return JobPagePath(job: appState.job!);
           }
           return JobsPagePath();
         case 1:
@@ -245,14 +249,23 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
                   runtimeDio: initRuntimeDio(),
                 ),
               ),
-              if (appState.jobId != null)
+              if (appState.job != null)
                 MaterialPage(
                   key: const ValueKey('JobPage'),
-                  child: BlocProvider(
-                    create: (context) => JobCubit(initDio()),
-                    child: JobPage(
-                      jobId: appState.jobId!,
-                    ),
+                  child: MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => JobCubit(initDio()),
+                      ),
+                      BlocProvider(
+                        create: (context) => RuntimeBloc(
+                          runtimeRepository: RuntimeRepository(
+                            RuntimeDataProvider(initRuntimeDio()),
+                          ),
+                        ),
+                      ),
+                    ],
+                    child: JobShell(job: appState.job!),
                   ),
                 ),
               if (appState.showProfile)
@@ -284,7 +297,7 @@ class IBMQRouterDelegate extends RouterDelegate<IBMQRoutePath>
       appState.user = configuration.user;
     }
     if (configuration is JobPagePath) {
-      appState.jobId = configuration.jobId;
+      appState.job = configuration.job;
     }
     if (configuration is JobsPagePath) {
       appState.pageIndex = 0;
@@ -363,8 +376,8 @@ class InnerRouterDelegate extends RouterDelegate<IBMQRoutePath>
         if (appState.showProfile) {
           appState.showProfile = false;
         }
-        if (appState.jobId != null) {
-          appState.jobId = null;
+        if (appState.job != null) {
+          appState.job = null;
         }
         return true;
       },

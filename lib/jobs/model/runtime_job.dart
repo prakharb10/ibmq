@@ -61,8 +61,22 @@ class RuntimeJob extends BaseJob {
   /// Identifier of the session where the job was executed.
   final String? sessionId;
 
+  /// Number of shots used in the job.
+  @JsonKey(readValue: _readShots)
+  final int shots;
+
+  /// Number of circuits.
+  @JsonKey(readValue: _readCircuits)
+  final int circuits;
+
   static _readProgram(Map<dynamic, dynamic> json, String key) =>
       json[key]['id'] as String;
+
+  static _readShots(Map<dynamic, dynamic> json, String key) =>
+      json['params']['run_options'][key] as int;
+
+  static _readCircuits(Map<dynamic, dynamic> json, String key) =>
+      (json['params'][key] as List).length;
 
   const RuntimeJob({
     required this.id,
@@ -77,6 +91,8 @@ class RuntimeJob extends BaseJob {
     this.cost,
     this.tags,
     this.sessionId,
+    required this.shots,
+    required this.circuits,
   });
 
   factory RuntimeJob.fromJson(Map<String, dynamic> json) =>
@@ -98,5 +114,7 @@ class RuntimeJob extends BaseJob {
         cost,
         tags,
         sessionId,
+        shots,
+        circuits,
       ];
 }
