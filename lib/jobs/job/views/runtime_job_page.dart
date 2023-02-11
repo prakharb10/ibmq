@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibmq/jobs/job/widgets/results_section.dart';
 
 import '../bloc/runtime_bloc.dart';
 import '../../model/runtime_data.dart';
+import '../model/runtime_result.dart';
 import '../widgets/runtime_job_timeline.dart';
 
 class RuntimeJobPage extends StatefulWidget {
@@ -17,9 +21,9 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
   @override
   void initState() {
     super.initState();
-    // context
-    //     .read<RuntimeBloc>()
-    //     .add(RuntimeResultFetched(jobId: widget.data.job.id));
+    context
+        .read<RuntimeBloc>()
+        .add(RuntimeResultFetched(jobId: widget.data.job.id));
   }
 
   @override
@@ -115,31 +119,96 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
           const Divider(),
           RuntimeJobTimeline(
             timestamps: metrics.timestamps,
+          ),
+          BlocBuilder<RuntimeBloc, RuntimeState>(
+            builder: (context, state) {
+              if (state is RuntimeResultInProgress) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is RuntimeResultFailure) {
+                return const Center(
+                  child: Text("Failed to load result"),
+                );
+              }
+              if (state is RuntimeResultSuccess<EstimatorResult>) {
+                final result = state.result;
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Results",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        ResultsSection(
+                          name: "metadata",
+                          type: "array",
+                          description: "Additional metadata",
+                          content: const JsonEncoder.withIndent('  ').convert(
+                            result.metadata,
+                          ),
+                        ),
+                        const Divider(),
+                        ResultsSection(
+                          name: "values",
+                          type: "array",
+                          description:
+                              """Estimated expectation values <Ψ|H|Ψ>. This is a numpy array. The i-th element is calculated using the circuit and observable indexed by the i-th circuit_indices and i-th observable_indices, and bound with i-th parameter_values.""",
+                          content: const JsonEncoder.withIndent('  ').convert(
+                            result.values,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              if (state is RuntimeResultSuccess<SamplerResult>) {
+                final result = state.result;
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Results",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        ResultsSection(
+                          name: "metadata",
+                          type: "array",
+                          description: "Additional metadata",
+                          content: const JsonEncoder.withIndent('  ').convert(
+                            result.metadata,
+                          ),
+                        ),
+                        const Divider(),
+                        ResultsSection(
+                          name: "quasi_dists",
+                          type: "array",
+                          description:
+                              "List of quasi-probabilities returned for each circuit",
+                          content: const JsonEncoder.withIndent('  ').convert(
+                            result.quasiDists,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            },
           )
         ],
       ),
     );
-    // BlocBuilder<RuntimeBloc, RuntimeState>(
-    //   builder: (context, state) {
-    //     if (state is RuntimeResultInProgress) {
-    //       return const Scaffold(
-    //         body: Center(
-    //           child: CircularProgressIndicator(),
-    //         ),
-    //       );
-    //     }
-    //     if (state is RuntimeResultFailure) {
-    //       return const Scaffold(
-    //         body: Center(
-    //           child: Text("Failed to load result"),
-    //         ),
-    //       );
-    //     }
-    //     if (state is RuntimeResultSuccess) {
-    //       final result = state.result;
-    //     }
-    //     return Container();
-    //   },
-    // );
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ibmq/jobs/job/model/runtime_result.dart';
@@ -12,10 +13,11 @@ class RuntimeRepository {
   Future<RuntimeResult> getJobResults(String jobId) async {
     try {
       final response = await runtimeDataProvider.getJobResults(jobId);
-      if ((response.data as Map).containsKey('values')) {
-        return EstimatorResult.fromJson(response.data);
-      } else if ((response.data as Map).containsKey('quasi_dists')) {
-        return SamplerResult.fromJson(response.data);
+      final data = jsonDecode(response.data);
+      if ((data as Map<String, dynamic>).containsKey('values')) {
+        return EstimatorResult.fromJson(data);
+      } else if ((data).containsKey('quasi_dists')) {
+        return SamplerResult.fromJson(data);
       } else {
         throw Exception('Failed to get job results');
       }

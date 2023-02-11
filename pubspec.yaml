@@ -48,6 +48,7 @@ dependencies:
   data_table_2: ^2.3.10
   intl: ^0.18.0
   timelines: ^0.1.0
+  flutter_markdown: ^0.6.13+1
 
 dev_dependencies:
   flutter_test:
