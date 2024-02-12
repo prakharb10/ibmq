@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/router.dart';
-import 'package:ibmq/user/bloc/user_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  /// App state
-  final IBMQAppState appState;
-
   /// Token to use for login
   ///
   /// If this is null, the user will be prompted to enter a token
   final String? token;
   const LoginPage({
     super.key,
-    required this.appState,
     this.token,
   });
 
@@ -36,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       });
     });
     if (widget.token != null) {
-      context.read<UserBloc>().add(Login(widget.token!));
+      context.read<AuthCubit>().tokenLogin(widget.token!);
     }
   }
 
@@ -69,32 +64,46 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: _valid
-                  ? () => context.read<UserBloc>().add(Login(_controller.text))
+                  ? () => context.read<AuthCubit>().tokenLogin(_controller.text)
                   : null,
               child: const Text("Login"),
             ),
-            BlocConsumer<UserBloc, UserState>(
+            BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
-                if (state is UserLoggedIn) {
-                  context.read<UserBloc>().add(GetProfile());
-                  final box = Hive.box('ibmq');
-                  box.put('token', _controller.text);
-                  widget.appState.cookie = state.cookie;
-                  widget.appState.accessToken = state.accessToken;
-                }
-                if (state is UserLoaded) {
-                  widget.appState.user = state.user;
+                if (state is TokenLoginSuccess) {
+                  JobsRoute().go(context);
                 }
               },
               builder: (context, state) {
-                if (state is UserLoading) {
-                  return const CircularProgressIndicator();
-                } else if (state is UserError) {
-                  return Text(state.message);
-                }
-                return Container();
+                return switch (state) {
+                  TokenLoginInProgress() => const CircularProgressIndicator(),
+                  TokenLoginFailure(message: var message) => Text(message),
+                  _ => const SizedBox.shrink(),
+                };
               },
             )
+            // BlocConsumer<UserBloc, UserState>(
+            //   listener: (context, state) {
+            //     if (state is UserLoggedIn) {
+            //       context.read<UserBloc>().add(GetProfile());
+            //       final box = Hive.box('ibmq');
+            //       box.put('token', _controller.text);
+            //       widget.appState.cookie = state.cookie;
+            //       widget.appState.accessToken = state.accessToken;
+            //     }
+            //     if (state is UserLoaded) {
+            //       widget.appState.user = state.user;
+            //     }
+            //   },
+            //   builder: (context, state) {
+            //     if (state is UserLoading) {
+            //       return const CircularProgressIndicator();
+            //     } else if (state is UserError) {
+            //       return Text(state.message);
+            //     }
+            //     return Container();
+            //   },
+            // )
           ],
         ),
       ),

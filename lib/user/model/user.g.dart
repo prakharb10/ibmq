@@ -27,13 +27,28 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
     };
 
 UserUrls _$UserUrlsFromJson(Map<String, dynamic> json) => UserUrls(
-      http: json['http'] as String,
-      ws: json['ws'] as String,
-      services: Map<String, String>.from(json['services'] as Map),
+      http: Uri.parse(json['http'] as String),
+      ws: Uri.parse(json['ws'] as String),
+      services: _$recordConvert(
+        json['services'],
+        ($jsonValue) => (
+          quantumLab: Uri.parse($jsonValue['quantumLab'] as String),
+          runtime: Uri.parse($jsonValue['runtime'] as String),
+        ),
+      ),
     );
 
 Map<String, dynamic> _$UserUrlsToJson(UserUrls instance) => <String, dynamic>{
-      'http': instance.http,
-      'ws': instance.ws,
-      'services': instance.services,
+      'http': instance.http.toString(),
+      'ws': instance.ws.toString(),
+      'services': {
+        'quantumLab': instance.services.quantumLab.toString(),
+        'runtime': instance.services.runtime.toString(),
+      },
     };
+
+$Rec _$recordConvert<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) =>
+    convert(value as Map<String, dynamic>);

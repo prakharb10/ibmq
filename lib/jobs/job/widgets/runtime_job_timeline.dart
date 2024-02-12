@@ -5,8 +5,7 @@ import 'package:timelines/timelines.dart';
 
 class RuntimeJobTimeline extends StatelessWidget {
   final RuntimeJobTimestamps timestamps;
-  const RuntimeJobTimeline({Key? key, required this.timestamps})
-      : super(key: key);
+  const RuntimeJobTimeline({super.key, required this.timestamps});
 
   @override
   Widget build(BuildContext context) {

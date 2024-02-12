@@ -22,8 +22,7 @@ class SamplerResult extends RuntimeResult {
   final List<Map<String, dynamic>> quasiDists;
 
   const SamplerResult(
-      {required this.quasiDists, required List<dynamic> metadata})
-      : super(metadata: metadata);
+      {required this.quasiDists, required super.metadata});
 
   factory SamplerResult.fromJson(Map<String, dynamic> json) =>
       _$SamplerResultFromJson(json);
@@ -40,8 +39,7 @@ class EstimatorResult extends RuntimeResult {
   /// Estimated expectation values
   final Map<String, dynamic> values;
 
-  const EstimatorResult({required this.values, required List<dynamic> metadata})
-      : super(metadata: metadata);
+  const EstimatorResult({required this.values, required super.metadata});
 
   factory EstimatorResult.fromJson(Map<String, dynamic> json) =>
       _$EstimatorResultFromJson(json);

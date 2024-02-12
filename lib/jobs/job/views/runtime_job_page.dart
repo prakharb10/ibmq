@@ -11,7 +11,7 @@ import '../widgets/runtime_job_timeline.dart';
 
 class RuntimeJobPage extends StatefulWidget {
   final RuntimeData data;
-  const RuntimeJobPage({Key? key, required this.data}) : super(key: key);
+  const RuntimeJobPage({super.key, required this.data});
 
   @override
   State<RuntimeJobPage> createState() => _RuntimeJobPageState();

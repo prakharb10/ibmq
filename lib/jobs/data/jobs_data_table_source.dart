@@ -9,31 +9,29 @@ import 'package:ibmq/jobs/cursor/model/paging_cursor.dart';
 import 'package:ibmq/jobs/data/runtime_jobs_data_provider.dart';
 import 'package:ibmq/jobs/model/runtime_job.dart';
 import 'package:ibmq/jobs/model/runtime_job_metrics.dart';
-import 'package:ibmq/router.dart';
 import 'package:intl/intl.dart';
 
 import '../model/job.dart';
-import '../model/runtime_data.dart';
 import 'jobs_data_provider.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
   final Dio dio;
   final Dio runtimeDio;
-  final IBMQAppState appState;
+  // final IBMQAppState appState;
   final CursorsBloc bloc;
   final JobsCacheCubit jobsCacheCubit;
 
   JobsDataTableSource({
     required this.dio,
     required this.runtimeDio,
-    required this.appState,
+    // required this.appState,
     required this.bloc,
     required this.jobsCacheCubit,
   });
   // `start` is the number of rows to be skipped
   // `end` is the number of rows to be fetched i.e. limit
   @override
-  Future<AsyncRowsResponse> getRows(int start, int end) async {
+  Future<AsyncRowsResponse> getRows(int startIndex, int end) async {
     // Get cached jobs
     final cachedJobs = jobsCacheCubit.state as JobsCacheLoaded;
     // Initialize data providers
@@ -44,8 +42,8 @@ class JobsDataTableSource extends AsyncDataTableSource {
     int noOfJobs = cursors.cursor.total;
     int noOfRuntimeJobs = cursors.runtimeCursor.total;
     List<BaseJob> displayJobs = [];
-    if (start < cachedJobs.jobs.length) {
-      displayJobs = cachedJobs.jobs.sublist(start, start + end);
+    if (startIndex < cachedJobs.jobs.length) {
+      displayJobs = cachedJobs.jobs.sublist(startIndex, startIndex + end);
     } else {
       // Fetch data only if jobs in cursors are less than `end`
       bool shouldFetchJobs = cursors.cursor.jobs.length < end &&
@@ -216,7 +214,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
               DataCell(Text(e.tags.toString())),
             ],
             key: ValueKey(e.id),
-            onTap: () => appState.job = e,
+            // onTap: () => appState.job = e,
           );
         } else {
           final ee = e as RuntimeJob;
@@ -242,7 +240,7 @@ class JobsDataTableSource extends AsyncDataTableSource {
               DataCell(Text(ee.tags.toString())),
             ],
             key: ValueKey(ee.id),
-            onTap: () => appState.job = RuntimeData(job: ee, metrics: metric),
+            // onTap: () => appState.job = RuntimeData(job: ee, metrics: metric),
           );
         }
       },

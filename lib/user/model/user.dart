@@ -61,13 +61,13 @@ class User extends Equatable {
 @JsonSerializable()
 class UserUrls extends Equatable {
   /// The base url for all API calls
-  final String http;
+  final Uri http;
 
   /// The url for websockets
-  final String ws;
+  final Uri ws;
 
   /// The urls for other services
-  final Map<String, String> services;
+  final ({Uri quantumLab, Uri runtime}) services;
 
   const UserUrls({
     required this.http,

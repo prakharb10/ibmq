@@ -7,12 +7,12 @@ class ResultsSection extends StatelessWidget {
   final String description;
   final String content;
   const ResultsSection({
-    Key? key,
+    super.key,
     required this.name,
     required this.type,
     required this.description,
     required this.content,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

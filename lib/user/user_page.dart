@@ -3,7 +3,7 @@ import 'package:ibmq/user/model/user.dart';
 
 class UserPage extends StatelessWidget {
   final User user;
-  const UserPage({Key? key, required this.user}) : super(key: key);
+  const UserPage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

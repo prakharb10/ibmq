@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class JobPage extends StatefulWidget {
   final String jobId;
-  const JobPage({Key? key, required this.jobId}) : super(key: key);
+  const JobPage({super.key, required this.jobId});
 
   @override
   State<JobPage> createState() => _JobPageState();

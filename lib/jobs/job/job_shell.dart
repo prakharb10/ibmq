@@ -7,7 +7,7 @@ import '../model/runtime_data.dart';
 
 class JobShell extends StatelessWidget {
   final BaseJob job;
-  const JobShell({Key? key, required this.job}) : super(key: key);
+  const JobShell({super.key, required this.job});
 
   @override
   Widget build(BuildContext context) {

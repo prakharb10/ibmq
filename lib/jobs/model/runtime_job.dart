@@ -37,7 +37,7 @@ class RuntimeJob extends BaseJob {
 
   /// The job status.
   ///
-  /// See [JobStatus] for possible values.
+  /// See [RuntimeJobStatus] for possible values.
   final RuntimeJobStatus status;
 
   /// Program associated with the job.
