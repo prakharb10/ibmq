@@ -29,7 +29,7 @@ extension $AppShellRouteDataExtension on AppShellRouteData {
 
 extension $JobsRouteExtension on JobsRoute {
   static JobsRoute _fromState(GoRouterState state) => JobsRoute(
-        $extra: state.extra as String?,
+        $extra: state.extra as String,
       );
 
   String get location => GoRouteData.$location(

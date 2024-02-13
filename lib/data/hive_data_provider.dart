@@ -24,7 +24,7 @@ class HiveDataProvider {
     if (Hive.isBoxOpen(name)) {
       return Hive.box(name);
     } else {
-      logger.e('Box $name does not exist');
+      logger.w('Box $name does not exist');
       throw Exception('Box $name does not exist');
     }
   }
@@ -37,8 +37,8 @@ class HiveDataProvider {
     if (box.containsKey(key)) {
       return box.get(key) as T?;
     } else {
-      logger.e('Key $key does not exist in box ${box.name}');
-      throw Exception('Key $key does not exist in box ${box.name}');
+      logger.i('Key $key does not exist in box ${box.name}');
+      return null;
     }
   }
 

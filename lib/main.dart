@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
@@ -6,13 +7,22 @@ import 'package:ibmq/auth/data/creds_repository.dart';
 import 'package:ibmq/data/auth_client.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
 import 'package:ibmq/router.dart';
-
+import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:macos_ui/macos_ui.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveDataProvider.init();
   await HiveDataProvider.openBoxes();
+  await _configureMacosWindowUtils();
   runApp(const MyApp());
+}
+
+Future<void> _configureMacosWindowUtils() async {
+  const config = MacosWindowUtilsConfig(
+    toolbarStyle: NSWindowToolbarStyle.expanded,
+  );
+  await config.apply();
 }
 
 class MyApp extends StatefulWidget {
@@ -38,6 +48,9 @@ class _MyAppState extends State<MyApp> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
+          create: (context) => _authClient,
+        ),
+        RepositoryProvider(
           create: (context) =>
               CredsRepository(hiveDataProvider: _hiveDataProvider),
         ),
@@ -48,84 +61,128 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ],
-      child: MaterialApp.router(
-        title: 'IBM Quantum',
-        themeMode: ThemeMode.system,
-        theme: ThemeData(
-          brightness: Brightness.light,
-          colorSchemeSeed: const Color(0xFF491d8b),
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          colorSchemeSeed: const Color(0xFF491d8b),
-        ),
-        routerConfig: router,
-      ),
+      child: switch (Theme.of(context).platform) {
+        TargetPlatform.macOS => MacosApp.router(
+            title: 'IBM Quantum',
+            themeMode: ThemeMode.system,
+            theme: MacosThemeData.light(),
+            darkTheme: MacosThemeData.dark(),
+            routerConfig: router,
+          ),
+        _ => MaterialApp.router(
+            title: 'IBM Quantum',
+            themeMode: ThemeMode.system,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              colorSchemeSeed: const Color(0xFF491d8b),
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              colorSchemeSeed: const Color(0xFF491d8b),
+            ),
+            routerConfig: router,
+          ),
+      },
     );
   }
 }
 
 class AppShell extends StatelessWidget {
-  // final IBMQAppState appState;
-  // final Dio dio;
-  // final Dio runtimeDio;
   final Widget child;
   const AppShell({
     super.key,
     required this.child,
-    // required this.appState,
-    // required this.dio,
-    // required this.runtimeDio,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('IBM Quantum'),
-        actions: [
-          IconButton(
-            // onPressed: () => appState.showProfile = true,
-            onPressed: () {},
-            icon: const Icon(Icons.person),
-          )
-        ],
-      ),
-      body: child,
-      // body: appState.pageIndex == 0
-      //     ? MultiBlocProvider(
-      //         providers: [
-      //           BlocProvider(
-      //             create: (context) => CursorsBloc(),
-      //           ),
-      //           BlocProvider(
-      //             create: (context) => JobsCacheCubit(),
-      //           ),
-      //         ],
-      //         child: JobsPage(
-      //           dio: dio,
-      //           runtimeDio: runtimeDio,
-      //           appState: appState,
-      //         ),
-      //       )
-      //     : const Center(child: Text('Backends')),
-      drawer: const NavigationDrawer(
-        // selectedIndex: appState.pageIndex,
-        // onDestinationSelected: (index) {
-        //   appState.pageIndex = index;
-        //   Navigator.of(context).pop();
-        // },
-        children: [
-          NavigationDrawerDestination(
-            icon: Icon(Icons.webhook),
-            label: Text("Jobs"),
+    return switch (Theme.of(context).platform) {
+      TargetPlatform.macOS => MacosWindow(
+          titleBar: const TitleBar(
+            title: Text('IBM Quantum Dashboard'),
           ),
-          NavigationDrawerDestination(
-            label: Text("Backends"),
-            icon: Icon(Icons.device_hub),
+          sidebar: Sidebar(
+            builder: (context, scrollController) => SidebarItems(
+              scrollController: scrollController,
+              items: const [
+                SidebarItem(
+                  leading: MacosIcon(CupertinoIcons.function),
+                  label: Text('Jobs'),
+                ),
+                SidebarItem(
+                  leading: MacosIcon(CupertinoIcons.circle_grid_hex),
+                  label: Text('Backends'),
+                ),
+              ],
+              currentIndex: 0,
+              onChanged: (value) {},
+            ),
+            minWidth: 200,
+            bottom: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                return switch (state) {
+                  UserInfoLoadSuccess(user: var user) => MacosListTile(
+                      leading: const MacosIcon(CupertinoIcons.profile_circled),
+                      title: Text("${user.firstName} ${user.lastName}"),
+                      subtitle: Text(user.email),
+                    ),
+                  UserInfoLoadInProgress() => const Center(
+                      child: ProgressCircle(),
+                    ),
+                  _ => const SizedBox.shrink(),
+                };
+              },
+            ),
           ),
-        ],
-      ),
-    );
+          child: child,
+        ),
+      _ => Scaffold(
+          appBar: AppBar(
+            title: const Text('IBM Quantum'),
+            actions: [
+              IconButton(
+                // onPressed: () => appState.showProfile = true,
+                onPressed: () {},
+                icon: const Icon(Icons.person),
+              )
+            ],
+          ),
+          body: child,
+          // body: appState.pageIndex == 0
+          //     ? MultiBlocProvider(
+          //         providers: [
+          //           BlocProvider(
+          //             create: (context) => CursorsBloc(),
+          //           ),
+          //           BlocProvider(
+          //             create: (context) => JobsCacheCubit(),
+          //           ),
+          //         ],
+          //         child: JobsPage(
+          //           dio: dio,
+          //           runtimeDio: runtimeDio,
+          //           appState: appState,
+          //         ),
+          //       )
+          //     : const Center(child: Text('Backends')),
+          drawer: const NavigationDrawer(
+            // selectedIndex: appState.pageIndex,
+            // onDestinationSelected: (index) {
+            //   appState.pageIndex = index;
+            //   Navigator.of(context).pop();
+            // },
+            children: [
+              NavigationDrawerDestination(
+                icon: Icon(Icons.webhook),
+                label: Text("Jobs"),
+              ),
+              NavigationDrawerDestination(
+                label: Text("Backends"),
+                icon: Icon(Icons.device_hub),
+              ),
+            ],
+          ),
+        ),
+    };
   }
 }

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:macos_ui/macos_ui.dart';
 
 class JobsPage extends StatefulWidget {
-  // final Dio dio;
-  // final Dio runtimeDio;
-  // final IBMQAppState appState;
+  final String accessToken;
   const JobsPage({
     super.key,
-    // required this.dio,
-    // required this.runtimeDio,
-    // required this.appState,
+    required this.accessToken,
   });
 
   @override
@@ -21,15 +20,25 @@ class _JobsPageState extends State<JobsPage> {
   @override
   void initState() {
     super.initState();
+    context.read<UserCubit>().loadUserInfo(widget.accessToken);
     // context.read<CursorsBloc>().add(GetCursors());
     // context.read<JobsCacheCubit>().getJobs();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Jobs Page'),
-    );
+    return switch (Theme.of(context).platform) {
+      TargetPlatform.macOS => MacosScaffold(children: [
+          ContentArea(
+            builder: (context, scrollController) => const Center(
+              child: Text('Jobs Page'),
+            ),
+          )
+        ]),
+      _ => const Center(
+          child: Text('Jobs Page'),
+        ),
+    };
     // return AsyncPaginatedDataTable2(
     //   columns: const [
     //     DataColumn2(label: Text("Job Id")),

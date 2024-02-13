@@ -30,7 +30,7 @@ class CredsRepository {
       }
       return (token: token, accessToken: accessToken);
     } catch (e) {
-      logger.e('Failed to get credentials');
+      logger.e('Failed to get credentials', error: e);
       return (token: null, accessToken: null);
     }
   }

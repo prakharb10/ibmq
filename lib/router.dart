@@ -6,10 +6,11 @@ import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/auth/data/creds_repository.dart';
+import 'package:ibmq/data/auth_client.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/auth/login_page.dart';
-
+import 'package:ibmq/user/cubit/user_cubit.dart';
 
 part 'router.g.dart';
 
@@ -18,7 +19,10 @@ part 'router.g.dart';
 class AppShellRouteData extends ShellRouteData {
   @override
   Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
-    return AppShell(child: navigator);
+    return BlocProvider(
+      create: (context) => UserCubit(authClient: context.read<AuthClient>()),
+      child: AppShell(child: navigator),
+    );
   }
 }
 
@@ -49,13 +53,13 @@ class LoginRoute extends GoRouteData {
 }
 
 class JobsRoute extends GoRouteData {
-  final String? $extra;
+  final String $extra;
 
-  JobsRoute({this.$extra});
+  JobsRoute({required this.$extra});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const JobsPage();
+    return JobsPage(accessToken: $extra);
   }
 }
 

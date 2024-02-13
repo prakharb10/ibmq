@@ -19,7 +19,7 @@ class AuthPage extends StatelessWidget {
                 token: String? token
               )
               when (accessToken != null && token != null):
-            JobsRoute().go(context);
+            JobsRoute($extra: accessToken).go(context);
             break;
           case CredentialsLoadSuccess(token: String? token):
             LoginRoute($extra: token).go(context);
