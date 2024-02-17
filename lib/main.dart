@@ -1,20 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/auth/data/creds_repository.dart';
 import 'package:ibmq/data/auth_client.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
 import 'package:ibmq/router.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveDataProvider.init();
   await HiveDataProvider.openBoxes();
-  await _configureMacosWindowUtils();
+  if (defaultTargetPlatform == TargetPlatform.macOS) {
+    await _configureMacosWindowUtils();
+  }
   runApp(const MyApp());
 }
 
@@ -61,28 +66,38 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ],
-      child: switch (Theme.of(context).platform) {
-        TargetPlatform.macOS => MacosApp.router(
-            title: 'IBM Quantum',
-            themeMode: ThemeMode.system,
-            theme: MacosThemeData.light(),
-            darkTheme: MacosThemeData.dark(),
-            routerConfig: router,
-          ),
-        _ => MaterialApp.router(
-            title: 'IBM Quantum',
-            themeMode: ThemeMode.system,
-            theme: ThemeData(
-              brightness: Brightness.light,
-              colorSchemeSeed: const Color(0xFF491d8b),
+      child: BlocProvider(
+        create: (context) => CredentialsCubit(context.read<CredsRepository>()),
+        child: switch (Theme.of(context).platform) {
+          TargetPlatform.macOS => MacosApp.router(
+              title: 'IBM Quantum',
+              themeMode: ThemeMode.system,
+              theme: MacosThemeData.light(),
+              darkTheme: MacosThemeData.dark(),
+              routerConfig: router,
             ),
-            darkTheme: ThemeData(
-              brightness: Brightness.dark,
-              colorSchemeSeed: const Color(0xFF491d8b),
+          TargetPlatform.iOS => CupertinoApp.router(
+              title: 'IBM Quantum',
+              theme: const CupertinoThemeData(
+                primaryColor: Color(0xFF491d8b),
+              ),
+              routerConfig: router,
             ),
-            routerConfig: router,
-          ),
-      },
+          _ => MaterialApp.router(
+              title: 'IBM Quantum',
+              themeMode: ThemeMode.system,
+              theme: ThemeData(
+                brightness: Brightness.light,
+                colorSchemeSeed: const Color(0xFF491d8b),
+              ),
+              darkTheme: ThemeData(
+                brightness: Brightness.dark,
+                colorSchemeSeed: const Color(0xFF491d8b),
+              ),
+              routerConfig: router,
+            ),
+        },
+      ),
     );
   }
 }
@@ -125,6 +140,58 @@ class AppShell extends StatelessWidget {
                       leading: const MacosIcon(CupertinoIcons.profile_circled),
                       title: Text("${user.firstName} ${user.lastName}"),
                       subtitle: Text(user.email),
+                      onClick: () => showMacosAlertDialog(
+                        context: context,
+                        builder: (context) => MacosAlertDialog(
+                          appIcon: const MacosIcon(
+                            CupertinoIcons.profile_circled,
+                            size: 64,
+                          ),
+                          title: const Text("Profile"),
+                          message: Column(
+                            children: [
+                              Text("${user.firstName} ${user.lastName}"),
+                              Text(user.email),
+                              Text(user.institution),
+                              const MacosPulldownMenuDivider(),
+                              BlocBuilder<VersionCubit, VersionState>(
+                                bloc: VersionCubit(context.read<AuthClient>())
+                                  ..getVersion(),
+                                builder: (context, state) {
+                                  return switch (state) {
+                                    VersionLoadSuccess(version: var version) =>
+                                      Text("API Version: $version"),
+                                    VersionLoadFailure(error: var error) =>
+                                      Text("Failed to get API version: $error"),
+                                    VersionLoadInProgress() => const Center(
+                                        child: ProgressCircle(),
+                                      ),
+                                    _ => const SizedBox.shrink(),
+                                  };
+                                },
+                              )
+                            ],
+                          ),
+                          primaryButton: PushButton(
+                            controlSize: ControlSize.large,
+                            onPressed: () {
+                              context
+                                  .read<CredentialsCubit>()
+                                  .deleteCredentials();
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Logout"),
+                          ),
+                          secondaryButton: PushButton(
+                            controlSize: ControlSize.large,
+                            secondary: true,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Close"),
+                          ),
+                        ),
+                      ),
                     ),
                   UserInfoLoadInProgress() => const Center(
                       child: ProgressCircle(),
@@ -136,9 +203,24 @@ class AppShell extends StatelessWidget {
           ),
           child: child,
         ),
+      TargetPlatform.iOS => CupertinoTabScaffold(
+          tabBar: CupertinoTabBar(
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.function),
+                label: 'Jobs',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.circle_grid_hex),
+                label: 'Backends',
+              ),
+            ],
+          ),
+          tabBuilder: (context, index) => child,
+        ),
       _ => Scaffold(
           appBar: AppBar(
-            title: const Text('IBM Quantum'),
+            title: const Text('IBM Quantum Dashboard'),
             actions: [
               IconButton(
                 // onPressed: () => appState.showProfile = true,

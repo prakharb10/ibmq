@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibmq/auth/cubit/credentials_cubit.dart';
+import 'package:ibmq/data/auth_client.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class JobsPage extends StatefulWidget {
@@ -28,13 +32,122 @@ class _JobsPageState extends State<JobsPage> {
   @override
   Widget build(BuildContext context) {
     return switch (Theme.of(context).platform) {
-      TargetPlatform.macOS => MacosScaffold(children: [
-          ContentArea(
-            builder: (context, scrollController) => const Center(
-              child: Text('Jobs Page'),
+      TargetPlatform.macOS => MacosScaffold(
+          toolBar: ToolBar(
+            actions: [
+              CustomToolbarItem(
+                inToolbarBuilder: (context) => MacosTooltip(
+                  message: "Current Instance",
+                  child: MacosPopupButton<String>(
+                    items: const [
+                      MacosPopupMenuItem(
+                        value: "child",
+                        child: Text("child"),
+                      )
+                    ],
+                    onChanged: (value) {},
+                  ),
+                ),
+              )
+            ],
+          ),
+          children: [
+            ContentArea(
+              builder: (context, scrollController) => const Center(
+                child: Text('Jobs Page'),
+              ),
+            )
+          ],
+        ),
+      TargetPlatform.iOS => CupertinoTabView(
+          defaultTitle: 'Jobs',
+          builder: (context) => CupertinoPageScaffold(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                CupertinoSliverNavigationBar(
+                  middle: const Text("IBM Quantum Dashboard"),
+                  trailing: BlocBuilder<UserCubit, UserState>(
+                    builder: (context, state) {
+                      return switch (state) {
+                        UserInfoLoadSuccess(user: var user) => GestureDetector(
+                            child: const Icon(CupertinoIcons.profile_circled),
+                            onTap: () => showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: const Column(
+                                  children: [
+                                    Icon(CupertinoIcons.profile_circled),
+                                    Text("Profile"),
+                                  ],
+                                ),
+                                content: Column(
+                                  children: [
+                                    Text("${user.firstName} ${user.lastName}"),
+                                    Text(user.email),
+                                    Text(user.institution),
+                                    BlocBuilder<VersionCubit, VersionState>(
+                                      bloc: VersionCubit(
+                                          context.read<AuthClient>())
+                                        ..getVersion(),
+                                      builder: (context, state) {
+                                        return switch (state) {
+                                          VersionLoadSuccess(
+                                            version: var version
+                                          ) =>
+                                            Text("API Version: $version"),
+                                          VersionLoadFailure(
+                                            error: var error
+                                          ) =>
+                                            Text(
+                                                "Failed to get API version: $error"),
+                                          VersionLoadInProgress() =>
+                                            const Center(
+                                              child:
+                                                  CupertinoActivityIndicator(),
+                                            ),
+                                          _ => const SizedBox.shrink(),
+                                        };
+                                      },
+                                    )
+                                  ],
+                                ),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text("Close"),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                  ),
+                                  CupertinoDialogAction(
+                                    isDestructiveAction: true,
+                                    child: const Text("Logout"),
+                                    onPressed: () {
+                                      context
+                                          .read<CredentialsCubit>()
+                                          .deleteCredentials();
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        UserInfoLoadInProgress() => const Center(
+                            child: CupertinoActivityIndicator(),
+                          ),
+                        _ => const SizedBox.shrink(),
+                      };
+                    },
+                  ),
+                ),
+                const SliverFillRemaining(
+                  child: Center(
+                    child: Text('Jobs Page'),
+                  ),
+                ),
+              ],
             ),
-          )
-        ]),
+          ),
+        ),
       _ => const Center(
           child: Text('Jobs Page'),
         ),

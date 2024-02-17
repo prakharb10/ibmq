@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/auth/cubit/auth_cubit.dart';
@@ -44,6 +45,111 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final body = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Login to IBM Quantum",
+          style: switch (Theme.of(context).platform) {
+            TargetPlatform.macOS =>
+              MacosTheme.of(context).typography.largeTitle,
+            TargetPlatform.iOS =>
+              cupertino.CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+            _ => Theme.of(context).textTheme.headlineLarge,
+          },
+        ),
+        const Text("Copy your API token from your IBM Quantum account page."),
+        ...switch (Theme.of(context).platform) {
+          TargetPlatform.macOS => [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MacosTextField(
+                  controller: _controller,
+                  placeholder: "API Token",
+                  clearButtonMode: OverlayVisibilityMode.editing,
+                  onSubmitted: (_) {
+                    if (_valid) {
+                      context.read<AuthCubit>().tokenLogin(_controller.text);
+                    }
+                  },
+                ),
+              ),
+              PushButton(
+                controlSize: ControlSize.large,
+                onPressed: _valid
+                    ? () =>
+                        context.read<AuthCubit>().tokenLogin(_controller.text)
+                    : null,
+                child: const Text("Login"),
+              ),
+            ],
+          TargetPlatform.iOS => [
+              cupertino.Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: cupertino.CupertinoTextField(
+                  controller: _controller,
+                  placeholder: "API Token",
+                  onSubmitted: (_) {
+                    if (_valid) {
+                      context.read<AuthCubit>().tokenLogin(_controller.text);
+                    }
+                  },
+                  clearButtonMode: cupertino.OverlayVisibilityMode.editing,
+                ),
+              ),
+              cupertino.CupertinoButton.filled(
+                onPressed: _valid
+                    ? () =>
+                        context.read<AuthCubit>().tokenLogin(_controller.text)
+                    : null,
+                child: const Text("Login"),
+              ),
+            ],
+          _ => [
+              TextFormField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  labelText: "API Token",
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your token";
+                  }
+                  return null;
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              ElevatedButton(
+                onPressed: _valid
+                    ? () =>
+                        context.read<AuthCubit>().tokenLogin(_controller.text)
+                    : null,
+                child: const Text("Login"),
+              ),
+            ],
+        },
+        cupertino.Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: BlocConsumer<AuthCubit, AuthState>(
+            listener: (context, state) {
+              if (state is TokenLoginSuccess) {
+                JobsRoute($extra: state.accessToken).go(context);
+              }
+            },
+            builder: (context, state) {
+              return switch (state) {
+                TokenLoginInProgress() =>
+                  Theme.of(context).platform == TargetPlatform.macOS
+                      ? const ProgressCircle()
+                      : const CircularProgressIndicator.adaptive(),
+                TokenLoginFailure(message: var message) => Text(message),
+                _ => const SizedBox.shrink(),
+              };
+            },
+          ),
+        )
+      ],
+    );
     return switch (Theme.of(context).platform) {
       TargetPlatform.macOS => MacosWindow(
           titleBar: const TitleBar(
@@ -56,59 +162,21 @@ class _LoginPageState extends State<LoginPage> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
                     controller: scrollController,
-                    child: Column(
-                      children: [
-                        Text(
-                          "Login to IBM Quantum",
-                          style: MacosTheme.of(context).typography.largeTitle,
-                        ),
-                        const Text(
-                            "Copy your API token from your IBM Quantum account page."),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: MacosTextField(
-                            controller: _controller,
-                            placeholder: "API Token",
-                            clearButtonMode: OverlayVisibilityMode.editing,
-                            onSubmitted: (_) {
-                              if (_valid) {
-                                context
-                                    .read<AuthCubit>()
-                                    .tokenLogin(_controller.text);
-                              }
-                            },
-                          ),
-                        ),
-                        PushButton(
-                          controlSize: ControlSize.large,
-                          onPressed: _valid
-                              ? () => context
-                                  .read<AuthCubit>()
-                                  .tokenLogin(_controller.text)
-                              : null,
-                          child: const Text("Login"),
-                        ),
-                        BlocConsumer<AuthCubit, AuthState>(
-                          listener: (context, state) {
-                            if (state is TokenLoginSuccess) {
-                              JobsRoute($extra: state.accessToken).go(context);
-                            }
-                          },
-                          builder: (context, state) {
-                            return switch (state) {
-                              TokenLoginInProgress() => const ProgressCircle(),
-                              TokenLoginFailure(message: var message) =>
-                                Text(message),
-                              _ => const SizedBox.shrink(),
-                            };
-                          },
-                        )
-                      ],
-                    ),
+                    child: body,
                   ),
                 ),
               )
             ],
+          ),
+        ),
+      TargetPlatform.iOS => cupertino.CupertinoPageScaffold(
+          navigationBar: const cupertino.CupertinoNavigationBar(
+            middle: Text("IBM Quantum"),
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: body,
           ),
         ),
       _ => Scaffold(
@@ -118,49 +186,7 @@ class _LoginPageState extends State<LoginPage> {
           body: Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Login to IBM Quantum",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const Text(
-                    "Copy your API token from your IBM Quantum account page."),
-                TextFormField(
-                  controller: _controller,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your token";
-                    }
-                    return null;
-                  },
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                ),
-                ElevatedButton(
-                  onPressed: _valid
-                      ? () =>
-                          context.read<AuthCubit>().tokenLogin(_controller.text)
-                      : null,
-                  child: const Text("Login"),
-                ),
-                BlocConsumer<AuthCubit, AuthState>(
-                  listener: (context, state) {
-                    if (state is TokenLoginSuccess) {
-                      JobsRoute($extra: state.accessToken).go(context);
-                    }
-                  },
-                  builder: (context, state) {
-                    return switch (state) {
-                      TokenLoginInProgress() =>
-                        const CircularProgressIndicator(),
-                      TokenLoginFailure(message: var message) => Text(message),
-                      _ => const SizedBox.shrink(),
-                    };
-                  },
-                )
-              ],
-            ),
+            child: body,
           ),
         ),
     };

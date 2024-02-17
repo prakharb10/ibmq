@@ -13,4 +13,7 @@ abstract class AuthClient {
 
   @GET("/users/me")
   Future<User> getUser(@Header("X-Access-Token") String accessToken);
+
+  @GET("/version")
+  Future<HttpResponse<Map<String, String>>> getVersion();
 }
