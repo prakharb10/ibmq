@@ -9,7 +9,6 @@ part of 'router.dart';
 List<RouteBase> get $appRoutes => [
       $appShellRouteData,
       $authRoute,
-      $loginRoute,
     ];
 
 RouteBase get $appShellRouteData => ShellRouteData.$route(
@@ -28,24 +27,20 @@ extension $AppShellRouteDataExtension on AppShellRouteData {
 }
 
 extension $JobsRouteExtension on JobsRoute {
-  static JobsRoute _fromState(GoRouterState state) => JobsRoute(
-        $extra: state.extra as String,
-      );
+  static JobsRoute _fromState(GoRouterState state) => JobsRoute();
 
   String get location => GoRouteData.$location(
         '/jobs',
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 RouteBase get $authRoute => GoRouteData.$route(
@@ -68,30 +63,4 @@ extension $AuthRouteExtension on AuthRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $loginRoute => GoRouteData.$route(
-      path: '/login',
-      factory: $LoginRouteExtension._fromState,
-    );
-
-extension $LoginRouteExtension on LoginRoute {
-  static LoginRoute _fromState(GoRouterState state) => LoginRoute(
-        $extra: state.extra as String?,
-      );
-
-  String get location => GoRouteData.$location(
-        '/login',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: $extra);
-
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
-
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
 }

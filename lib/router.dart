@@ -5,11 +5,9 @@ import 'package:ibmq/auth/auth_page.dart';
 import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
-import 'package:ibmq/data/auth_client.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/main.dart';
-import 'package:ibmq/auth/login_page.dart';
-import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 
 part 'router.g.dart';
 
@@ -18,15 +16,12 @@ part 'router.g.dart';
 class AppShellRouteData extends ShellRouteData {
   @override
   Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
-    return BlocProvider(
-      create: (context) => UserCubit(authClient: context.read<AuthClient>()),
-      child: BlocListener<CredentialsCubit, CredentialsState>(
-        listener: (context, state) {
-          AuthRoute().go(context);
-        },
-        listenWhen: (previous, current) => current is CredentialsDeleteSuccess,
-        child: AppShell(child: navigator),
-      ),
+    return BlocListener<CredentialsCubit, CredentialsState>(
+      listener: (context, state) {
+        AuthRoute().go(context);
+      },
+      listenWhen: (previous, current) => current is CredentialsDeleteSuccess,
+      child: AppShell(child: navigator),
     );
   }
 }
@@ -35,33 +30,24 @@ class AppShellRouteData extends ShellRouteData {
 class AuthRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const AuthPage();
-  }
-}
-
-@TypedGoRoute<LoginRoute>(path: '/login')
-class LoginRoute extends GoRouteData {
-  final String? $extra;
-
-  LoginRoute({this.$extra});
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return BlocProvider(
-      create: (context) => AuthCubit(context.read<AuthRepository>()),
-      child: LoginPage(token: $extra),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthCubit(context.read<AuthRepository>()),
+        ),
+        BlocProvider(
+          create: (context) => DataClientsCubit(),
+        ),
+      ],
+      child: const AuthPage(),
     );
   }
 }
 
 class JobsRoute extends GoRouteData {
-  final String $extra;
-
-  JobsRoute({required this.$extra});
-
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return JobsPage(accessToken: $extra);
+    return const JobsPage();
   }
 }
 

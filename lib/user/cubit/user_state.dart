@@ -16,8 +16,12 @@ final class UserInfoLoadInProgress extends UserState {}
 /// [user] is the user's info
 final class UserInfoLoadSuccess extends UserState {
   final User user;
+  final String accessToken;
 
-  const UserInfoLoadSuccess(this.user);
+  const UserInfoLoadSuccess({
+    required this.user,
+    required this.accessToken,
+  });
 
   @override
   List<Object> get props => [user];

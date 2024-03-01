@@ -66,8 +66,16 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ],
-      child: BlocProvider(
-        create: (context) => CredentialsCubit(context.read<CredsRepository>()),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                CredentialsCubit(context.read<CredsRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => UserCubit(authClient: _authClient),
+          ),
+        ],
         child: switch (Theme.of(context).platform) {
           TargetPlatform.macOS => MacosApp.router(
               title: 'IBM Quantum',
@@ -141,6 +149,7 @@ class AppShell extends StatelessWidget {
                       title: Text("${user.firstName} ${user.lastName}"),
                       subtitle: Text(user.email),
                       onClick: () => showMacosAlertDialog(
+                        barrierDismissible: true,
                         context: context,
                         builder: (context) => MacosAlertDialog(
                           appIcon: const MacosIcon(

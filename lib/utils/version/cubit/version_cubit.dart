@@ -4,6 +4,7 @@ import 'package:ibmq/data/auth_client.dart';
 
 part 'version_state.dart';
 
+// TODO: Switch to hydrated_cubit
 class VersionCubit extends Cubit<VersionState> {
   final AuthClient _authClient;
   VersionCubit(AuthClient authClient)

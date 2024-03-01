@@ -6,6 +6,7 @@ import '../model/user.dart';
 
 part 'user_state.dart';
 
+// TODO: Switch to hydrated_cubit
 class UserCubit extends Cubit<UserState> {
   final AuthClient _authClient;
   UserCubit({required AuthClient authClient})
@@ -23,7 +24,7 @@ class UserCubit extends Cubit<UserState> {
     emit(UserInfoLoadInProgress());
     try {
       final user = await _authClient.getUser(accessToken);
-      emit(UserInfoLoadSuccess(user));
+      emit(UserInfoLoadSuccess(user: user, accessToken: accessToken));
     } catch (e) {
       emit(UserInfoLoadFailure(e.toString()));
     }

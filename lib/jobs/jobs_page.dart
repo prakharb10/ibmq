@@ -8,11 +8,7 @@ import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class JobsPage extends StatefulWidget {
-  final String accessToken;
-  const JobsPage({
-    super.key,
-    required this.accessToken,
-  });
+  const JobsPage({super.key});
 
   @override
   State<JobsPage> createState() => _JobsPageState();
@@ -24,7 +20,6 @@ class _JobsPageState extends State<JobsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<UserCubit>().loadUserInfo(widget.accessToken);
     // context.read<CursorsBloc>().add(GetCursors());
     // context.read<JobsCacheCubit>().getJobs();
   }
