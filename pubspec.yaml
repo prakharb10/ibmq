@@ -40,9 +40,6 @@ dependencies:
   flutter_bloc: ^8.1.4
   equatable: ^2.0.5
   dio: ^5.4.0
-  # TODO: remove cookie_jar dependency
-  dio_cookie_manager: ^3.1.1
-  cookie_jar: ^4.0.8
   json_annotation: ^4.8.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -54,6 +51,8 @@ dependencies:
   logger: ^2.0.2+1
   retrofit: ^4.1.0
   macos_ui: ^2.0.5
+  fast_immutable_collections: ^10.1.1
+  fpdart: ^1.1.0
 
 dev_dependencies:
   flutter_test:
