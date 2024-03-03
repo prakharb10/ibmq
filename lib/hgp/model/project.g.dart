@@ -12,7 +12,10 @@ Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
       description: json['description'] as String,
       creationDate: DateTime.parse(json['creationDate'] as String),
       priority: json['priority'] as int,
-      devices: json['devices'] as Map<String, dynamic>,
+      devices: IMap<String, dynamic>.fromJson(
+          json['devices'] as Map<String, dynamic>,
+          (value) => value as String,
+          (value) => value),
     );
 
 Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
@@ -21,5 +24,8 @@ Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
       'description': instance.description,
       'creationDate': instance.creationDate.toIso8601String(),
       'priority': instance.priority,
-      'devices': instance.devices,
+      'devices': instance.devices.toJson(
+        (value) => value,
+        (value) => value,
+      ),
     };

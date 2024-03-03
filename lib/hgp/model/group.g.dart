@@ -12,9 +12,10 @@ Group _$GroupFromJson(Map<String, dynamic> json) => Group(
       description: json['description'] as String,
       creationDate: DateTime.parse(json['creationDate'] as String),
       priority: json['priority'] as int,
-      projects: (json['projects'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, Project.fromJson(e as Map<String, dynamic>)),
-      ),
+      projects: IMap<String, Project>.fromJson(
+          json['projects'] as Map<String, dynamic>,
+          (value) => value as String,
+          (value) => Project.fromJson(value as Map<String, dynamic>)),
     );
 
 Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
@@ -23,5 +24,8 @@ Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
       'description': instance.description,
       'creationDate': instance.creationDate.toIso8601String(),
       'priority': instance.priority,
-      'projects': instance.projects,
+      'projects': instance.projects.toJson(
+        (value) => value,
+        (value) => value,
+      ),
     };

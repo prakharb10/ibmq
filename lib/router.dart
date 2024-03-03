@@ -5,6 +5,8 @@ import 'package:ibmq/auth/auth_page.dart';
 import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
+import 'package:ibmq/hgp/cubit/hgp_cubit.dart';
+import 'package:ibmq/hgp/cubit/instance_cubit.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
@@ -21,7 +23,20 @@ class AppShellRouteData extends ShellRouteData {
         AuthRoute().go(context);
       },
       listenWhen: (previous, current) => current is CredentialsDeleteSuccess,
-      child: AppShell(child: navigator),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => HgpCubit(
+                httpClient: (context.read<DataClientsCubit>().state
+                        as DataClientsCreateSuccess)
+                    .httpClient),
+          ),
+          BlocProvider(
+            create: (context) => InstanceCubit(),
+          ),
+        ],
+        child: AppShell(child: navigator),
+      ),
     );
   }
 }
@@ -30,15 +45,8 @@ class AppShellRouteData extends ShellRouteData {
 class AuthRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthCubit(context.read<AuthRepository>()),
-        ),
-        BlocProvider(
-          create: (context) => DataClientsCubit(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => AuthCubit(context.read<AuthRepository>()),
       child: const AuthPage(),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'project.g.dart';
@@ -26,7 +27,7 @@ class Project extends Equatable {
   /// The devices associated with the project.
   ///
   /// This is not parsed.
-  final Map<String, dynamic> devices;
+  final IMap<String, dynamic> devices;
 
   const Project({
     required this.name,

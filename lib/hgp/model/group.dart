@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:ibmq/hgp/model/project.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -23,7 +24,7 @@ class Group extends Equatable {
   final int priority;
 
   /// The projects associated with the group.
-  final Map<String, Project> projects;
+  final IMap<String, Project> projects;
 
   const Group({
     required this.name,

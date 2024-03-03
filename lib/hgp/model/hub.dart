@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:ibmq/hgp/model/group.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -27,7 +28,7 @@ class Hub extends Equatable {
   final int priority;
 
   /// The groups associated with the hub.
-  final Map<String, Group> groups;
+  final IMap<String, Group> groups;
 
   const Hub({
     required this.id,

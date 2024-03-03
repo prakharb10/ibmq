@@ -10,6 +10,7 @@ import 'package:ibmq/data/auth_client.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
 import 'package:ibmq/router.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
 
@@ -75,6 +76,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) => UserCubit(authClient: _authClient),
           ),
+          BlocProvider(
+            create: (context) => DataClientsCubit(),
+          )
         ],
         child: switch (Theme.of(context).platform) {
           TargetPlatform.macOS => MacosApp.router(
@@ -148,6 +152,7 @@ class AppShell extends StatelessWidget {
                       leading: const MacosIcon(CupertinoIcons.profile_circled),
                       title: Text("${user.firstName} ${user.lastName}"),
                       subtitle: Text(user.email),
+                      // TODO: Move to a separate widget
                       onClick: () => showMacosAlertDialog(
                         barrierDismissible: true,
                         context: context,

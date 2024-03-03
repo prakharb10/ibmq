@@ -13,9 +13,10 @@ Hub _$HubFromJson(Map<String, dynamic> json) => Hub(
       class_: json['class'] as String,
       creationDate: DateTime.parse(json['creationDate'] as String),
       priority: json['priority'] as int,
-      groups: (json['groups'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, Group.fromJson(e as Map<String, dynamic>)),
-      ),
+      groups: IMap<String, Group>.fromJson(
+          json['groups'] as Map<String, dynamic>,
+          (value) => value as String,
+          (value) => Group.fromJson(value as Map<String, dynamic>)),
     );
 
 Map<String, dynamic> _$HubToJson(Hub instance) => <String, dynamic>{
@@ -25,5 +26,8 @@ Map<String, dynamic> _$HubToJson(Hub instance) => <String, dynamic>{
       'class': instance.class_,
       'creationDate': instance.creationDate.toIso8601String(),
       'priority': instance.priority,
-      'groups': instance.groups,
+      'groups': instance.groups.toJson(
+        (value) => value,
+        (value) => value,
+      ),
     };
