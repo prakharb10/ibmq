@@ -10,16 +10,16 @@ sealed class DataClientsState extends Equatable {
 final class DataClientsInitial extends DataClientsState {}
 
 final class DataClientsCreateSuccess extends DataClientsState {
-  final HttpClient httpClient;
-  final RuntimeClient runtimeClient;
+  final HTTPDataProvider httpDataProvider;
+  final RuntimeDataProvider runtimeDataProvider;
 
   const DataClientsCreateSuccess({
-    required this.httpClient,
-    required this.runtimeClient,
+    required this.httpDataProvider,
+    required this.runtimeDataProvider,
   });
 
   @override
-  List<Object> get props => [httpClient, runtimeClient];
+  List<Object> get props => [httpDataProvider, runtimeDataProvider];
 }
 
 final class DataClientsCreateFailure extends DataClientsState {

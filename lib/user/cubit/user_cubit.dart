@@ -1,16 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ibmq/data/auth_client.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:ibmq/user/user_repository.dart';
+import 'package:logger/logger.dart';
 
 import '../model/user.dart';
 
 part 'user_state.dart';
 
-// TODO: Switch to hydrated_cubit
 class UserCubit extends Cubit<UserState> {
-  final AuthClient _authClient;
-  UserCubit({required AuthClient authClient})
-      : _authClient = authClient,
+  final UserRepository _userRepository;
+  final _logger = Logger();
+  UserCubit({required UserRepository userRepository})
+      : _userRepository = userRepository,
         super(UserInitial());
 
   /// Load the user's information
@@ -22,11 +24,15 @@ class UserCubit extends Cubit<UserState> {
   /// message.
   void loadUserInfo(String accessToken) async {
     emit(UserInfoLoadInProgress());
-    try {
-      final user = await _authClient.getUser(accessToken);
-      emit(UserInfoLoadSuccess(user: user, accessToken: accessToken));
-    } catch (e) {
-      emit(UserInfoLoadFailure(e.toString()));
+    switch (await _userRepository.loadUserInfo(accessToken).run()) {
+      case Left(value: final l):
+        _logger.e('Failed to load user info', error: l);
+        emit(UserInfoLoadFailure(l));
+        break;
+      case Right(value: final r):
+        emit(UserInfoLoadSuccess(accessToken: accessToken, user: r));
+        break;
+      default:
     }
   }
 }

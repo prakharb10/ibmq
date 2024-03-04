@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/auth/data/creds_repository.dart';
-import 'package:ibmq/data/auth_client.dart';
+import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
 import 'package:ibmq/router.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/user/user_repository.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -21,7 +21,7 @@ void main() async {
   if (defaultTargetPlatform == TargetPlatform.macOS) {
     await _configureMacosWindowUtils();
   }
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 Future<void> _configureMacosWindowUtils() async {
@@ -31,30 +31,19 @@ Future<void> _configureMacosWindowUtils() async {
   await config.apply();
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   final _hiveDataProvider = HiveDataProvider();
-  final _dio = Dio();
-  late final AuthClient _authClient;
 
-  @override
-  void initState() {
-    super.initState();
-    _authClient = AuthClient(_dio);
-  }
+  final AuthDataProvider _authDataProvider = AuthDataProvider();
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => _authClient,
+          create: (context) => _authDataProvider,
         ),
         RepositoryProvider(
           create: (context) =>
@@ -62,19 +51,25 @@ class _MyAppState extends State<MyApp> {
         ),
         RepositoryProvider(
           create: (context) => AuthRepository(
-            authClient: _authClient,
+            authDataProvider: _authDataProvider,
             hiveDataProvider: _hiveDataProvider,
           ),
         ),
+        RepositoryProvider(
+          create: (context) =>
+              UserRepository(authDataProvider: _authDataProvider),
+        )
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) =>
-                CredentialsCubit(context.read<CredsRepository>()),
+            create: (context) => CredentialsCubit(
+                RepositoryProvider.of<CredsRepository>(context)),
           ),
           BlocProvider(
-            create: (context) => UserCubit(authClient: _authClient),
+            create: (context) => UserCubit(
+              userRepository: RepositoryProvider.of<UserRepository>(context),
+            ),
           ),
           BlocProvider(
             create: (context) => DataClientsCubit(),
@@ -169,7 +164,8 @@ class AppShell extends StatelessWidget {
                               Text(user.institution),
                               const MacosPulldownMenuDivider(),
                               BlocBuilder<VersionCubit, VersionState>(
-                                bloc: VersionCubit(context.read<AuthClient>())
+                                bloc: VersionCubit(
+                                    context.read<AuthDataProvider>())
                                   ..getVersion(),
                                 builder: (context, state) {
                                   return switch (state) {

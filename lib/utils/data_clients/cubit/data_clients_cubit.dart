@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ibmq/data/http_client.dart';
-import 'package:ibmq/data/runtime_client.dart';
+import 'package:ibmq/data/http_data_provider.dart';
+import 'package:ibmq/data/runtime_data_provider.dart';
 
 part 'data_clients_state.dart';
 
@@ -15,18 +14,14 @@ class DataClientsCubit extends Cubit<DataClientsState> {
     required Uri httpBaseUrl,
     required Uri runtimeBaseUrl,
   }) {
-    final dio = Dio(BaseOptions(
-      headers: {
-        "X-Access-Token": accessToken,
-      },
-    ));
     try {
-      final httpClient = HttpClient(dio, baseUrl: httpBaseUrl.toString());
-      final runtimeClient =
-          RuntimeClient(dio, baseUrl: runtimeBaseUrl.toString());
+      final httpClient =
+          HTTPDataProvider(accessToken: accessToken, baseUrl: httpBaseUrl);
+      final runtimeClient = RuntimeDataProvider(
+          accessToken: accessToken, baseUrl: runtimeBaseUrl);
       emit(DataClientsCreateSuccess(
-        httpClient: httpClient,
-        runtimeClient: runtimeClient,
+        httpDataProvider: httpClient,
+        runtimeDataProvider: runtimeClient,
       ));
     } catch (e) {
       emit(DataClientsCreateFailure(e.toString()));

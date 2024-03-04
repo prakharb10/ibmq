@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart' hide State;
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
-import 'package:ibmq/data/auth_client.dart';
+import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/hgp/cubit/hgp_cubit.dart';
 import 'package:ibmq/hgp/cubit/instance_cubit.dart';
 import 'package:ibmq/hgp/model/hub.dart';
@@ -30,7 +30,7 @@ class _JobsPageState extends State<JobsPage> {
     // context.read<JobsCacheCubit>().getJobs();
   }
 
-  IO<IList<String>> hgpEntries(List<Hub> hgps) => IO(() => hgps
+  IO<IList<String>> hgpEntries(IList<Hub> hgps) => IO(() => hgps
       .flatMap((h) => h.groups.entries.flatMap((g) => g.value.projects.entries
           .flatMap((p) => ["${h.name}/${g.key}/${p.key}"])))
       .toIList());
@@ -116,7 +116,7 @@ class _JobsPageState extends State<JobsPage> {
                                     Text(user.institution),
                                     BlocBuilder<VersionCubit, VersionState>(
                                       bloc: VersionCubit(
-                                          context.read<AuthClient>())
+                                          context.read<AuthDataProvider>())
                                         ..getVersion(),
                                       builder: (context, state) {
                                         return switch (state) {

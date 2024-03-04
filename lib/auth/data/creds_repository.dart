@@ -1,3 +1,4 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
 import 'package:logger/logger.dart';
 
@@ -18,7 +19,9 @@ class CredsRepository {
   /// If not, it returns null.
   Future<({String? token, String? accessToken})> getCredentials() async {
     try {
-      final box = _hiveDataProvider.getBox('ibmq');
+      final box = _hiveDataProvider.getBox('ibmq').run().getOrElse(() {
+        throw Exception('Box ibmq does not exist');
+      });
       final token = await _hiveDataProvider.getValue<String>(box, 'token');
       final accessToken =
           await _hiveDataProvider.getValue<String>(box, 'accessToken');
@@ -40,7 +43,9 @@ class CredsRepository {
   /// Throws an exception if an error occurs.
   Future<void> deleteCredentials() async {
     try {
-      final box = _hiveDataProvider.getBox('ibmq');
+      final box = _hiveDataProvider.getBox('ibmq').run().getOrElse(() {
+        throw Exception('Box ibmq does not exist');
+      });
       _hiveDataProvider.deleteValue(box, 'token');
       _hiveDataProvider.deleteValue(box, 'accessToken');
       _hiveDataProvider.deleteValue(box, 'expiresAt');

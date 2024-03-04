@@ -1,3 +1,4 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 
@@ -20,14 +21,16 @@ class HiveDataProvider {
   /// Get the box with the given name
   ///
   /// Throws an exception if the box does not exist
-  Box getBox(String name) {
-    if (Hive.isBoxOpen(name)) {
-      return Hive.box(name);
-    } else {
-      logger.w('Box $name does not exist');
-      throw Exception('Box $name does not exist');
-    }
-  }
+  IOOption<Box> getBox(String name) => IOOption.tryCatch(
+        () {
+          if (Hive.isBoxOpen(name)) {
+            return Hive.box(name);
+          } else {
+            logger.w('Box $name does not exist');
+            throw Exception('Box $name does not exist');
+          }
+        },
+      );
 
   /// Get the value of the given key from the given box
   /// Returns null if the key does not exist

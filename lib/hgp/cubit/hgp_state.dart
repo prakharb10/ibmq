@@ -15,7 +15,7 @@ final class HgpLoadInProgress extends HgpState {}
 ///
 /// [hgps] is the list of Hub/Group/Project
 final class HgpLoadSuccess extends HgpState {
-  final List<Hub> hgps;
+  final IList<Hub> hgps;
 
   const HgpLoadSuccess(this.hgps);
 
