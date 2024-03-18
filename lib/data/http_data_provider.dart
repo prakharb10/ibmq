@@ -24,8 +24,7 @@ class HTTPDataProvider {
   TaskEither<String, List> getHGP() => TaskEither.tryCatch(
         () async {
           final resp = await _dio.get('/Network');
-          final data = Option<List>.safeCast(resp.data);
-          return switch (data) {
+          return switch (Option<List>.safeCast(resp.data)) {
             Some(value: final d) => d,
             None() => throw Exception('Failed to parse response data'),
           };

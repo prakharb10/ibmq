@@ -5,9 +5,9 @@ import 'package:ibmq/auth/auth_page.dart';
 import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
-import 'package:ibmq/hgp/cubit/hgp_cubit.dart';
-import 'package:ibmq/hgp/cubit/instance_cubit.dart';
-import 'package:ibmq/hgp/hgp_repository.dart';
+import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
+import 'package:ibmq/instances/cubit/instances_cubit.dart';
+import 'package:ibmq/instances/instances_repository.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
@@ -25,19 +25,18 @@ class AppShellRouteData extends ShellRouteData {
       },
       listenWhen: (previous, current) => current is CredentialsDeleteSuccess,
       child: RepositoryProvider(
-        create: (context) => HGPRepository(
-          httpDataProvider: (context.read<DataClientsCubit>().state
-                  as DataClientsCreateSuccess)
-              .httpDataProvider,
-        ),
+        create: (context) => InstancesRepository(
+            runtimeDataProvider: (context.read<DataClientsCubit>().state
+                    as DataClientsCreateSuccess)
+                .runtimeDataProvider),
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => HgpCubit(
-                  hgpRepository: RepositoryProvider.of<HGPRepository>(context)),
+              create: (context) => InstancesCubit(
+                  instancesRepository: context.read<InstancesRepository>()),
             ),
             BlocProvider(
-              create: (context) => InstanceCubit(),
+              create: (context) => InstanceFilterCubit(),
             ),
           ],
           child: AppShell(child: navigator),

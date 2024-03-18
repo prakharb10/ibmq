@@ -1,13 +1,11 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart' hide State;
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
-import 'package:ibmq/hgp/cubit/hgp_cubit.dart';
-import 'package:ibmq/hgp/cubit/instance_cubit.dart';
-import 'package:ibmq/hgp/model/hub.dart';
+import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
+import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -25,15 +23,10 @@ class _JobsPageState extends State<JobsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<HgpCubit>().loadHgp();
+    context.read<InstancesCubit>().loadInstances();
     // context.read<CursorsBloc>().add(GetCursors());
     // context.read<JobsCacheCubit>().getJobs();
   }
-
-  IO<IList<String>> hgpEntries(IList<Hub> hgps) => IO(() => hgps
-      .flatMap((h) => h.groups.entries.flatMap((g) => g.value.projects.entries
-          .flatMap((p) => ["${h.name}/${g.key}/${p.key}"])))
-      .toIList());
 
   @override
   Widget build(BuildContext context) {
@@ -43,38 +36,40 @@ class _JobsPageState extends State<JobsPage> {
             actions: [
               CustomToolbarItem(
                 tooltipMessage: "Current Instance",
-                inToolbarBuilder: (context) => BlocConsumer<HgpCubit, HgpState>(
+                inToolbarBuilder: (context) =>
+                    BlocConsumer<InstancesCubit, InstancesState>(
                   listener: (context, state) => switch (state) {
-                    HgpLoadSuccess(hgps: final hgps) => context
-                        .read<InstanceCubit>()
-                        .changeInstance(hgpEntries(hgps).run().first),
+                    InstancesLoadSuccess(instances: final instances) => context
+                        .read<InstanceFilterCubit>()
+                        .changeInstance(instances.first.name),
                     _ => null,
                   },
-                  builder: (context, state) {
-                    return switch (state) {
-                      HgpLoadSuccess(hgps: var hgps) =>
-                        BlocBuilder<InstanceCubit, String?>(
-                          builder: (context, state) {
-                            return MacosPopupButton<String>(
-                              value: state,
-                              hint: const Text("Select HGP"),
-                              items: hgpEntries(hgps)
-                                  .run()
-                                  .map((t) => MacosPopupMenuItem(
-                                      value: t, child: Text(t)))
-                                  .toList(),
-                              onChanged: (value) => context
-                                  .read<InstanceCubit>()
-                                  .changeInstance(value),
-                            );
-                          },
-                        ),
-                      HgpLoadInProgress() => const MacosTooltip(
-                          message: "Loading HGP",
-                          child: ProgressCircle(),
-                        ),
-                      _ => const SizedBox.shrink(),
-                    };
+                  builder: (context, state) => switch (state) {
+                    InstancesLoadSuccess(instances: var instances) =>
+                      BlocBuilder<InstanceFilterCubit, Option<String>>(
+                        builder: (context, state) {
+                          return MacosPopupButton<String>(
+                            value: state.toNullable(),
+                            hint: const Text("Select Instance"),
+                            items: instances
+                                .map(
+                                  (e) => MacosPopupMenuItem(
+                                    value: e.name,
+                                    child: Text(e.name),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) => context
+                                .read<InstanceFilterCubit>()
+                                .changeInstance(value),
+                          );
+                        },
+                      ),
+                    InstancesLoadInProgress() => const MacosTooltip(
+                        message: "Loading Instances",
+                        child: ProgressCircle(),
+                      ),
+                    _ => const SizedBox.shrink(),
                   },
                 ),
               )
