@@ -8,7 +8,9 @@ import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instances_repository.dart';
+import 'package:ibmq/jobs/bloc/jobs_bloc.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
+import 'package:ibmq/jobs/jobs_repository.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 
@@ -60,7 +62,19 @@ class AuthRoute extends GoRouteData {
 class JobsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const JobsPage();
+    return RepositoryProvider(
+      create: (context) => JobsRepository(
+        runtimeDataProvider:
+            (context.read<DataClientsCubit>().state as DataClientsCreateSuccess)
+                .runtimeDataProvider,
+      ),
+      child: BlocProvider(
+        create: (context) => JobsBloc(
+          jobsRepository: RepositoryProvider.of<JobsRepository>(context),
+        ),
+        child: const JobsPage(),
+      ),
+    );
   }
 }
 

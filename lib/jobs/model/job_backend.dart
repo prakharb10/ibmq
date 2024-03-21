@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'job_backend.g.dart';
+// TODO: Remove this file once usage is removed
 
 /// Model class for a backend for a job
 @JsonSerializable()

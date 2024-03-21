@@ -18,26 +18,23 @@ class InstancesRepository {
   TaskEither<String, IList<({String name, IBMQPlan plan})>>
       getUserInstances() => _runtimeDataProvider.getUserInstances().flatMap(
             (r) => r
-                .traverseTaskEither(
-                  (a) => TaskEither.fromOption(
-                    Option.fromJson(
-                      a,
-                      (json) => (
-                        name: switch (Option<String>.safeCast(json['name'])) {
-                          Some(value: final d) => d,
-                          None() =>
-                            throw Exception('Failed to parse instance name'),
-                        },
-                        plan: IBMQPlan.values.byName(a['plan'])
-                      ),
-                    ),
-                    () {
-                      _logger.e('Failed to parse instance', error: a);
-                      return "Error while parsing instances";
-                    },
-                  ),
+                .traverseIOEither(
+                  (a) => IOEither.tryCatch(
+                      () => (
+                            name: switch (Option<String>.safeCast(a['name'])) {
+                              Some(value: final d) => d,
+                              None() => throw Exception(
+                                  'Failed to parse instance name'),
+                            },
+                            plan: IBMQPlan.values.byName(a['plan'])
+                          ), (error, stackTrace) {
+                    _logger.e('Failed to parse instance',
+                        error: error, stackTrace: stackTrace);
+                    return "Error while parsing instances";
+                  }),
                 )
-                .map((r) => r.toIList()),
+                .map((r) => r.toIList())
+                .toTaskEither(),
           );
 }
 

@@ -6,6 +6,7 @@ import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
+import 'package:ibmq/jobs/bloc/jobs_bloc.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -24,6 +25,7 @@ class _JobsPageState extends State<JobsPage> {
   void initState() {
     super.initState();
     context.read<InstancesCubit>().loadInstances();
+    context.read<JobsBloc>().add(const UserJobsRequested());
     // context.read<CursorsBloc>().add(GetCursors());
     // context.read<JobsCacheCubit>().getJobs();
   }
@@ -77,8 +79,16 @@ class _JobsPageState extends State<JobsPage> {
           ),
           children: [
             ContentArea(
-              builder: (context, scrollController) => const Center(
-                child: Text('Jobs Page'),
+              builder: (context, scrollController) => Center(
+                child: BlocBuilder<JobsBloc, JobsState>(
+                  builder: (context, state) => switch (state) {
+                    JobsLoadInProgress() => const ProgressCircle(),
+                    JobsLoadSuccess(userJobs: var userJobs) =>
+                      Text(userJobs.toString()),
+                    JobsLoadFailure(error: var error) => Text(error),
+                    _ => const SizedBox.shrink(),
+                  },
+                ),
               ),
             )
           ],

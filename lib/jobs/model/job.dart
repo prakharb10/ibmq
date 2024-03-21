@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ibmq/jobs/model/job_backend.dart';
-import 'package:ibmq/jobs/model/provider.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -23,15 +22,22 @@ abstract class BaseJob extends Equatable {
 /// This class is used to display a job in the jobs list
 /// and to navigate to the job details page.
 /// Contains limited information about the job.
-@JsonSerializable()
-class Job extends BaseJob {
+@JsonSerializable(fieldRename: FieldRename.snake)
+final class Job extends Equatable {
   /// The job id
   final String id;
 
-  /// The job backend
-  ///
-  /// See [JobBackend] for more information
-  final JobBackend backend;
+  /// Name of the hub of the instance in which the job is being executed
+  final String hub;
+
+  /// Name of the group of the instance in which the job is being executed
+  final String group;
+
+  /// Name of the project of the instance in which the job is being executed
+  final String project;
+
+  /// The system on which to run the program
+  final String backend;
 
   /// The job status
   ///
@@ -39,65 +45,103 @@ class Job extends BaseJob {
   final JobStatus status;
 
   /// The job creation date
-  final DateTime creationDate;
+  final DateTime created;
 
-  /// The job name
-  final String? name;
+  /// The job type
+  final JobType type;
 
   /// Tags associated with the job
   final List<String> tags;
 
-  final bool liveDataEnabled;
-
-  /// The job provider
-  ///
-  /// See [Provider] for more information
-  final Provider provider;
+  /// Job name
+  final String name;
 
   /// The job run mode
-  final String? runMode;
+  final Option<RunMode> runMode;
 
-  /// The user id
-  final String userId;
+  /// Job ran in private mode
+  final bool private;
 
-  /// The job end date
-  final DateTime? endDate;
+  /// UTC timestamp for when the job finished running
+  final Option<DateTime> endTime;
 
-  /// The job was created locally or remotely
-  final String createdBy;
+  /// estimated running time of the job in seconds
+  final Option<double> estimatedRunningTimeSeconds;
+
+  /// estimated max running time of the job in seconds
+  final Option<double> estimatedMaxRunningTimeSeconds;
+
+  /// Program details
+  final ({String id}) program;
+
+  /// Name and tag of the image to use when running a program
+  final String runtime;
+
+  /// Identifier of the session that the job is a part of
+  final Option<String> sessionId;
+
+  /// Current state of the job
+  final ({JobStatus status, String reason}) state;
 
   const Job({
     required this.id,
+    required this.hub,
+    required this.group,
+    required this.project,
     required this.backend,
     required this.status,
-    required this.creationDate,
-    this.name,
+    required this.created,
+    required this.type,
     required this.tags,
-    required this.liveDataEnabled,
-    required this.provider,
-    this.runMode,
-    required this.userId,
-    this.endDate,
-    required this.createdBy,
+    required this.name,
+    required this.runMode,
+    required this.private,
+    required this.endTime,
+    required this.estimatedRunningTimeSeconds,
+    required this.estimatedMaxRunningTimeSeconds,
+    required this.program,
+    required this.runtime,
+    required this.sessionId,
+    required this.state,
   });
 
   @override
-  List<Object?> get props => [
+  List<Object> get props => [
         id,
+        hub,
+        group,
+        project,
         backend,
         status,
-        creationDate,
-        name,
+        created,
+        type,
         tags,
-        liveDataEnabled,
-        provider,
+        name,
         runMode,
-        userId,
-        endDate,
-        createdBy,
+        private,
+        endTime,
+        estimatedRunningTimeSeconds,
+        estimatedMaxRunningTimeSeconds,
+        program,
+        runtime,
+        sessionId,
+        state,
       ];
 
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);
 
   Map<String, dynamic> toJson() => _$JobToJson(this);
+}
+
+@JsonEnum(fieldRename: FieldRename.screamingSnake)
+enum JobType {
+  iqx,
+  runtime,
+}
+
+enum RunMode {
+  fairshare,
+  dedicated,
+  priority,
+  session,
 }
