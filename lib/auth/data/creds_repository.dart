@@ -1,8 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
-import 'package:logger/logger.dart';
-
-final logger = Logger();
+import 'package:ibmq/utils/talker.dart';
 
 /// Repository to handle authentication
 ///
@@ -28,12 +26,12 @@ class CredsRepository {
       final expiresAt =
           await _hiveDataProvider.getValue<DateTime>(box, 'expiresAt');
       if (expiresAt != null && expiresAt.isBefore(DateTime.now())) {
-        logger.i('Token has expired');
+        talker.warning('Token has expired');
         return (token: token, accessToken: null);
       }
       return (token: token, accessToken: accessToken);
     } catch (e) {
-      logger.e('Failed to get credentials', error: e);
+      talker.error('Failed to get credentials', e);
       return (token: null, accessToken: null);
     }
   }
@@ -50,7 +48,7 @@ class CredsRepository {
       _hiveDataProvider.deleteValue(box, 'accessToken');
       _hiveDataProvider.deleteValue(box, 'expiresAt');
     } catch (e) {
-      logger.e('Failed to delete credentials');
+      talker.error('Failed to delete credentials', e);
       throw Exception('Failed to delete credentials');
     }
   }

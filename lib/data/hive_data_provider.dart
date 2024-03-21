@@ -1,8 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:logger/logger.dart';
-
-final logger = Logger();
+import 'package:ibmq/utils/talker.dart';
 
 /// Data provider class to interact with the Hive database
 class HiveDataProvider {
@@ -26,7 +24,7 @@ class HiveDataProvider {
           if (Hive.isBoxOpen(name)) {
             return Hive.box(name);
           } else {
-            logger.w('Box $name does not exist');
+            talker.critical('Box $name does not exist');
             throw Exception('Box $name does not exist');
           }
         },
@@ -40,7 +38,7 @@ class HiveDataProvider {
     if (box.containsKey(key)) {
       return box.get(key) as T?;
     } else {
-      logger.i('Key $key does not exist in box ${box.name}');
+      talker.warning('Key $key does not exist in box ${box.name}');
       return null;
     }
   }
@@ -53,7 +51,7 @@ class HiveDataProvider {
     try {
       await box.put(key, value);
     } catch (e) {
-      logger.e('Failed to set value for key $key in box ${box.name}');
+      talker.error('Failed to set value for key $key in box ${box.name}', e);
       throw Exception('Failed to set value for key $key in box ${box.name}');
     }
   }
@@ -67,7 +65,7 @@ class HiveDataProvider {
     try {
       await box.putAll(map);
     } catch (e) {
-      logger.e('Failed to put all values in box ${box.name}');
+      talker.error('Failed to put all values in box ${box.name}', e);
       throw Exception('Failed to put all values in box ${box.name}');
     }
   }
@@ -80,7 +78,7 @@ class HiveDataProvider {
     try {
       await box.delete(key);
     } catch (e) {
-      logger.e('Failed to delete value for key $key in box ${box.name}');
+      talker.error('Failed to delete value for key $key in box ${box.name}', e);
       throw Exception('Failed to delete value for key $key in box ${box.name}');
     }
   }

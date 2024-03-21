@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/models/runtime_api_error.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 /// Data Provider to interact with the IBM Runtime API
 ///
 /// See [API docs](https://docs.quantum.ibm.com/api/runtime) for more information
 class RuntimeDataProvider {
   final Dio _dio;
-  final _logger = Logger();
 
   RuntimeDataProvider({required String accessToken, required Uri baseUrl})
       : _dio = Dio(
@@ -18,7 +18,15 @@ class RuntimeDataProvider {
             },
             baseUrl: baseUrl.toString(),
           ),
-        );
+        )..interceptors.add(
+            TalkerDioLogger(
+              talker: talker,
+              settings: TalkerDioLoggerSettings(
+                responseFilter: (response) =>
+                    response.realUri.path != '/runtime/facade/v1/jobs',
+              ),
+            ),
+          );
 
   /// Get user instances
   ///
@@ -47,8 +55,7 @@ class RuntimeDataProvider {
           _ => throw Exception('Failed to get user instances'),
         };
       }, (error, stackTrace) {
-        _logger.e('Failed to get user instances',
-            error: error, stackTrace: stackTrace);
+        talker.handle(error, stackTrace, 'Failed to get user instances');
         return 'Failed to get user instances';
       });
 
@@ -128,8 +135,7 @@ class RuntimeDataProvider {
           _ => throw Exception('Failed to list user jobs'),
         };
       }, (error, stackTrace) {
-        _logger.e('Failed to list user jobs',
-            error: error, stackTrace: stackTrace);
+        talker.handle(error, stackTrace, 'Failed to list user jobs');
         return 'Failed to list user jobs';
       });
 }

@@ -1,12 +1,11 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/runtime_data_provider.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
 
 /// Repository for user instances
 class InstancesRepository {
   final RuntimeDataProvider _runtimeDataProvider;
-  final _logger = Logger();
 
   InstancesRepository({required RuntimeDataProvider runtimeDataProvider})
       : _runtimeDataProvider = runtimeDataProvider;
@@ -28,8 +27,8 @@ class InstancesRepository {
                             },
                             plan: IBMQPlan.values.byName(a['plan'])
                           ), (error, stackTrace) {
-                    _logger.e('Failed to parse instance',
-                        error: error, stackTrace: stackTrace);
+                    talker.handle(
+                        error, stackTrace, 'Failed to parse instances');
                     return "Error while parsing instances";
                   }),
                 )

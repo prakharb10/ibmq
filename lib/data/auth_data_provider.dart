@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 /// Data provider for authentication
 class AuthDataProvider {
   final _dio = Dio(BaseOptions(
     baseUrl: 'https://auth.quantum-computing.ibm.com/api',
-  ));
-
-  final _logger = Logger();
+  ))
+    ..interceptors.add(TalkerDioLogger(talker: talker));
 
   /// Logs in the user using the given token
   ///
@@ -28,7 +28,7 @@ class AuthDataProvider {
           };
         },
         (error, stackTrace) {
-          _logger.e('Failed to login with token', error: error);
+          talker.handle(error, stackTrace, 'Failed to login with token');
           return 'Failed to login with token';
         },
       );
@@ -51,7 +51,7 @@ class AuthDataProvider {
           };
         },
         (error, stackTrace) {
-          _logger.e('Failed to get user', error: error);
+          talker.handle(error, stackTrace, 'Failed to get user');
           return 'Failed to get user';
         },
       );
@@ -70,7 +70,7 @@ class AuthDataProvider {
           };
         },
         (error, stackTrace) {
-          _logger.e('Failed to get version', error: error);
+          talker.handle(error, stackTrace, 'Failed to get version');
           return 'Failed to get version';
         },
       );

@@ -13,6 +13,8 @@ import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/jobs/jobs_repository.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
+import 'package:ibmq/utils/talker.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'router.g.dart';
 
@@ -78,4 +80,7 @@ class JobsRoute extends GoRouteData {
   }
 }
 
-final router = GoRouter(routes: $appRoutes);
+final router = GoRouter(
+  routes: $appRoutes,
+  observers: [TalkerRouteObserver(talker)],
+);

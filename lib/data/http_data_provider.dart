@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 /// Data Provider to interact with the HTTP API
 class HTTPDataProvider {
   final Dio _dio;
-  final _logger = Logger();
 
   HTTPDataProvider({required String accessToken, required Uri baseUrl})
       : _dio = Dio(
@@ -15,7 +15,7 @@ class HTTPDataProvider {
             },
             baseUrl: baseUrl.toString(),
           ),
-        );
+        )..interceptors.add(TalkerDioLogger(talker: talker));
 
   /// Get the H/G/P information
   ///
@@ -30,8 +30,7 @@ class HTTPDataProvider {
           };
         },
         (error, stackTrace) {
-          _logger.e('Failed to get H/G/P information',
-              error: error, stackTrace: stackTrace);
+          talker.handle(error, stackTrace, 'Failed to get H/G/P information');
           return 'Failed to get H/G/P information';
         },
       );

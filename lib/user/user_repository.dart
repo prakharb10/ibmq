@@ -1,11 +1,12 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/user/model/user.dart';
+import 'package:ibmq/utils/talker.dart';
 
 /// Repository for user data
 class UserRepository {
   final AuthDataProvider _authDataProvider;
-  // TODO: Add talker
+
   UserRepository({required AuthDataProvider authDataProvider})
       : _authDataProvider = authDataProvider;
 
@@ -17,7 +18,10 @@ class UserRepository {
       _authDataProvider.getUser(accessToken).flatMap(
             (r) => IOEither.tryCatch(
               () => User.fromJson(r),
-              (error, stackTrace) => 'Failed to parse User data',
+              (error, stackTrace) {
+                talker.handle(error, stackTrace, 'Failed to parse User data');
+                return 'Failed to parse User data';
+              },
             ).toTaskEither(),
           );
 }

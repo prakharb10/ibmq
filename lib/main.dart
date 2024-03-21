@@ -11,11 +11,14 @@ import 'package:ibmq/router.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
 import 'package:ibmq/user/user_repository.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
+import 'package:ibmq/utils/talker.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = TalkerBlocObserver(talker: talker);
   await HiveDataProvider.init();
   await HiveDataProvider.openBoxes();
   if (defaultTargetPlatform == TargetPlatform.macOS) {

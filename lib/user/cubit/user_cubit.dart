@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/user/user_repository.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
 
 import '../model/user.dart';
 
@@ -10,7 +10,6 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserRepository _userRepository;
-  final _logger = Logger();
   UserCubit({required UserRepository userRepository})
       : _userRepository = userRepository,
         super(UserInitial());
@@ -26,7 +25,7 @@ class UserCubit extends Cubit<UserState> {
     emit(UserInfoLoadInProgress());
     switch (await _userRepository.loadUserInfo(accessToken).run()) {
       case Left(value: final l):
-        _logger.e('Failed to load user info', error: l);
+        talker.error('Failed to load user info', l);
         emit(UserInfoLoadFailure(l));
         break;
       case Right(value: final r):

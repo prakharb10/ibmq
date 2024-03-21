@@ -8,8 +8,6 @@ part 'jobs_event.dart';
 part 'jobs_state.dart';
 
 class JobsBloc extends Bloc<JobsEvent, JobsState> {
-  // TODO: Add talker
-
   JobsBloc({required JobsRepository jobsRepository}) : super(JobsInitial()) {
     on<UserJobsRequested>((event, emit) async {
       emit(JobsLoadInProgress());

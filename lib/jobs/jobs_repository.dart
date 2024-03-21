@@ -1,13 +1,11 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/runtime_data_provider.dart';
 import 'package:ibmq/jobs/model/user_jobs.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
 
 /// Repository for user jobs
 class JobsRepository {
   final RuntimeDataProvider _runtimeDataProvider;
-  // TODO: Add talker
-  final _logger = Logger();
 
   JobsRepository({required RuntimeDataProvider runtimeDataProvider})
       : _runtimeDataProvider = runtimeDataProvider;
@@ -63,8 +61,7 @@ class JobsRepository {
           .flatMap(
             (r) => IOEither.tryCatch(() => UserJobs.fromJson(r),
                 (error, stackTrace) {
-              _logger.e('Failed to parse user jobs',
-                  error: error, stackTrace: stackTrace);
+              talker.handle(error, stackTrace, 'Failed to parse user jobs');
               return 'Failed to parse user jobs';
             }).toTaskEither(),
           );

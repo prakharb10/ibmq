@@ -1,9 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
-import 'package:logger/logger.dart';
-
-final logger = Logger();
+import 'package:ibmq/utils/talker.dart';
 
 class AuthRepository {
   final AuthDataProvider _authDataProvider;
@@ -42,7 +40,7 @@ class AuthRepository {
         });
         return accessToken;
       }, (error, stackTrace) {
-        logger.e('Failed to login with token', error: error);
+        talker.handle(error, stackTrace, 'Failed to login with token');
         return 'Failed to login with token';
       });
 }

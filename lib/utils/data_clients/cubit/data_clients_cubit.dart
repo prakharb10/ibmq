@@ -2,12 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ibmq/data/http_data_provider.dart';
 import 'package:ibmq/data/runtime_data_provider.dart';
-import 'package:logger/logger.dart';
+import 'package:ibmq/utils/talker.dart';
 
 part 'data_clients_state.dart';
 
 class DataClientsCubit extends Cubit<DataClientsState> {
-  final _logger = Logger();
   DataClientsCubit() : super(DataClientsInitial());
 
   /// Create the data clients
@@ -26,7 +25,7 @@ class DataClientsCubit extends Cubit<DataClientsState> {
         runtimeDataProvider: runtimeClient,
       ));
     } catch (e) {
-      _logger.e('Failed to create data clients', error: e);
+      talker.error('Failed to create data clients', e);
       emit(DataClientsCreateFailure(e.toString()));
     }
   }
