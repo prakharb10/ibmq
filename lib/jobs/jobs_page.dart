@@ -1,3 +1,4 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +7,9 @@ import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
-import 'package:ibmq/jobs/bloc/jobs_bloc.dart';
+import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
+import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
+import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -19,15 +22,16 @@ class JobsPage extends StatefulWidget {
 }
 
 class _JobsPageState extends State<JobsPage> {
-  // int _rowsPerPage = 10;
+  late final JobsDataTableSource _jobsDataTableSource;
 
   @override
   void initState() {
     super.initState();
     context.read<InstancesCubit>().loadInstances();
-    context.read<JobsBloc>().add(const UserJobsRequested());
-    // context.read<CursorsBloc>().add(GetCursors());
-    // context.read<JobsCacheCubit>().getJobs();
+    _jobsDataTableSource = JobsDataTableSource(
+      jobsFilterBloc: context.read<JobsFilterBloc>(),
+      jobsRepository: context.read<JobsRepository>(),
+    );
   }
 
   @override
@@ -40,15 +44,39 @@ class _JobsPageState extends State<JobsPage> {
                 tooltipMessage: "Current Instance",
                 inToolbarBuilder: (context) =>
                     BlocConsumer<InstancesCubit, InstancesState>(
-                  listener: (context, state) => switch (state) {
-                    InstancesLoadSuccess(instances: final instances) => context
-                        .read<InstanceFilterCubit>()
-                        .changeInstance(instances.first.name),
-                    _ => null,
+                  listener: (context, state) {
+                    switch (state) {
+                      case InstancesLoadSuccess(instances: final instances):
+                        context
+                            .read<InstanceFilterCubit>()
+                            .changeInstance(instances.first.name);
+                        // The first event on the InstanceFilterCubit is not
+                        // triggering the listener, so we need to manually
+                        // trigger the JobsFilterBloc event.
+                        context.read<JobsFilterBloc>().add(
+                              JobsFilterEvent.providerChanged(
+                                  provider: instances.first.name),
+                            );
+                        break;
+                      default:
+                        break;
+                    }
                   },
                   builder: (context, state) => switch (state) {
                     InstancesLoadSuccess(instances: var instances) =>
-                      BlocBuilder<InstanceFilterCubit, Option<String>>(
+                      BlocConsumer<InstanceFilterCubit, Option<String>>(
+                        listener: (context, state) {
+                          switch (state) {
+                            case Some(:final value):
+                              context.read<JobsFilterBloc>().add(
+                                    JobsFilterEvent.providerChanged(
+                                        provider: value),
+                                  );
+                              break;
+                            case None():
+                              break;
+                          }
+                        },
                         builder: (context, state) {
                           return MacosPopupButton<String>(
                             value: state.toNullable(),
@@ -79,16 +107,45 @@ class _JobsPageState extends State<JobsPage> {
           ),
           children: [
             ContentArea(
-              builder: (context, scrollController) => Center(
-                child: BlocBuilder<JobsBloc, JobsState>(
-                  builder: (context, state) => switch (state) {
-                    JobsLoadInProgress() => const ProgressCircle(),
-                    JobsLoadSuccess(userJobs: var userJobs) =>
-                      Text(userJobs.toString()),
-                    JobsLoadFailure(error: var error) => Text(error),
-                    _ => const SizedBox.shrink(),
-                  },
-                ),
+              builder: (context, scrollController) =>
+                  BlocBuilder<InstancesCubit, InstancesState>(
+                builder: (context, state) => switch (state) {
+                  InstancesLoadSuccess() => AsyncPaginatedDataTable2(
+                      scrollController: scrollController,
+                      columns: const [
+                        DataColumn2(label: Text("Job Id")),
+                        DataColumn2(label: Text("Status")),
+                        // DataColumn2(label: Text("Created")),
+                        // DataColumn2(label: Text("Run")),
+                        // DataColumn2(label: Text("Program")),
+                        // DataColumn2(
+                        //   label: Text("Compute Resource"),
+                        //   size: ColumnSize.L,
+                        // ),
+                        // DataColumn2(
+                        //   label: Text("Provider"),
+                        //   size: ColumnSize.L,
+                        // ),
+                        // DataColumn2(label: Text("QR Usage")),
+                        // DataColumn2(label: Text("Tags")),
+                      ],
+                      source: _jobsDataTableSource,
+                      // wrapInCard: false,
+                      fixedLeftColumns: 1,
+                      minWidth: 1600,
+                      // sortColumnIndex: 2,
+                      // rowsPerPage: _rowsPerPage,
+                      // availableRowsPerPage: const [10, 20, 50],
+                      // onRowsPerPageChanged: (value) => _rowsPerPage = value!,
+                    ),
+                  InstancesLoadInProgress() => const Center(
+                      child: MacosTooltip(
+                        message: "Loading Instances",
+                        child: ProgressCircle(),
+                      ),
+                    ),
+                  _ => const SizedBox.shrink(),
+                },
               ),
             )
           ],
@@ -186,39 +243,5 @@ class _JobsPageState extends State<JobsPage> {
           child: Text('Jobs Page'),
         ),
     };
-    // return AsyncPaginatedDataTable2(
-    //   columns: const [
-    //     DataColumn2(label: Text("Job Id")),
-    //     DataColumn2(label: Text("Status")),
-    //     DataColumn2(label: Text("Created")),
-    //     DataColumn2(label: Text("Run")),
-    //     DataColumn2(label: Text("Program")),
-    //     DataColumn2(
-    //       label: Text("Compute Resource"),
-    //       size: ColumnSize.L,
-    //     ),
-    //     DataColumn2(
-    //       label: Text("Provider"),
-    //       size: ColumnSize.L,
-    //     ),
-    //     DataColumn2(label: Text("QR Usage")),
-    //     DataColumn2(label: Text("Tags")),
-    //   ],
-    //   source: JobsDataTableSource(
-    //     dio: widget.dio,
-    //     runtimeDio: widget.runtimeDio,
-    //     // appState: widget.appState,
-    //     bloc: context.read<CursorsBloc>(),
-    //     jobsCacheCubit: context.read<JobsCacheCubit>(),
-    //   ),
-    //   wrapInCard: false,
-    //   fixedLeftColumns: 1,
-    //   minWidth: 1600,
-    //   sortColumnIndex: 2,
-    //   // TODO: Handle changing rows per page
-    //   // rowsPerPage: _rowsPerPage,
-    //   // availableRowsPerPage: const [10, 20, 50],
-    //   // onRowsPerPageChanged: (value) => _rowsPerPage = value!,
-    // );
   }
 }

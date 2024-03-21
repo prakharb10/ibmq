@@ -8,9 +8,9 @@ import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instances_repository.dart';
-import 'package:ibmq/jobs/bloc/jobs_bloc.dart';
+import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
-import 'package:ibmq/jobs/jobs_repository.dart';
+import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:ibmq/utils/talker.dart';
@@ -71,9 +71,7 @@ class JobsRoute extends GoRouteData {
                 .runtimeDataProvider,
       ),
       child: BlocProvider(
-        create: (context) => JobsBloc(
-          jobsRepository: RepositoryProvider.of<JobsRepository>(context),
-        ),
+        create: (context) => JobsFilterBloc(),
         child: const JobsPage(),
       ),
     );
