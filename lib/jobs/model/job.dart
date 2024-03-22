@@ -22,7 +22,7 @@ abstract class BaseJob extends Equatable {
 /// This class is used to display a job in the jobs list
 /// and to navigate to the job details page.
 /// Contains limited information about the job.
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 final class Job extends Equatable {
   /// The job id
   final String id;
@@ -66,9 +66,11 @@ final class Job extends Equatable {
   final Option<DateTime> endTime;
 
   /// estimated running time of the job in seconds
+  @JsonKey(name: 'estimated_running_time_seconds')
   final Option<double> estimatedRunningTimeSeconds;
 
   /// estimated max running time of the job in seconds
+  @JsonKey(name: 'estimated_max_running_time_seconds')
   final Option<double> estimatedMaxRunningTimeSeconds;
 
   /// Program details

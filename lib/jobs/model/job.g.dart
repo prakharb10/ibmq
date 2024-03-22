@@ -18,10 +18,10 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       name: json['name'] as String,
       runMode: Option<RunMode>.fromJson(
-          json['run_mode'], (value) => $enumDecode(_$RunModeEnumMap, value)),
+          json['runMode'], (value) => $enumDecode(_$RunModeEnumMap, value)),
       private: json['private'] as bool,
       endTime: Option<DateTime>.fromJson(
-          json['end_time'], (value) => DateTime.parse(value as String)),
+          json['endTime'], (value) => DateTime.parse(value as String)),
       estimatedRunningTimeSeconds: Option<double>.fromJson(
           json['estimated_running_time_seconds'],
           (value) => (value as num).toDouble()),
@@ -34,7 +34,7 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       ),
       runtime: json['runtime'] as String,
       sessionId: Option<String>.fromJson(
-          json['session_id'], (value) => value as String),
+          json['sessionId'], (value) => value as String),
       state: _$recordConvert(
         json['state'],
         ($jsonValue) => (
@@ -55,11 +55,11 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'type': _$JobTypeEnumMap[instance.type]!,
       'tags': instance.tags,
       'name': instance.name,
-      'run_mode': instance.runMode.toJson(
+      'runMode': instance.runMode.toJson(
         (value) => _$RunModeEnumMap[value]!,
       ),
       'private': instance.private,
-      'end_time': instance.endTime.toJson(
+      'endTime': instance.endTime.toJson(
         (value) => value.toIso8601String(),
       ),
       'estimated_running_time_seconds':
@@ -74,7 +74,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
         'id': instance.program.id,
       },
       'runtime': instance.runtime,
-      'session_id': instance.sessionId.toJson(
+      'sessionId': instance.sessionId.toJson(
         (value) => value,
       ),
       'state': {

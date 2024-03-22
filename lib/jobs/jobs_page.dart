@@ -39,6 +39,28 @@ class _JobsPageState extends State<JobsPage> {
     return switch (Theme.of(context).platform) {
       TargetPlatform.macOS => MacosScaffold(
           toolBar: ToolBar(
+            enableBlur: true,
+            leading: MacosTooltip(
+              message: 'Toggle Sidebar',
+              useMousePosition: false,
+              child: MacosIconButton(
+                icon: MacosIcon(
+                  CupertinoIcons.sidebar_left,
+                  color: MacosTheme.brightnessOf(context).resolve(
+                    const Color.fromRGBO(0, 0, 0, 0.5),
+                    const Color.fromRGBO(255, 255, 255, 0.5),
+                  ),
+                  size: 20.0,
+                ),
+                boxConstraints: const BoxConstraints(
+                  minHeight: 20,
+                  minWidth: 20,
+                  maxWidth: 48,
+                  maxHeight: 38,
+                ),
+                onPressed: () => MacosWindowScope.of(context).toggleSidebar(),
+              ),
+            ),
             actions: [
               CustomToolbarItem(
                 tooltipMessage: "Current Instance",
@@ -110,33 +132,62 @@ class _JobsPageState extends State<JobsPage> {
               builder: (context, scrollController) =>
                   BlocBuilder<InstancesCubit, InstancesState>(
                 builder: (context, state) => switch (state) {
-                  InstancesLoadSuccess() => AsyncPaginatedDataTable2(
-                      scrollController: scrollController,
-                      columns: const [
-                        DataColumn2(label: Text("Job Id")),
-                        DataColumn2(label: Text("Status")),
-                        // DataColumn2(label: Text("Created")),
-                        // DataColumn2(label: Text("Run")),
-                        // DataColumn2(label: Text("Program")),
-                        // DataColumn2(
-                        //   label: Text("Compute Resource"),
-                        //   size: ColumnSize.L,
-                        // ),
-                        // DataColumn2(
-                        //   label: Text("Provider"),
-                        //   size: ColumnSize.L,
-                        // ),
-                        // DataColumn2(label: Text("QR Usage")),
-                        // DataColumn2(label: Text("Tags")),
-                      ],
-                      source: _jobsDataTableSource,
-                      // wrapInCard: false,
-                      fixedLeftColumns: 1,
-                      minWidth: 1600,
-                      // sortColumnIndex: 2,
-                      // rowsPerPage: _rowsPerPage,
-                      // availableRowsPerPage: const [10, 20, 50],
-                      // onRowsPerPageChanged: (value) => _rowsPerPage = value!,
+                  InstancesLoadSuccess() =>
+                    BlocBuilder<JobsFilterBloc, JobsFilterState>(
+                      builder: (context, state) => switch (state) {
+                        Filtered(:final filter) => AsyncPaginatedDataTable2(
+                            scrollController: scrollController,
+                            header: const Text("Jobs"),
+                            actions: [
+                              MacosTooltip(
+                                message: "Refresh Jobs",
+                                child: MacosIconButton(
+                                  icon: const Icon(
+                                      CupertinoIcons.arrow_clockwise),
+                                  onPressed: () =>
+                                      _jobsDataTableSource.refreshDatasource(),
+                                ),
+                              ),
+                            ],
+                            columns: [
+                              const DataColumn2(label: Text("Job Id")),
+                              const DataColumn2(label: Text("Session Id")),
+                              const DataColumn2(label: Text("Status")),
+                              DataColumn2(
+                                label: const Text("Created"),
+                                onSort: (columnIndex, ascending) =>
+                                    context.read<JobsFilterBloc>().add(
+                                          JobsFilterEvent.sortChanged(
+                                              sort: ascending ? 'ASC' : 'DESC'),
+                                        ),
+                              ),
+                              const DataColumn2(label: Text("Completed")),
+                              const DataColumn2(label: Text("Program")),
+                              const DataColumn2(
+                                label: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text("Compute Resource"),
+                                ),
+                                size: ColumnSize.L,
+                              ),
+                              const DataColumn2(label: Text("Usage")),
+                              const DataColumn2(label: Text("Tags")),
+                            ],
+                            source: _jobsDataTableSource,
+                            fixedLeftColumns: 1,
+                            lmRatio: 1.5,
+                            minWidth: 1500,
+                            sortColumnIndex: 3,
+                            sortAscending: switch (filter.sort) {
+                              Some(:final value) => value == 'ASC',
+                              None() => false,
+                            },
+                            // rowsPerPage: _rowsPerPage,
+                            // availableRowsPerPage: const [10, 20, 50],
+                            // onRowsPerPageChanged: (value) => _rowsPerPage = value!,
+                          ),
+                        _ => const SizedBox.shrink(),
+                      },
                     ),
                   InstancesLoadInProgress() => const Center(
                       child: MacosTooltip(

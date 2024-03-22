@@ -29,7 +29,7 @@ void main() async {
 
 Future<void> _configureMacosWindowUtils() async {
   const config = MacosWindowUtilsConfig(
-    toolbarStyle: NSWindowToolbarStyle.expanded,
+    toolbarStyle: NSWindowToolbarStyle.unified,
   );
   await config.apply();
 }
@@ -123,9 +123,6 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (Theme.of(context).platform) {
       TargetPlatform.macOS => MacosWindow(
-          titleBar: const TitleBar(
-            title: Text('IBM Quantum Dashboard'),
-          ),
           sidebar: Sidebar(
             builder: (context, scrollController) => SidebarItems(
               scrollController: scrollController,

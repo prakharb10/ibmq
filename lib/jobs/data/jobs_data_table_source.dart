@@ -5,6 +5,7 @@ import 'package:ibmq/jobs/bloc/jobs_filter.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/utils/talker.dart';
+import 'package:intl/intl.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
   final JobsRepository _jobsRepository;
@@ -50,10 +51,38 @@ class JobsDataTableSource extends AsyncDataTableSource {
               r.count,
               r.jobs
                   .map(
-                    (a) => DataRow2(cells: [
-                      DataCell(Text(a.id)),
-                      DataCell(Text(a.status.name))
-                    ]),
+                    (a) => DataRow2(
+                      cells: [
+                        DataCell(Text(a.id)),
+                        DataCell(
+                          Text(switch (a.sessionId) {
+                            None() => '',
+                            Some(:final value) => value,
+                          }),
+                        ),
+                        DataCell(Text(a.status.name)),
+                        DataCell(
+                          Text(DateFormat.yMd()
+                              .add_jm()
+                              .format(a.created.toLocal())),
+                        ),
+                        DataCell(
+                          Text(switch (a.endTime) {
+                            None() => '',
+                            Some(:final value) =>
+                              DateFormat.yMd().add_jm().format(value.toLocal()),
+                          }),
+                        ),
+                        DataCell(Text(a.program.id)),
+                        DataCell(Text(a.backend)),
+                        const DataCell(
+                          Text("Usage"),
+                        ),
+                        DataCell(
+                          Text(a.tags.join(', ')),
+                        ),
+                      ],
+                    ),
                   )
                   .toList(),
             ),

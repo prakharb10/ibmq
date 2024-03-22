@@ -288,9 +288,6 @@ class _AuthPageState extends State<AuthPage> {
                   CredentialsLoadSuccess() => switch (
                         Theme.of(context).platform) {
                       TargetPlatform.macOS => MacosWindow(
-                          titleBar: const TitleBar(
-                            title: Text("IBM Quantum"),
-                          ),
                           child: MacosScaffold(
                             children: [
                               ContentArea(
