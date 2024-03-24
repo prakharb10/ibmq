@@ -89,13 +89,32 @@ class JobsFilterBloc extends Bloc<JobsFilterEvent, JobsFilterState> {
         }),
       );
     });
-    on<_TagsChanged>((event, emit) {
+    on<_TagAdded>((event, emit) {
       emit(
         Filtered(
             filter: switch (state) {
-          Filtered(:final filter) =>
-            filter.copyWith(tags: Option.of(event.tags)),
-          _ => JobsFilter(tags: Option.of(event.tags)),
+          Filtered(:final filter) => filter.copyWith(
+                tags: switch (filter.tags) {
+              Some(value: final t) =>
+                Option.of(t.contains(event.tag) ? t : [...t, event.tag]),
+              None() => Option.of([event.tag]),
+            }),
+          _ => JobsFilter(tags: Option.of([event.tag])),
+        }),
+      );
+    });
+    on<_TagRemoved>((event, emit) {
+      emit(
+        Filtered(
+            filter: switch (state) {
+          Filtered(:final filter) => filter.copyWith(
+              tags: filter.tags.flatMap(
+                (t) => t.length == 1
+                    ? const Option.none()
+                    : Option.of(t.where((e) => e != event.tag).toList()),
+              ),
+            ),
+          _ => JobsFilter(tags: const Option.none()),
         }),
       );
     });
@@ -114,8 +133,8 @@ class JobsFilterBloc extends Bloc<JobsFilterEvent, JobsFilterState> {
         Filtered(
             filter: switch (state) {
           Filtered(:final filter) =>
-            filter.copyWith(sessionId: Option.of(event.sessionId)),
-          _ => JobsFilter(sessionId: Option.of(event.sessionId)),
+            filter.copyWith(sessionId: Option.fromNullable(event.sessionId)),
+          _ => JobsFilter(sessionId: Option.fromNullable(event.sessionId)),
         }),
       );
     });

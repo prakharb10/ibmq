@@ -19,11 +19,11 @@ class JobsFilterEvent with _$JobsFilterEvent {
       {required DateTime createdAfter}) = _CreatedAfterChanged;
   const factory JobsFilterEvent.createdBeforeChanged(
       {required DateTime createdBefore}) = _CreatedBeforeChanged;
-  const factory JobsFilterEvent.tagsChanged({required List<String> tags}) =
-      _TagsChanged;
+  const factory JobsFilterEvent.tagAdded({required String tag}) = _TagAdded;
+  const factory JobsFilterEvent.tagRemoved({required String tag}) = _TagRemoved;
   const factory JobsFilterEvent.programChanged({required String program}) =
       _ProgramChanged;
-  const factory JobsFilterEvent.sessionIdChanged({required String sessionId}) =
+  const factory JobsFilterEvent.sessionIdChanged({String? sessionId}) =
       _SessionIdChanged;
   const factory JobsFilterEvent.searchChanged({required String search}) =
       _SearchChanged;

@@ -23,6 +23,7 @@ class JobsPage extends StatefulWidget {
 
 class _JobsPageState extends State<JobsPage> {
   late final JobsDataTableSource _jobsDataTableSource;
+  final PaginatorController _paginatorController = PaginatorController();
 
   @override
   void initState() {
@@ -94,6 +95,7 @@ class _JobsPageState extends State<JobsPage> {
                                     JobsFilterEvent.providerChanged(
                                         provider: value),
                                   );
+                              _paginatorController.goToFirstPage();
                               break;
                             case None():
                               break;
@@ -135,56 +137,132 @@ class _JobsPageState extends State<JobsPage> {
                   InstancesLoadSuccess() =>
                     BlocBuilder<JobsFilterBloc, JobsFilterState>(
                       builder: (context, state) => switch (state) {
-                        Filtered(:final filter) => AsyncPaginatedDataTable2(
-                            scrollController: scrollController,
-                            header: const Text("Jobs"),
-                            actions: [
-                              MacosTooltip(
-                                message: "Refresh Jobs",
-                                child: MacosIconButton(
-                                  icon: const Icon(
-                                      CupertinoIcons.arrow_clockwise),
-                                  onPressed: () =>
-                                      _jobsDataTableSource.refreshDatasource(),
-                                ),
+                        Filtered(:final filter) => Theme(
+                            data: ThemeData(
+                              brightness: MacosTheme.brightnessOf(context),
+                              colorSchemeSeed:
+                                  MacosTheme.of(context).primaryColor,
+                              canvasColor: MacosTheme.of(context).canvasColor,
+                              iconTheme: IconThemeData(
+                                color: MacosTheme.of(context).iconTheme.color,
+                                opacity:
+                                    MacosTheme.of(context).iconTheme.opacity,
+                                size: MacosTheme.of(context).iconTheme.size,
                               ),
-                            ],
-                            columns: [
-                              const DataColumn2(label: Text("Job Id")),
-                              const DataColumn2(label: Text("Session Id")),
-                              const DataColumn2(label: Text("Status")),
-                              DataColumn2(
-                                label: const Text("Created"),
-                                onSort: (columnIndex, ascending) =>
-                                    context.read<JobsFilterBloc>().add(
+                            ),
+                            child: Material(
+                              child: AsyncPaginatedDataTable2(
+                                wrapInCard: false,
+                                controller: _paginatorController,
+                                scrollController: scrollController,
+                                headingTextStyle: MacosTheme.of(context)
+                                    .typography
+                                    .title3
+                                    .copyWith(
+                                        color: MacosTheme.of(context)
+                                            .primaryColor),
+                                sortArrowIcon: CupertinoIcons.chevron_up,
+                                header: const Text("Jobs"),
+                                actions: [
+                                  switch (filter.tags) {
+                                    Some(:final value) => Wrap(
+                                        spacing: 8.0,
+                                        children: value
+                                            .map(
+                                              (tag) => InputChip(
+                                                label: Text(tag),
+                                                tooltip: "Tag",
+                                                onDeleted: () => context
+                                                    .read<JobsFilterBloc>()
+                                                    .add(
+                                                      JobsFilterEvent
+                                                          .tagRemoved(tag: tag),
+                                                    ),
+                                              ),
+                                            )
+                                            .toList()),
+                                    None() => const SizedBox.shrink(),
+                                  },
+                                  switch (filter.sessionId) {
+                                    Some(:final value) => InputChip(
+                                        label: Text(value),
+                                        tooltip: "Session Id",
+                                        onDeleted: () =>
+                                            context.read<JobsFilterBloc>().add(
+                                                  const JobsFilterEvent
+                                                      .sessionIdChanged(
+                                                    sessionId: null,
+                                                  ),
+                                                ),
+                                      ),
+                                    None() => const SizedBox.shrink(),
+                                  },
+                                  MacosTooltip(
+                                    message: "Refresh Jobs",
+                                    child: IconButton(
+                                      icon: const MacosIcon(
+                                          CupertinoIcons.arrow_clockwise),
+                                      onPressed: () => _jobsDataTableSource
+                                          .refreshDatasource(),
+                                    ),
+                                  ),
+                                ],
+                                columns: [
+                                  const DataColumn2(
+                                    label: Text("Job Id"),
+                                    size: ColumnSize.L,
+                                  ),
+                                  const DataColumn2(
+                                    label: Text("Session Id"),
+                                    size: ColumnSize.L,
+                                  ),
+                                  const DataColumn2(label: Text("Status")),
+                                  DataColumn2(
+                                    label: const Text("Created"),
+                                    onSort: (columnIndex, ascending) => context
+                                        .read<JobsFilterBloc>()
+                                        .add(
                                           JobsFilterEvent.sortChanged(
                                               sort: ascending ? 'ASC' : 'DESC'),
                                         ),
-                              ),
-                              const DataColumn2(label: Text("Completed")),
-                              const DataColumn2(label: Text("Program")),
-                              const DataColumn2(
-                                label: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text("Compute Resource"),
+                                  ),
+                                  const DataColumn2(label: Text("Completed")),
+                                  const DataColumn2(label: Text("Program")),
+                                  const DataColumn2(
+                                    label: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Text("Compute Resource"),
+                                    ),
+                                    size: ColumnSize.L,
+                                  ),
+                                  const DataColumn2(label: Text("Usage")),
+                                  const DataColumn2(label: Text("Tags")),
+                                ],
+                                source: _jobsDataTableSource,
+                                fixedLeftColumns: 1,
+                                lmRatio: 1.5,
+                                minWidth: 1500,
+                                sortColumnIndex: 3,
+                                sortAscending: switch (filter.sort) {
+                                  Some(:final value) => value == 'ASC',
+                                  None() => false,
+                                },
+                                showFirstLastButtons: true,
+                                columnSpacing: 40,
+                                renderEmptyRowsInTheEnd: false,
+                                loading: const Center(
+                                  child: MacosTooltip(
+                                    message: "Loading Instances",
+                                    child: ProgressCircle(),
+                                  ),
                                 ),
-                                size: ColumnSize.L,
+                                empty: const Center(
+                                  child: Text("No Jobs Found"),
+                                ),
+                                onRowsPerPageChanged: (value) =>
+                                    _jobsDataTableSource.refreshDatasource(),
                               ),
-                              const DataColumn2(label: Text("Usage")),
-                              const DataColumn2(label: Text("Tags")),
-                            ],
-                            source: _jobsDataTableSource,
-                            fixedLeftColumns: 1,
-                            lmRatio: 1.5,
-                            minWidth: 1500,
-                            sortColumnIndex: 3,
-                            sortAscending: switch (filter.sort) {
-                              Some(:final value) => value == 'ASC',
-                              None() => false,
-                            },
-                            // rowsPerPage: _rowsPerPage,
-                            // availableRowsPerPage: const [10, 20, 50],
-                            // onRowsPerPageChanged: (value) => _rowsPerPage = value!,
+                            ),
                           ),
                         _ => const SizedBox.shrink(),
                       },

@@ -27,9 +27,10 @@ mixin _$JobsFilterEvent {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) =>
       throw _privateConstructorUsedError;
@@ -44,9 +45,10 @@ mixin _$JobsFilterEvent {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) =>
       throw _privateConstructorUsedError;
@@ -61,9 +63,10 @@ mixin _$JobsFilterEvent {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) =>
@@ -79,7 +82,8 @@ mixin _$JobsFilterEvent {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -96,7 +100,8 @@ mixin _$JobsFilterEvent {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -113,7 +118,8 @@ mixin _$JobsFilterEvent {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -187,9 +193,10 @@ class _$StartedImpl implements _Started {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return started();
@@ -207,9 +214,10 @@ class _$StartedImpl implements _Started {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return started?.call();
@@ -227,9 +235,10 @@ class _$StartedImpl implements _Started {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -251,7 +260,8 @@ class _$StartedImpl implements _Started {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -271,7 +281,8 @@ class _$StartedImpl implements _Started {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -291,7 +302,8 @@ class _$StartedImpl implements _Started {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -383,9 +395,10 @@ class _$ProviderChangedImpl implements _ProviderChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return providerChanged(provider);
@@ -403,9 +416,10 @@ class _$ProviderChangedImpl implements _ProviderChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return providerChanged?.call(provider);
@@ -423,9 +437,10 @@ class _$ProviderChangedImpl implements _ProviderChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -447,7 +462,8 @@ class _$ProviderChangedImpl implements _ProviderChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -467,7 +483,8 @@ class _$ProviderChangedImpl implements _ProviderChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -487,7 +504,8 @@ class _$ProviderChangedImpl implements _ProviderChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -584,9 +602,10 @@ class _$PendingChangedImpl implements _PendingChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return pendingChanged(pending);
@@ -604,9 +623,10 @@ class _$PendingChangedImpl implements _PendingChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return pendingChanged?.call(pending);
@@ -624,9 +644,10 @@ class _$PendingChangedImpl implements _PendingChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -648,7 +669,8 @@ class _$PendingChangedImpl implements _PendingChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -668,7 +690,8 @@ class _$PendingChangedImpl implements _PendingChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -688,7 +711,8 @@ class _$PendingChangedImpl implements _PendingChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -792,9 +816,10 @@ class _$BackendChangedImpl implements _BackendChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return backendChanged(backend);
@@ -812,9 +837,10 @@ class _$BackendChangedImpl implements _BackendChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return backendChanged?.call(backend);
@@ -832,9 +858,10 @@ class _$BackendChangedImpl implements _BackendChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -856,7 +883,8 @@ class _$BackendChangedImpl implements _BackendChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -876,7 +904,8 @@ class _$BackendChangedImpl implements _BackendChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -896,7 +925,8 @@ class _$BackendChangedImpl implements _BackendChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -992,9 +1022,10 @@ class _$SortChangedImpl implements _SortChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return sortChanged(sort);
@@ -1012,9 +1043,10 @@ class _$SortChangedImpl implements _SortChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return sortChanged?.call(sort);
@@ -1032,9 +1064,10 @@ class _$SortChangedImpl implements _SortChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -1056,7 +1089,8 @@ class _$SortChangedImpl implements _SortChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -1076,7 +1110,8 @@ class _$SortChangedImpl implements _SortChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -1096,7 +1131,8 @@ class _$SortChangedImpl implements _SortChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -1191,9 +1227,10 @@ class _$LimitChangedImpl implements _LimitChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return limitChanged(limit);
@@ -1211,9 +1248,10 @@ class _$LimitChangedImpl implements _LimitChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return limitChanged?.call(limit);
@@ -1231,9 +1269,10 @@ class _$LimitChangedImpl implements _LimitChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -1255,7 +1294,8 @@ class _$LimitChangedImpl implements _LimitChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -1275,7 +1315,8 @@ class _$LimitChangedImpl implements _LimitChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -1295,7 +1336,8 @@ class _$LimitChangedImpl implements _LimitChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -1390,9 +1432,10 @@ class _$OffsetChangedImpl implements _OffsetChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return offsetChanged(offset);
@@ -1410,9 +1453,10 @@ class _$OffsetChangedImpl implements _OffsetChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return offsetChanged?.call(offset);
@@ -1430,9 +1474,10 @@ class _$OffsetChangedImpl implements _OffsetChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -1454,7 +1499,8 @@ class _$OffsetChangedImpl implements _OffsetChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -1474,7 +1520,8 @@ class _$OffsetChangedImpl implements _OffsetChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -1494,7 +1541,8 @@ class _$OffsetChangedImpl implements _OffsetChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -1592,9 +1640,10 @@ class _$CreatedAfterChangedImpl implements _CreatedAfterChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return createdAfterChanged(createdAfter);
@@ -1612,9 +1661,10 @@ class _$CreatedAfterChangedImpl implements _CreatedAfterChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return createdAfterChanged?.call(createdAfter);
@@ -1632,9 +1682,10 @@ class _$CreatedAfterChangedImpl implements _CreatedAfterChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -1656,7 +1707,8 @@ class _$CreatedAfterChangedImpl implements _CreatedAfterChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -1676,7 +1728,8 @@ class _$CreatedAfterChangedImpl implements _CreatedAfterChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -1696,7 +1749,8 @@ class _$CreatedAfterChangedImpl implements _CreatedAfterChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -1795,9 +1849,10 @@ class _$CreatedBeforeChangedImpl implements _CreatedBeforeChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return createdBeforeChanged(createdBefore);
@@ -1815,9 +1870,10 @@ class _$CreatedBeforeChangedImpl implements _CreatedBeforeChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return createdBeforeChanged?.call(createdBefore);
@@ -1835,9 +1891,10 @@ class _$CreatedBeforeChangedImpl implements _CreatedBeforeChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -1859,7 +1916,8 @@ class _$CreatedBeforeChangedImpl implements _CreatedBeforeChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -1879,7 +1937,8 @@ class _$CreatedBeforeChangedImpl implements _CreatedBeforeChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -1899,7 +1958,8 @@ class _$CreatedBeforeChangedImpl implements _CreatedBeforeChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -1923,71 +1983,65 @@ abstract class _CreatedBeforeChanged implements JobsFilterEvent {
 }
 
 /// @nodoc
-abstract class _$$TagsChangedImplCopyWith<$Res> {
-  factory _$$TagsChangedImplCopyWith(
-          _$TagsChangedImpl value, $Res Function(_$TagsChangedImpl) then) =
-      __$$TagsChangedImplCopyWithImpl<$Res>;
+abstract class _$$TagAddedImplCopyWith<$Res> {
+  factory _$$TagAddedImplCopyWith(
+          _$TagAddedImpl value, $Res Function(_$TagAddedImpl) then) =
+      __$$TagAddedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<String> tags});
+  $Res call({String tag});
 }
 
 /// @nodoc
-class __$$TagsChangedImplCopyWithImpl<$Res>
-    extends _$JobsFilterEventCopyWithImpl<$Res, _$TagsChangedImpl>
-    implements _$$TagsChangedImplCopyWith<$Res> {
-  __$$TagsChangedImplCopyWithImpl(
-      _$TagsChangedImpl _value, $Res Function(_$TagsChangedImpl) _then)
+class __$$TagAddedImplCopyWithImpl<$Res>
+    extends _$JobsFilterEventCopyWithImpl<$Res, _$TagAddedImpl>
+    implements _$$TagAddedImplCopyWith<$Res> {
+  __$$TagAddedImplCopyWithImpl(
+      _$TagAddedImpl _value, $Res Function(_$TagAddedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tags = null,
+    Object? tag = null,
   }) {
-    return _then(_$TagsChangedImpl(
-      tags: null == tags
-          ? _value._tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+    return _then(_$TagAddedImpl(
+      tag: null == tag
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 
-class _$TagsChangedImpl implements _TagsChanged {
-  const _$TagsChangedImpl({required final List<String> tags}) : _tags = tags;
+class _$TagAddedImpl implements _TagAdded {
+  const _$TagAddedImpl({required this.tag});
 
-  final List<String> _tags;
   @override
-  List<String> get tags {
-    if (_tags is EqualUnmodifiableListView) return _tags;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_tags);
-  }
+  final String tag;
 
   @override
   String toString() {
-    return 'JobsFilterEvent.tagsChanged(tags: $tags)';
+    return 'JobsFilterEvent.tagAdded(tag: $tag)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TagsChangedImpl &&
-            const DeepCollectionEquality().equals(other._tags, _tags));
+            other is _$TagAddedImpl &&
+            (identical(other.tag, tag) || other.tag == tag));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_tags));
+  int get hashCode => Object.hash(runtimeType, tag);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TagsChangedImplCopyWith<_$TagsChangedImpl> get copyWith =>
-      __$$TagsChangedImplCopyWithImpl<_$TagsChangedImpl>(this, _$identity);
+  _$$TagAddedImplCopyWith<_$TagAddedImpl> get copyWith =>
+      __$$TagAddedImplCopyWithImpl<_$TagAddedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2001,12 +2055,13 @@ class _$TagsChangedImpl implements _TagsChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
-    return tagsChanged(tags);
+    return tagAdded(tag);
   }
 
   @override
@@ -2021,12 +2076,13 @@ class _$TagsChangedImpl implements _TagsChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
-    return tagsChanged?.call(tags);
+    return tagAdded?.call(tag);
   }
 
   @override
@@ -2041,14 +2097,15 @@ class _$TagsChangedImpl implements _TagsChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
-    if (tagsChanged != null) {
-      return tagsChanged(tags);
+    if (tagAdded != null) {
+      return tagAdded(tag);
     }
     return orElse();
   }
@@ -2065,12 +2122,13 @@ class _$TagsChangedImpl implements _TagsChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
   }) {
-    return tagsChanged(this);
+    return tagAdded(this);
   }
 
   @override
@@ -2085,12 +2143,13 @@ class _$TagsChangedImpl implements _TagsChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
   }) {
-    return tagsChanged?.call(this);
+    return tagAdded?.call(this);
   }
 
   @override
@@ -2105,26 +2164,231 @@ class _$TagsChangedImpl implements _TagsChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
     required TResult orElse(),
   }) {
-    if (tagsChanged != null) {
-      return tagsChanged(this);
+    if (tagAdded != null) {
+      return tagAdded(this);
     }
     return orElse();
   }
 }
 
-abstract class _TagsChanged implements JobsFilterEvent {
-  const factory _TagsChanged({required final List<String> tags}) =
-      _$TagsChangedImpl;
+abstract class _TagAdded implements JobsFilterEvent {
+  const factory _TagAdded({required final String tag}) = _$TagAddedImpl;
 
-  List<String> get tags;
+  String get tag;
   @JsonKey(ignore: true)
-  _$$TagsChangedImplCopyWith<_$TagsChangedImpl> get copyWith =>
+  _$$TagAddedImplCopyWith<_$TagAddedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$TagRemovedImplCopyWith<$Res> {
+  factory _$$TagRemovedImplCopyWith(
+          _$TagRemovedImpl value, $Res Function(_$TagRemovedImpl) then) =
+      __$$TagRemovedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String tag});
+}
+
+/// @nodoc
+class __$$TagRemovedImplCopyWithImpl<$Res>
+    extends _$JobsFilterEventCopyWithImpl<$Res, _$TagRemovedImpl>
+    implements _$$TagRemovedImplCopyWith<$Res> {
+  __$$TagRemovedImplCopyWithImpl(
+      _$TagRemovedImpl _value, $Res Function(_$TagRemovedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tag = null,
+  }) {
+    return _then(_$TagRemovedImpl(
+      tag: null == tag
+          ? _value.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$TagRemovedImpl implements _TagRemoved {
+  const _$TagRemovedImpl({required this.tag});
+
+  @override
+  final String tag;
+
+  @override
+  String toString() {
+    return 'JobsFilterEvent.tagRemoved(tag: $tag)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TagRemovedImpl &&
+            (identical(other.tag, tag) || other.tag == tag));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, tag);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TagRemovedImplCopyWith<_$TagRemovedImpl> get copyWith =>
+      __$$TagRemovedImplCopyWithImpl<_$TagRemovedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function(String provider) providerChanged,
+    required TResult Function(bool pending) pendingChanged,
+    required TResult Function(List<String> backend) backendChanged,
+    required TResult Function(String sort) sortChanged,
+    required TResult Function(int limit) limitChanged,
+    required TResult Function(int offset) offsetChanged,
+    required TResult Function(DateTime createdAfter) createdAfterChanged,
+    required TResult Function(DateTime createdBefore) createdBeforeChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
+    required TResult Function(String program) programChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
+    required TResult Function(String search) searchChanged,
+  }) {
+    return tagRemoved(tag);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function(String provider)? providerChanged,
+    TResult? Function(bool pending)? pendingChanged,
+    TResult? Function(List<String> backend)? backendChanged,
+    TResult? Function(String sort)? sortChanged,
+    TResult? Function(int limit)? limitChanged,
+    TResult? Function(int offset)? offsetChanged,
+    TResult? Function(DateTime createdAfter)? createdAfterChanged,
+    TResult? Function(DateTime createdBefore)? createdBeforeChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
+    TResult? Function(String program)? programChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
+    TResult? Function(String search)? searchChanged,
+  }) {
+    return tagRemoved?.call(tag);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function(String provider)? providerChanged,
+    TResult Function(bool pending)? pendingChanged,
+    TResult Function(List<String> backend)? backendChanged,
+    TResult Function(String sort)? sortChanged,
+    TResult Function(int limit)? limitChanged,
+    TResult Function(int offset)? offsetChanged,
+    TResult Function(DateTime createdAfter)? createdAfterChanged,
+    TResult Function(DateTime createdBefore)? createdBeforeChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
+    TResult Function(String program)? programChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
+    TResult Function(String search)? searchChanged,
+    required TResult orElse(),
+  }) {
+    if (tagRemoved != null) {
+      return tagRemoved(tag);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_ProviderChanged value) providerChanged,
+    required TResult Function(_PendingChanged value) pendingChanged,
+    required TResult Function(_BackendChanged value) backendChanged,
+    required TResult Function(_SortChanged value) sortChanged,
+    required TResult Function(_LimitChanged value) limitChanged,
+    required TResult Function(_OffsetChanged value) offsetChanged,
+    required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
+    required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
+    required TResult Function(_ProgramChanged value) programChanged,
+    required TResult Function(_SessionIdChanged value) sessionIdChanged,
+    required TResult Function(_SearchChanged value) searchChanged,
+  }) {
+    return tagRemoved(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_ProviderChanged value)? providerChanged,
+    TResult? Function(_PendingChanged value)? pendingChanged,
+    TResult? Function(_BackendChanged value)? backendChanged,
+    TResult? Function(_SortChanged value)? sortChanged,
+    TResult? Function(_LimitChanged value)? limitChanged,
+    TResult? Function(_OffsetChanged value)? offsetChanged,
+    TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
+    TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
+    TResult? Function(_ProgramChanged value)? programChanged,
+    TResult? Function(_SessionIdChanged value)? sessionIdChanged,
+    TResult? Function(_SearchChanged value)? searchChanged,
+  }) {
+    return tagRemoved?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_ProviderChanged value)? providerChanged,
+    TResult Function(_PendingChanged value)? pendingChanged,
+    TResult Function(_BackendChanged value)? backendChanged,
+    TResult Function(_SortChanged value)? sortChanged,
+    TResult Function(_LimitChanged value)? limitChanged,
+    TResult Function(_OffsetChanged value)? offsetChanged,
+    TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
+    TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
+    TResult Function(_ProgramChanged value)? programChanged,
+    TResult Function(_SessionIdChanged value)? sessionIdChanged,
+    TResult Function(_SearchChanged value)? searchChanged,
+    required TResult orElse(),
+  }) {
+    if (tagRemoved != null) {
+      return tagRemoved(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _TagRemoved implements JobsFilterEvent {
+  const factory _TagRemoved({required final String tag}) = _$TagRemovedImpl;
+
+  String get tag;
+  @JsonKey(ignore: true)
+  _$$TagRemovedImplCopyWith<_$TagRemovedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2202,9 +2466,10 @@ class _$ProgramChangedImpl implements _ProgramChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return programChanged(program);
@@ -2222,9 +2487,10 @@ class _$ProgramChangedImpl implements _ProgramChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return programChanged?.call(program);
@@ -2242,9 +2508,10 @@ class _$ProgramChangedImpl implements _ProgramChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -2266,7 +2533,8 @@ class _$ProgramChangedImpl implements _ProgramChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -2286,7 +2554,8 @@ class _$ProgramChangedImpl implements _ProgramChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -2306,7 +2575,8 @@ class _$ProgramChangedImpl implements _ProgramChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -2335,7 +2605,7 @@ abstract class _$$SessionIdChangedImplCopyWith<$Res> {
           $Res Function(_$SessionIdChangedImpl) then) =
       __$$SessionIdChangedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String sessionId});
+  $Res call({String? sessionId});
 }
 
 /// @nodoc
@@ -2349,13 +2619,13 @@ class __$$SessionIdChangedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sessionId = null,
+    Object? sessionId = freezed,
   }) {
     return _then(_$SessionIdChangedImpl(
-      sessionId: null == sessionId
+      sessionId: freezed == sessionId
           ? _value.sessionId
           : sessionId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -2363,10 +2633,10 @@ class __$$SessionIdChangedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SessionIdChangedImpl implements _SessionIdChanged {
-  const _$SessionIdChangedImpl({required this.sessionId});
+  const _$SessionIdChangedImpl({this.sessionId});
 
   @override
-  final String sessionId;
+  final String? sessionId;
 
   @override
   String toString() {
@@ -2404,9 +2674,10 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return sessionIdChanged(sessionId);
@@ -2424,9 +2695,10 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return sessionIdChanged?.call(sessionId);
@@ -2444,9 +2716,10 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -2468,7 +2741,8 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -2488,7 +2762,8 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -2508,7 +2783,8 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,
@@ -2522,10 +2798,10 @@ class _$SessionIdChangedImpl implements _SessionIdChanged {
 }
 
 abstract class _SessionIdChanged implements JobsFilterEvent {
-  const factory _SessionIdChanged({required final String sessionId}) =
+  const factory _SessionIdChanged({final String? sessionId}) =
       _$SessionIdChangedImpl;
 
-  String get sessionId;
+  String? get sessionId;
   @JsonKey(ignore: true)
   _$$SessionIdChangedImplCopyWith<_$SessionIdChangedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -2604,9 +2880,10 @@ class _$SearchChangedImpl implements _SearchChanged {
     required TResult Function(int offset) offsetChanged,
     required TResult Function(DateTime createdAfter) createdAfterChanged,
     required TResult Function(DateTime createdBefore) createdBeforeChanged,
-    required TResult Function(List<String> tags) tagsChanged,
+    required TResult Function(String tag) tagAdded,
+    required TResult Function(String tag) tagRemoved,
     required TResult Function(String program) programChanged,
-    required TResult Function(String sessionId) sessionIdChanged,
+    required TResult Function(String? sessionId) sessionIdChanged,
     required TResult Function(String search) searchChanged,
   }) {
     return searchChanged(search);
@@ -2624,9 +2901,10 @@ class _$SearchChangedImpl implements _SearchChanged {
     TResult? Function(int offset)? offsetChanged,
     TResult? Function(DateTime createdAfter)? createdAfterChanged,
     TResult? Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult? Function(List<String> tags)? tagsChanged,
+    TResult? Function(String tag)? tagAdded,
+    TResult? Function(String tag)? tagRemoved,
     TResult? Function(String program)? programChanged,
-    TResult? Function(String sessionId)? sessionIdChanged,
+    TResult? Function(String? sessionId)? sessionIdChanged,
     TResult? Function(String search)? searchChanged,
   }) {
     return searchChanged?.call(search);
@@ -2644,9 +2922,10 @@ class _$SearchChangedImpl implements _SearchChanged {
     TResult Function(int offset)? offsetChanged,
     TResult Function(DateTime createdAfter)? createdAfterChanged,
     TResult Function(DateTime createdBefore)? createdBeforeChanged,
-    TResult Function(List<String> tags)? tagsChanged,
+    TResult Function(String tag)? tagAdded,
+    TResult Function(String tag)? tagRemoved,
     TResult Function(String program)? programChanged,
-    TResult Function(String sessionId)? sessionIdChanged,
+    TResult Function(String? sessionId)? sessionIdChanged,
     TResult Function(String search)? searchChanged,
     required TResult orElse(),
   }) {
@@ -2668,7 +2947,8 @@ class _$SearchChangedImpl implements _SearchChanged {
     required TResult Function(_OffsetChanged value) offsetChanged,
     required TResult Function(_CreatedAfterChanged value) createdAfterChanged,
     required TResult Function(_CreatedBeforeChanged value) createdBeforeChanged,
-    required TResult Function(_TagsChanged value) tagsChanged,
+    required TResult Function(_TagAdded value) tagAdded,
+    required TResult Function(_TagRemoved value) tagRemoved,
     required TResult Function(_ProgramChanged value) programChanged,
     required TResult Function(_SessionIdChanged value) sessionIdChanged,
     required TResult Function(_SearchChanged value) searchChanged,
@@ -2688,7 +2968,8 @@ class _$SearchChangedImpl implements _SearchChanged {
     TResult? Function(_OffsetChanged value)? offsetChanged,
     TResult? Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult? Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult? Function(_TagsChanged value)? tagsChanged,
+    TResult? Function(_TagAdded value)? tagAdded,
+    TResult? Function(_TagRemoved value)? tagRemoved,
     TResult? Function(_ProgramChanged value)? programChanged,
     TResult? Function(_SessionIdChanged value)? sessionIdChanged,
     TResult? Function(_SearchChanged value)? searchChanged,
@@ -2708,7 +2989,8 @@ class _$SearchChangedImpl implements _SearchChanged {
     TResult Function(_OffsetChanged value)? offsetChanged,
     TResult Function(_CreatedAfterChanged value)? createdAfterChanged,
     TResult Function(_CreatedBeforeChanged value)? createdBeforeChanged,
-    TResult Function(_TagsChanged value)? tagsChanged,
+    TResult Function(_TagAdded value)? tagAdded,
+    TResult Function(_TagRemoved value)? tagRemoved,
     TResult Function(_ProgramChanged value)? programChanged,
     TResult Function(_SessionIdChanged value)? sessionIdChanged,
     TResult Function(_SearchChanged value)? searchChanged,

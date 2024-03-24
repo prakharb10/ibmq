@@ -13,22 +13,22 @@ enum JobStatus {
   validated,
   running,
   @JsonValue("Running")
-  RUNNING,
+  Running,
   completed,
   @JsonValue("Completed")
-  COMPLETED,
+  Completed,
   pendingInQueue,
   queued,
   @JsonValue("Queued")
-  QUEUED,
+  Queued,
   cancelled,
   @JsonValue("Cancelled")
-  CANCELLED,
+  Cancelled,
   @JsonValue("CANCELLED - RAN TOO LONG")
   cancelledRanTooLong,
   failed,
   @JsonValue("Failed")
-  FAILED,
+  Failed,
   errorCreatingJob,
   errorValidatingJob,
   errorTranspilingJob,
