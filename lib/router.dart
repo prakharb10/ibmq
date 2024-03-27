@@ -13,6 +13,7 @@ import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
 import 'package:ibmq/main.dart';
+import 'package:ibmq/user/usage/cubit/user_usage_cubit.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:ibmq/utils/talker.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -43,6 +44,11 @@ class AppShellRouteData extends ShellRouteData {
             BlocProvider(
               create: (context) => InstanceFilterCubit(),
             ),
+            BlocProvider(
+              create: (context) => UserUsageCubit(
+                instancesRepository: context.read<InstancesRepository>(),
+              ),
+            )
           ],
           child: AppShell(child: navigator),
         ),

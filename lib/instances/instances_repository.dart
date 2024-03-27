@@ -1,6 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/runtime_data_provider.dart';
+import 'package:ibmq/user/usage/model/user_usage.dart';
 import 'package:ibmq/utils/talker.dart';
 
 /// Repository for user instances
@@ -34,6 +35,22 @@ class InstancesRepository {
                 )
                 .map((r) => r.toIList())
                 .toTaskEither(),
+          );
+
+  /// Load the instance usage information for the user
+  ///
+  /// Returns the instance usage information if the instance usage information
+  /// is loaded successfully, otherwise returns `None`.
+  TaskEither<String, UserUsage> loadUserUsage() =>
+      _runtimeDataProvider.getUsage().flatMap(
+            (r) => IOEither.tryCatch(
+              () => UserUsage.fromJson(r),
+              (error, stackTrace) {
+                talker.handle(
+                    error, stackTrace, 'Failed to parse UserUsage data');
+                return 'Failed to parse UserUsage data';
+              },
+            ).toTaskEither(),
           );
 }
 

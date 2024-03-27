@@ -172,4 +172,38 @@ class RuntimeDataProvider {
         talker.handle(error, stackTrace, 'Failed to get job metrics');
         return 'Failed to get job metrics';
       });
+
+  /// Get usage for all instances
+  ///
+  /// Returns the API response if the request is successful, otherwise
+  /// returns an error message.
+  TaskEither<String, Map<String, dynamic>> getUsage() => TaskEither.tryCatch(
+        () async {
+          final resp = await _dio.get('/usage');
+          return switch (resp.statusCode) {
+            200 => switch (Option<Map<String, dynamic>>.safeCast(resp.data)) {
+                Some(value: final d) => d,
+                None() => throw Exception('Failed to cast usage data'),
+              },
+            401 || 500 => switch (
+                  Option<List>.safeCast(resp.data['errors']).flatMap(
+                (t) => t
+                    .traverseIOOption(
+                      (a) => IOOption.tryCatch(
+                        () => RuntimeAPIError.fromJson(a),
+                      ),
+                    )
+                    .run(),
+              )) {
+                Some(value: final d) => throw Exception(d.first.message),
+                None() => throw Exception('Failed to parse errors'),
+              },
+            _ => throw Exception('Failed to get usage data'),
+          };
+        },
+        (error, stackTrace) {
+          talker.handle(error, stackTrace, 'Failed to get usage data');
+          return 'Failed to get usage data';
+        },
+      );
 }

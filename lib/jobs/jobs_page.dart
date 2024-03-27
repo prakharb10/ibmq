@@ -11,7 +11,7 @@ import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
-import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/user/info/cubit/user_info_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
 
@@ -293,7 +293,7 @@ class _JobsPageState extends State<JobsPage> {
               slivers: <Widget>[
                 CupertinoSliverNavigationBar(
                   middle: const Text("IBM Quantum Dashboard"),
-                  trailing: BlocBuilder<UserCubit, UserState>(
+                  trailing: BlocBuilder<UserInfoCubit, UserInfoState>(
                     builder: (context, state) {
                       return switch (state) {
                         UserInfoLoadSuccess(user: var user) => GestureDetector(

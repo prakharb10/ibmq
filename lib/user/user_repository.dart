@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
-import 'package:ibmq/user/model/user.dart';
+import 'package:ibmq/user/info/model/user.dart';
 import 'package:ibmq/utils/talker.dart';
 
 /// Repository for user data

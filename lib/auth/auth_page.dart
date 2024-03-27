@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/router.dart';
-import 'package:ibmq/user/cubit/user_cubit.dart';
+import 'package:ibmq/user/info/cubit/user_info_cubit.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
 
@@ -128,7 +128,7 @@ class _AuthPageState extends State<AuthPage> {
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is TokenLoginSuccess) {
-                context.read<UserCubit>().loadUserInfo(state.accessToken);
+                context.read<UserInfoCubit>().loadUserInfo(state.accessToken);
               }
             },
             builder: (context, state) {
@@ -152,7 +152,7 @@ class _AuthPageState extends State<AuthPage> {
         }
       },
       listenWhen: (previous, current) => current is DataClientsCreateSuccess,
-      child: BlocConsumer<UserCubit, UserState>(
+      child: BlocConsumer<UserInfoCubit, UserInfoState>(
         listener: (context, state) {
           switch (state) {
             case UserInfoLoadSuccess(
@@ -224,7 +224,7 @@ class _AuthPageState extends State<AuthPage> {
                           token: String? token
                         )
                         when (accessToken != null && token != null):
-                      context.read<UserCubit>().loadUserInfo(accessToken);
+                      context.read<UserInfoCubit>().loadUserInfo(accessToken);
                       break;
                     case CredentialsLoadSuccess(token: String? token)
                         when token != null:

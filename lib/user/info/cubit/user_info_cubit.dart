@@ -6,13 +6,13 @@ import 'package:ibmq/utils/talker.dart';
 
 import '../model/user.dart';
 
-part 'user_state.dart';
+part 'user_info_state.dart';
 
-class UserCubit extends Cubit<UserState> {
+class UserInfoCubit extends Cubit<UserInfoState> {
   final UserRepository _userRepository;
-  UserCubit({required UserRepository userRepository})
+  UserInfoCubit({required UserRepository userRepository})
       : _userRepository = userRepository,
-        super(UserInitial());
+        super(UserInfoInitial());
 
   /// Load the user's information
   ///
