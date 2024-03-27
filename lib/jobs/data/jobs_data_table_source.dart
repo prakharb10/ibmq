@@ -2,33 +2,36 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
+import 'package:ibmq/jobs/model/job.dart';
 import 'package:ibmq/jobs/model/job_status.dart';
-import 'package:ibmq/utils/talker.dart';
+import 'package:ibmq/jobs/runtime_job/metrics/cubit/runtime_job_metrics_cubit.dart';
+import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
   final JobsRepository _jobsRepository;
+  final RuntimeJobRepository _runtimeJobRepository;
   final JobsFilterBloc _jobsFilterBloc;
   JobsFilter _filter = JobsFilter();
 
-  JobsDataTableSource(
-      {required JobsFilterBloc jobsFilterBloc,
-      required JobsRepository jobsRepository})
-      : _jobsRepository = jobsRepository,
+  JobsDataTableSource({
+    required JobsFilterBloc jobsFilterBloc,
+    required JobsRepository jobsRepository,
+    required RuntimeJobRepository runtimeJobRepository,
+  })  : _jobsRepository = jobsRepository,
+        _runtimeJobRepository = runtimeJobRepository,
         _jobsFilterBloc = jobsFilterBloc {
-    // TODO: Maybe remove this and add a listener in the UI on the paginator
     _jobsFilterBloc.stream.listen((event) {
-      talker.debug('JobsDataTableSource: JobsFilterBloc event: $event');
       switch (event) {
         case Initial():
           break;
         case Filtered(:final filter):
           _filter = filter;
-          refreshDatasource();
           break;
       }
     });
@@ -175,8 +178,60 @@ class JobsDataTableSource extends AsyncDataTableSource {
                         DataCell(Text(a.program.id)),
                         // TODO: Navigate to backend details
                         DataCell(Text(a.backend)),
-                        const DataCell(
-                          Text("Usage"),
+                        DataCell(
+                          switch (a.status) {
+                            JobStatus.queued ||
+                            JobStatus.Queued ||
+                            JobStatus.running ||
+                            JobStatus.Running =>
+                              Text(switch (a.estimatedRunningTimeSeconds) {
+                                None() => '',
+                                Some(:final value) => '${value.toInt()}s',
+                              }),
+                            JobStatus.completed ||
+                            JobStatus.Completed ||
+                            JobStatus.failed ||
+                            JobStatus.Failed ||
+                            JobStatus.errorCreatingJob ||
+                            JobStatus.errorTranspilingJob ||
+                            JobStatus.errorValidatingJob ||
+                            JobStatus.errorRunningJob ||
+                            JobStatus.cancelled ||
+                            JobStatus.Cancelled ||
+                            JobStatus.cancelledRanTooLong =>
+                              switch (a.type) {
+                                JobType.iqx => const Text(''),
+                                JobType.runtime => BlocBuilder<
+                                      RuntimeJobMetricsCubit,
+                                      RuntimeJobMetricsState>(
+                                    bloc: RuntimeJobMetricsCubit(
+                                      runtimeJobRepository:
+                                          _runtimeJobRepository,
+                                    )..loadMetrics(a.id),
+                                    builder: (context, state) =>
+                                        switch (state) {
+                                      LoadInProgress() =>
+                                        const LinearProgressIndicator(),
+                                      LoadFailure(:final error) => Tooltip(
+                                          message: error,
+                                          child: const MacosIcon(
+                                            CupertinoIcons
+                                                .exclamationmark_triangle,
+                                            color: MacosColors.systemRedColor,
+                                          ),
+                                        ),
+                                      LoadSuccess(:final metrics) =>
+                                        Text(switch (metrics.usage) {
+                                          None() => '',
+                                          Some(:final value) =>
+                                            '${value.seconds}s',
+                                        }),
+                                      _ => const Text(''),
+                                    },
+                                  )
+                              },
+                            _ => const Text(''),
+                          },
                         ),
                         DataCell(
                           ListView(

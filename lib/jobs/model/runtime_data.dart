@@ -1,6 +1,6 @@
 import 'package:ibmq/jobs/model/job.dart';
 import 'package:ibmq/jobs/model/runtime_job.dart';
-import 'package:ibmq/jobs/model/runtime_job_metrics.dart';
+import 'package:ibmq/jobs/runtime_job/metrics/model/runtime_job_metrics.dart';
 
 /// The runtime data
 ///

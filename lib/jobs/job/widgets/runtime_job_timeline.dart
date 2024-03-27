@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ibmq/jobs/model/runtime_job_metrics.dart';
 import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 
 class RuntimeJobTimeline extends StatelessWidget {
-  final RuntimeJobTimestamps timestamps;
+  final ({DateTime created, DateTime? finished, DateTime? running}) timestamps;
   const RuntimeJobTimeline({super.key, required this.timestamps});
 
   @override

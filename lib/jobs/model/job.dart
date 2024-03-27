@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -51,7 +52,7 @@ final class Job extends Equatable {
   final JobType type;
 
   /// Tags associated with the job
-  final List<String> tags;
+  final IList<String> tags;
 
   /// Job name
   final String name;

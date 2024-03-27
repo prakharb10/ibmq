@@ -138,4 +138,38 @@ class RuntimeDataProvider {
         talker.handle(error, stackTrace, 'Failed to list user jobs');
         return 'Failed to list user jobs';
       });
+
+  /// Get job metrics
+  ///
+  /// [jobId] is the job ID
+  ///
+  /// Returns the API response if the request is successful, otherwise
+  /// returns an error message.
+  TaskEither<String, Map<String, dynamic>> getJobMetrics(String jobId) =>
+      TaskEither.tryCatch(() async {
+        final resp = await _dio.get('/jobs/$jobId/metrics');
+        return switch (resp.statusCode) {
+          200 => switch (Option<Map<String, dynamic>>.safeCast(resp.data)) {
+              Some(value: final d) => d,
+              None() => throw Exception('Failed to parse job metrics'),
+            },
+          401 || 403 || 404 => switch (
+                Option<List>.safeCast(resp.data['errors']).flatMap(
+              (t) => t
+                  .traverseIOOption(
+                    (a) => IOOption.tryCatch(
+                      () => RuntimeAPIError.fromJson(a),
+                    ),
+                  )
+                  .run(),
+            )) {
+              Some(value: final d) => throw Exception(d.first.message),
+              None() => throw Exception('Failed to parse errors'),
+            },
+          _ => throw Exception('Failed to get job metrics'),
+        };
+      }, (error, stackTrace) {
+        talker.handle(error, stackTrace, 'Failed to get job metrics');
+        return 'Failed to get job metrics';
+      });
 }

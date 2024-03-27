@@ -50,21 +50,21 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      if (metrics.timestamps.finished != null)
-                        Column(
-                          children: [
-                            Text(metrics.timestamps.finished!
-                                        .difference(metrics.timestamps.created)
-                                        .inSeconds <
-                                    1
-                                ? "${metrics.timestamps.finished?.difference(metrics.timestamps.created).inMilliseconds.toString()}ms"
-                                : "${metrics.timestamps.finished?.difference(metrics.timestamps.created).inSeconds.toString()}s"),
-                            Text(
-                              "Total completion time",
-                              style: Theme.of(context).textTheme.labelMedium,
-                            )
-                          ],
-                        ),
+                      // if (metrics.timestamps.finished != null)
+                      //   Column(
+                      //     children: [
+                      //       Text(metrics.timestamps.finished!
+                      //                   .difference(metrics.timestamps.created)
+                      //                   .inSeconds <
+                      //               1
+                      //           ? "${metrics.timestamps.finished?.difference(metrics.timestamps.created).inMilliseconds.toString()}ms"
+                      //           : "${metrics.timestamps.finished?.difference(metrics.timestamps.created).inSeconds.toString()}s"),
+                      //       Text(
+                      //         "Total completion time",
+                      //         style: Theme.of(context).textTheme.labelMedium,
+                      //       )
+                      //     ],
+                      //   ),
                       if (job.backend != null)
                         Column(
                           children: [
@@ -117,9 +117,9 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
             ),
           ),
           const Divider(),
-          RuntimeJobTimeline(
-            timestamps: metrics.timestamps,
-          ),
+          // RuntimeJobTimeline(
+          //   timestamps: metrics.timestamps,
+          // ),
           BlocBuilder<RuntimeBloc, RuntimeState>(
             builder: (context, state) {
               if (state is RuntimeResultInProgress) {

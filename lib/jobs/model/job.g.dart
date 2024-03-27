@@ -15,7 +15,7 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       status: $enumDecode(_$JobStatusEnumMap, json['status']),
       created: DateTime.parse(json['created'] as String),
       type: $enumDecode(_$JobTypeEnumMap, json['type']),
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      tags: IList<String>.fromJson(json['tags'], (value) => value as String),
       name: json['name'] as String,
       runMode: Option<RunMode>.fromJson(
           json['runMode'], (value) => $enumDecode(_$RunModeEnumMap, value)),
@@ -53,7 +53,9 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'status': _$JobStatusEnumMap[instance.status]!,
       'created': instance.created.toIso8601String(),
       'type': _$JobTypeEnumMap[instance.type]!,
-      'tags': instance.tags,
+      'tags': instance.tags.toJson(
+        (value) => value,
+      ),
       'name': instance.name,
       'runMode': instance.runMode.toJson(
         (value) => _$RunModeEnumMap[value]!,

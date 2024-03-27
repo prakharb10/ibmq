@@ -11,6 +11,7 @@ import 'package:ibmq/instances/instances_repository.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
+import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
 import 'package:ibmq/main.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:ibmq/utils/talker.dart';
@@ -64,12 +65,23 @@ class AuthRoute extends GoRouteData {
 class JobsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return RepositoryProvider(
-      create: (context) => JobsRepository(
-        runtimeDataProvider:
-            (context.read<DataClientsCubit>().state as DataClientsCreateSuccess)
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => JobsRepository(
+            runtimeDataProvider: (context.read<DataClientsCubit>().state
+                    as DataClientsCreateSuccess)
                 .runtimeDataProvider,
-      ),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => RuntimeJobRepository(
+            runtimeDataProvider: (context.read<DataClientsCubit>().state
+                    as DataClientsCreateSuccess)
+                .runtimeDataProvider,
+          ),
+        ),
+      ],
       child: BlocProvider(
         create: (context) => JobsFilterBloc(),
         child: const JobsPage(),

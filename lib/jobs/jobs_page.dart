@@ -10,6 +10,7 @@ import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
+import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
 import 'package:ibmq/user/cubit/user_cubit.dart';
 import 'package:ibmq/utils/version/cubit/version_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -32,6 +33,7 @@ class _JobsPageState extends State<JobsPage> {
     _jobsDataTableSource = JobsDataTableSource(
       jobsFilterBloc: context.read<JobsFilterBloc>(),
       jobsRepository: context.read<JobsRepository>(),
+      runtimeJobRepository: context.read<RuntimeJobRepository>(),
     );
   }
 
@@ -95,7 +97,7 @@ class _JobsPageState extends State<JobsPage> {
                                     JobsFilterEvent.providerChanged(
                                         provider: value),
                                   );
-                              _paginatorController.goToFirstPage();
+
                               break;
                             case None():
                               break;
@@ -135,7 +137,9 @@ class _JobsPageState extends State<JobsPage> {
                   BlocBuilder<InstancesCubit, InstancesState>(
                 builder: (context, state) => switch (state) {
                   InstancesLoadSuccess() =>
-                    BlocBuilder<JobsFilterBloc, JobsFilterState>(
+                    BlocConsumer<JobsFilterBloc, JobsFilterState>(
+                      listener: (context, state) =>
+                          _paginatorController.goToFirstPage(),
                       builder: (context, state) => switch (state) {
                         Filtered(:final filter) => Theme(
                             data: ThemeData(
@@ -235,7 +239,10 @@ class _JobsPageState extends State<JobsPage> {
                                     ),
                                     size: ColumnSize.L,
                                   ),
-                                  const DataColumn2(label: Text("Usage")),
+                                  const DataColumn2(
+                                    label: Text("Usage"),
+                                    size: ColumnSize.S,
+                                  ),
                                   const DataColumn2(label: Text("Tags")),
                                 ],
                                 source: _jobsDataTableSource,

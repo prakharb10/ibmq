@@ -32,6 +32,8 @@ class UserCubit extends Cubit<UserState> {
         emit(UserInfoLoadSuccess(accessToken: accessToken, user: r));
         break;
       default:
+        emit(const UserInfoLoadFailure('Failed to load user info'));
+        break;
     }
   }
 }
