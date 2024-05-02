@@ -13,8 +13,12 @@ import 'package:ibmq/jobs/jobs_page.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
 import 'package:ibmq/main.dart';
+import 'package:ibmq/user/jobs_updates/bloc/user_jobs_updates_bloc.dart';
 import 'package:ibmq/user/usage/cubit/user_usage_cubit.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
+import 'package:ibmq/utils/notifications/bloc/notifications_bloc.dart';
+import 'package:ibmq/utils/notifications/local_notifications.dart';
+import 'package:ibmq/utils/notifications/permissions/cubit/notification_permissions_cubit.dart';
 import 'package:ibmq/utils/talker.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -47,6 +51,22 @@ class AppShellRouteData extends ShellRouteData {
             BlocProvider(
               create: (context) => UserUsageCubit(
                 instancesRepository: context.read<InstancesRepository>(),
+              ),
+            ),
+            BlocProvider(
+              create: (context) => UserJobsUpdatesBloc(
+                runtimeDataProvider: (context.read<DataClientsCubit>().state
+                        as DataClientsCreateSuccess)
+                    .runtimeDataProvider,
+              ),
+            ),
+            BlocProvider(
+              create: (context) => NotificationsBloc(),
+            ),
+            BlocProvider(
+              create: (context) => NotificationPermissionsCubit(
+                localNotifications:
+                    RepositoryProvider.of<LocalNotifications>(context),
               ),
             )
           ],

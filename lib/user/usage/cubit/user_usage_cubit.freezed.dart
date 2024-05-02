@@ -334,10 +334,10 @@ class __$$LoadSuccessImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userUsage = freezed,
+    Object? userUsage = null,
   }) {
     return _then(_$LoadSuccessImpl(
-      freezed == userUsage
+      null == userUsage
           ? _value.userUsage
           : userUsage // ignore: cast_nullable_to_non_nullable
               as UserUsage,
@@ -363,12 +363,12 @@ class _$LoadSuccessImpl implements LoadSuccess {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadSuccessImpl &&
-            const DeepCollectionEquality().equals(other.userUsage, userUsage));
+            (identical(other.userUsage, userUsage) ||
+                other.userUsage == userUsage));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(userUsage));
+  int get hashCode => Object.hash(runtimeType, userUsage);
 
   @JsonKey(ignore: true)
   @override

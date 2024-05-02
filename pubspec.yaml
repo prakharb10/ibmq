@@ -56,6 +56,8 @@ dependencies:
   talker_dio_logger: ^4.1.0
   talker_bloc_logger: ^4.1.0
   freezed_annotation: ^2.4.1
+  web_socket_client: ^0.1.0
+  flutter_local_notifications: ^17.1.0
 
 dev_dependencies:
   flutter_test:

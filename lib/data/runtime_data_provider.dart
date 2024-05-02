@@ -3,12 +3,15 @@ import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/models/runtime_api_error.dart';
 import 'package:ibmq/utils/talker.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:web_socket_client/web_socket_client.dart';
 
 /// Data Provider to interact with the IBM Runtime API
 ///
 /// See [API docs](https://docs.quantum.ibm.com/api/runtime) for more information
 class RuntimeDataProvider {
   final Dio _dio;
+  final Uri _baseUrl;
+  final String _accessToken;
 
   RuntimeDataProvider({required String accessToken, required Uri baseUrl})
       : _dio = Dio(
@@ -26,7 +29,9 @@ class RuntimeDataProvider {
                     response.realUri.path != '/runtime/facade/v1/jobs',
               ),
             ),
-          );
+          ),
+        _baseUrl = baseUrl,
+        _accessToken = accessToken;
 
   /// Get user instances
   ///
@@ -206,4 +211,23 @@ class RuntimeDataProvider {
           return 'Failed to get usage data';
         },
       );
+
+  /// Get user jobs state updates
+  ///
+  TaskEither<String, Stream> getUserJobsStateUpdates() =>
+      TaskEither.tryCatch(() async {
+        final socket = WebSocket(_baseUrl.replace(
+          scheme: 'wss',
+          path: '/runtime/stream/jobs',
+        ));
+        await socket.connection.firstWhere((state) => state is Connected);
+
+        // Send the access token to authenticate the user
+        socket.send('{"X-Access-Token": "$_accessToken"}');
+        return socket.messages;
+      }, (error, stackTrace) {
+        talker.handle(
+            error, stackTrace, 'Failed to get user job state updates');
+        return 'Failed to get user job state updates';
+      });
 }
