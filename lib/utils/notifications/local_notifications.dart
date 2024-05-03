@@ -17,8 +17,13 @@ class LocalNotifications {
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
+    const linuxInitializationSettings =
+        LinuxInitializationSettings(defaultActionName: 'default');
     await flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(macOS: darwinInitializationSettings),
+      const InitializationSettings(
+        macOS: darwinInitializationSettings,
+        linux: linuxInitializationSettings,
+      ),
     );
   }
 

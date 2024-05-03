@@ -12,7 +12,7 @@ import 'package:ibmq/router.dart';
 import 'package:ibmq/user/info/cubit/user_info_cubit.dart';
 import 'package:ibmq/user/info/user_info_tile.dart';
 import 'package:ibmq/user/jobs_updates/bloc/user_jobs_updates_bloc.dart';
-import 'package:ibmq/user/jobs_updates/model/job_status_update.dart';
+import 'package:ibmq/user/jobs_updates/jobs_updates_widget.dart';
 import 'package:ibmq/user/usage/cubit/user_usage_cubit.dart';
 import 'package:ibmq/user/usage/user_usage_tile.dart';
 import 'package:ibmq/user/user_repository.dart';
@@ -21,7 +21,6 @@ import 'package:ibmq/utils/notifications/bloc/notifications_bloc.dart';
 import 'package:ibmq/utils/notifications/local_notifications.dart';
 import 'package:ibmq/utils/notifications/permissions/cubit/notification_permissions_cubit.dart';
 import 'package:ibmq/utils/talker.dart';
-import 'package:intl/intl.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:yaru/yaru.dart';
@@ -34,9 +33,9 @@ void main() async {
   if (defaultTargetPlatform == TargetPlatform.macOS) {
     await _configureMacosWindowUtils();
   }
-  if (defaultTargetPlatform == TargetPlatform.linux) {
-    await YaruWindowTitleBar.ensureInitialized();
-  }
+  // if (defaultTargetPlatform == TargetPlatform.linux) {
+  await YaruWindowTitleBar.ensureInitialized();
+  // }
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -202,35 +201,8 @@ class _AppShellState extends State<AppShell> {
               ),
             ),
             endSidebar: Sidebar(
-              builder: (context, scrollController) =>
-                  BlocListener<UserJobsUpdatesBloc, UserJobsUpdatesState>(
-                listener: (context, state) async {
-                  switch (state) {
-                    case Listening(:final jobStatusUpdate):
-                      talker.debug(
-                          "Received job status update: $jobStatusUpdate");
-                      context
-                          .read<NotificationsBloc>()
-                          .add(NotificationsEvent.received(jobStatusUpdate));
-                      await context.read<LocalNotifications>().sendNotification(
-                            id: jobStatusUpdate.id.hashCode,
-                            title: jobStatusUpdate.status.name,
-                            body: "Job ID: ${jobStatusUpdate.id}",
-                          );
-                      break;
-                    default:
-                  }
-                },
-                child: BlocBuilder<NotificationsBloc, NotificationsState>(
-                  builder: (context, state) => switch (state) {
-                    Initial() => const Center(
-                        child: Text("Listening for job updates..."),
-                      ),
-                    Loaded(:final jobStatusUpdates) =>
-                      jobUpdatesList(scrollController, jobStatusUpdates),
-                    _ => const SizedBox.shrink(),
-                  },
-                ),
+              builder: (context, scrollController) => JobsUpdatesWidget(
+                scrollController: scrollController,
               ),
               minWidth: 200,
               shownByDefault: false,
@@ -350,52 +322,4 @@ class _AppShellState extends State<AppShell> {
             ),
           ),
       };
-
-// TODO: Move to a separate widget
-  ListView jobUpdatesList(ScrollController scrollController,
-      Map<String, JobStatusUpdate> jobStatusUpdates) {
-    final reversedJobStatusUpdates = jobStatusUpdates.entries.toList()
-      ..sort((a, b) => b.value.timestamp.compareTo(a.value.timestamp));
-    return ListView.separated(
-      controller: scrollController,
-      itemCount: jobStatusUpdates.length,
-      itemBuilder: (context, index) => MacosListTile(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: Text(
-                reversedJobStatusUpdates[index].value.status.name,
-              ),
-            ),
-            MacosIconButton(
-              icon: const MacosIcon(CupertinoIcons.xmark_circle),
-              onPressed: () => context.read<NotificationsBloc>().add(
-                  NotificationsEvent.clear(
-                      reversedJobStatusUpdates[index].value)),
-            )
-          ],
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: Text(
-                  reversedJobStatusUpdates[index].value.id,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(
-                DateFormat(DateFormat.HOUR_MINUTE).format(
-                    reversedJobStatusUpdates[index].value.timestamp.toLocal()),
-              ),
-            ],
-          ),
-        ),
-      ),
-      separatorBuilder: (context, index) => const MacosPulldownMenuDivider(),
-    );
-  }
 }

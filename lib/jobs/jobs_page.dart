@@ -5,6 +5,7 @@ import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instance_selector.dart';
 import 'package:ibmq/jobs/jobs_data_table.dart';
 import 'package:ibmq/user/info/user_info_tile.dart';
+import 'package:ibmq/user/jobs_updates/jobs_updates_widget.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';
 
@@ -16,6 +17,8 @@ class JobsPage extends StatefulWidget {
 }
 
 class _JobsPageState extends State<JobsPage> {
+  bool _isSidebarOpen = false;
+
   @override
   void initState() {
     super.initState();
@@ -122,12 +125,33 @@ class _JobsPageState extends State<JobsPage> {
                 builder: (context) {
                   return const InstanceSelector();
                 },
-              )
+              ),
+              YaruIconButton(
+                icon: const Icon(YaruIcons.bell),
+                onPressed: () =>
+                    setState(() => _isSidebarOpen = !_isSidebarOpen),
+              ),
             ],
           ),
           body: BlocBuilder<InstancesCubit, InstancesState>(
             builder: (context, state) => switch (state) {
-              InstancesLoadSuccess() => const JobsDataTable(),
+              InstancesLoadSuccess() => Stack(
+                  children: [
+                    const JobsDataTable(),
+                    if (_isSidebarOpen)
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 300),
+                        right: 0,
+                        child: Card(
+                          child: YaruSection(
+                            width: 200.0,
+                            height: MediaQuery.sizeOf(context).height - 96,
+                            child: const JobsUpdatesWidget(),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               InstancesLoadInProgress() => const Center(
                   child: YaruCircularProgressIndicator(),
                 ),
