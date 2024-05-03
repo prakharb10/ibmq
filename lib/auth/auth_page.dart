@@ -7,6 +7,7 @@ import 'package:ibmq/router.dart';
 import 'package:ibmq/user/info/cubit/user_info_cubit.dart';
 import 'package:ibmq/utils/data_clients/cubit/data_clients_cubit.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:yaru/yaru.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -101,18 +102,21 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ],
           _ => [
-              TextFormField(
-                controller: _controller,
-                decoration: const InputDecoration(
-                  labelText: "API Token",
+              cupertino.Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                    labelText: "API Token",
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your token";
+                    }
+                    return null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your token";
-                  }
-                  return null;
-                },
-                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               ElevatedButton(
                 onPressed: _valid
@@ -133,10 +137,12 @@ class _AuthPageState extends State<AuthPage> {
             },
             builder: (context, state) {
               return switch (state) {
-                TokenLoginInProgress() =>
-                  Theme.of(context).platform == TargetPlatform.macOS
-                      ? const ProgressCircle()
-                      : const CircularProgressIndicator.adaptive(),
+                TokenLoginInProgress() => switch (Theme.of(context).platform) {
+                    TargetPlatform.macOS => const ProgressCircle(),
+                    TargetPlatform.linux =>
+                      const YaruCircularProgressIndicator(),
+                    _ => const CircularProgressIndicator.adaptive()
+                  },
                 TokenLoginFailure(message: var message) => Text(message),
                 _ => const SizedBox.shrink(),
               };
@@ -187,6 +193,11 @@ class _AuthPageState extends State<AuthPage> {
                     child:
                         Center(child: cupertino.CupertinoActivityIndicator()),
                   ),
+                TargetPlatform.linux => const Scaffold(
+                    body: Center(
+                      child: YaruCircularProgressIndicator(),
+                    ),
+                  ),
                 _ => const Scaffold(
                     body: Center(
                       child: CircularProgressIndicator(),
@@ -209,6 +220,11 @@ class _AuthPageState extends State<AuthPage> {
                 TargetPlatform.iOS => cupertino.CupertinoPageScaffold(
                     child: Center(
                         child: Text('Failed to load user info: $message')),
+                  ),
+                TargetPlatform.linux => Scaffold(
+                    body: Center(
+                      child: Text('Failed to load user info: $message'),
+                    ),
                   ),
                 _ => Scaffold(
                     body: Center(
@@ -254,6 +270,11 @@ class _AuthPageState extends State<AuthPage> {
                           child: Center(
                               child: cupertino.CupertinoActivityIndicator()),
                         ),
+                      TargetPlatform.linux => const Scaffold(
+                          body: Center(
+                            child: YaruCircularProgressIndicator(),
+                          ),
+                        ),
                       _ => const Scaffold(
                           body: Center(
                             child: CircularProgressIndicator(),
@@ -278,6 +299,11 @@ class _AuthPageState extends State<AuthPage> {
                         const cupertino.CupertinoPageScaffold(
                           child:
                               Center(child: Text('Failed to load credentials')),
+                        ),
+                      TargetPlatform.linux => const Scaffold(
+                          body: Center(
+                            child: Text('Failed to load credentials'),
+                          ),
                         ),
                       _ => const Scaffold(
                           body: Center(
@@ -309,6 +335,15 @@ class _AuthPageState extends State<AuthPage> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 16.0),
+                            child: body,
+                          ),
+                        ),
+                      TargetPlatform.linux => YaruDetailPage(
+                          appBar: const YaruWindowTitleBar(
+                            title: Text("IBM Quantum"),
+                          ),
+                          body: Padding(
+                            padding: const EdgeInsets.all(16.0),
                             child: body,
                           ),
                         ),

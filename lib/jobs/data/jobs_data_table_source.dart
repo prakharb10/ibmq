@@ -12,19 +12,23 @@ import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:ibmq/jobs/runtime_job/metrics/cubit/runtime_job_metrics_cubit.dart';
 import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:yaru/yaru.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
   final JobsRepository _jobsRepository;
   final RuntimeJobRepository _runtimeJobRepository;
   final JobsFilterBloc _jobsFilterBloc;
+  final BuildContext _context;
   JobsFilter _filter = JobsFilter();
 
   JobsDataTableSource({
     required JobsFilterBloc jobsFilterBloc,
     required JobsRepository jobsRepository,
     required RuntimeJobRepository runtimeJobRepository,
+    required BuildContext context,
   })  : _jobsRepository = jobsRepository,
         _runtimeJobRepository = runtimeJobRepository,
+        _context = context,
         _jobsFilterBloc = jobsFilterBloc {
     _jobsFilterBloc.stream.listen((event) {
       switch (event) {
@@ -64,7 +68,13 @@ class JobsDataTableSource extends AsyncDataTableSource {
                       color: MaterialStateProperty.resolveWith<Color?>(
                         (Set<MaterialState> states) {
                           if (states.contains(MaterialState.selected)) {
-                            return MacosColors.selectedTextBackgroundColor;
+                            return switch (Theme.of(_context).platform) {
+                              TargetPlatform.macOS =>
+                                MacosColors.selectedTextBackgroundColor,
+                              TargetPlatform.linux =>
+                                YaruColors.of(_context).link.withOpacity(0.2),
+                              _ => Theme.of(_context).colorScheme.surfaceTint,
+                            };
                           }
                           return switch (a.status) {
                             JobStatus.failed ||
@@ -73,17 +83,56 @@ class JobsDataTableSource extends AsyncDataTableSource {
                             JobStatus.errorTranspilingJob ||
                             JobStatus.errorValidatingJob ||
                             JobStatus.errorRunningJob =>
-                              MacosColors.systemRedColor.withOpacity(0.2),
+                              switch (Theme.of(_context).platform) {
+                                TargetPlatform.macOS =>
+                                  MacosColors.systemRedColor.withOpacity(0.2),
+                                TargetPlatform.linux => YaruColors.of(_context)
+                                    .error
+                                    .withOpacity(0.2),
+                                _ => Theme.of(_context)
+                                    .colorScheme
+                                    .error
+                                    .withOpacity(0.2),
+                              },
                             JobStatus.completed ||
                             JobStatus.Completed =>
-                              MacosColors.systemGreenColor.withOpacity(0.2),
-                            JobStatus.queued ||
-                            JobStatus.Queued =>
-                              MacosColors.systemYellowColor.withOpacity(0.2),
+                              switch (Theme.of(_context).platform) {
+                                TargetPlatform.macOS =>
+                                  MacosColors.systemGreenColor.withOpacity(0.2),
+                                TargetPlatform.linux => YaruColors.of(_context)
+                                    .success
+                                    .withOpacity(0.2),
+                                _ => Theme.of(_context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.2),
+                              },
+                            JobStatus.queued || JobStatus.Queued => switch (
+                                  Theme.of(_context).platform) {
+                                TargetPlatform.macOS => MacosColors
+                                    .systemYellowColor
+                                    .withOpacity(0.2),
+                                TargetPlatform.linux => YaruColors.of(_context)
+                                    .warning
+                                    .withOpacity(0.2),
+                                _ => Theme.of(_context)
+                                    .colorScheme
+                                    .secondary
+                                    .withOpacity(0.2),
+                              },
                             JobStatus.cancelled ||
                             JobStatus.Cancelled ||
                             JobStatus.cancelledRanTooLong =>
-                              MacosColors.systemGrayColor.withOpacity(0.2),
+                              switch (Theme.of(_context).platform) {
+                                TargetPlatform.macOS =>
+                                  MacosColors.systemGrayColor.withOpacity(0.2),
+                                TargetPlatform.linux =>
+                                  YaruColors.purple.withOpacity(0.2),
+                                _ => Theme.of(_context)
+                                    .colorScheme
+                                    .tertiary
+                                    .withOpacity(0.2),
+                              },
                             _ => null,
                           };
                         },
@@ -104,8 +153,12 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                   IconButton(
                                     onPressed: () => Clipboard.setData(
                                         ClipboardData(text: a.id)),
-                                    icon: const MacosIcon(
-                                        CupertinoIcons.square_on_square),
+                                    icon: switch (Theme.of(_context).platform) {
+                                      TargetPlatform.macOS => const MacosIcon(
+                                          CupertinoIcons.square_on_square,
+                                        ),
+                                      _ => const Icon(Icons.copy),
+                                    },
                                   )
                                 ],
                               );
@@ -131,8 +184,15 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                           IconButton(
                                             onPressed: () => Clipboard.setData(
                                                 ClipboardData(text: value)),
-                                            icon: const MacosIcon(CupertinoIcons
-                                                .square_on_square),
+                                            icon: switch (
+                                                Theme.of(_context).platform) {
+                                              TargetPlatform.macOS =>
+                                                const MacosIcon(
+                                                  CupertinoIcons
+                                                      .square_on_square,
+                                                ),
+                                              _ => const Icon(Icons.copy),
+                                            },
                                           )
                                         ],
                                       );
@@ -214,11 +274,20 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                         const LinearProgressIndicator(),
                                       LoadFailure(:final error) => Tooltip(
                                           message: error,
-                                          child: const MacosIcon(
-                                            CupertinoIcons
-                                                .exclamationmark_triangle,
-                                            color: MacosColors.systemRedColor,
-                                          ),
+                                          child: switch (
+                                              Theme.of(_context).platform) {
+                                            TargetPlatform.macOS =>
+                                              const MacosIcon(
+                                                CupertinoIcons
+                                                    .exclamationmark_triangle,
+                                                color:
+                                                    MacosColors.systemRedColor,
+                                              ),
+                                            _ => const Icon(
+                                                Icons.error,
+                                                color: Colors.red,
+                                              ),
+                                          },
                                         ),
                                       LoadSuccess(:final metrics) =>
                                         Text(switch (metrics.usage) {
