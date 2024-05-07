@@ -33,9 +33,9 @@ void main() async {
   if (defaultTargetPlatform == TargetPlatform.macOS) {
     await _configureMacosWindowUtils();
   }
-  // if (defaultTargetPlatform == TargetPlatform.linux) {
-  await YaruWindowTitleBar.ensureInitialized();
-  // }
+  if (defaultTargetPlatform == TargetPlatform.linux) {
+    await YaruWindowTitleBar.ensureInitialized();
+  }
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
