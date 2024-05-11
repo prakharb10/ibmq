@@ -7,7 +7,6 @@ import 'package:ibmq/jobs/job/widgets/results_section.dart';
 import '../bloc/runtime_bloc.dart';
 import '../../model/runtime_data.dart';
 import '../model/runtime_result.dart';
-import '../widgets/runtime_job_timeline.dart';
 
 class RuntimeJobPage extends StatefulWidget {
   final RuntimeData data;
@@ -29,7 +28,6 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
   @override
   Widget build(BuildContext context) {
     final job = widget.data.job;
-    final metrics = widget.data.metrics;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data.job.id),

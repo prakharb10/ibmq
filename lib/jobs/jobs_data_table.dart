@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart' hide State;
+import 'package:ibmq/jobs/bloc/jobs_filter.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
@@ -35,6 +36,10 @@ class _JobsDataTableState extends State<JobsDataTable> {
       jobsRepository: context.read<JobsRepository>(),
       runtimeJobRepository: context.read<RuntimeJobRepository>(),
       context: context,
+      filter: switch (context.read<JobsFilterBloc>().state) {
+        Filtered(:final filter) => filter,
+        _ => JobsFilter(),
+      },
     );
   }
 

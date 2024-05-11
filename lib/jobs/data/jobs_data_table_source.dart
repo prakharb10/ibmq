@@ -19,16 +19,18 @@ class JobsDataTableSource extends AsyncDataTableSource {
   final RuntimeJobRepository _runtimeJobRepository;
   final JobsFilterBloc _jobsFilterBloc;
   final BuildContext _context;
-  JobsFilter _filter = JobsFilter();
+  JobsFilter _filter;
 
   JobsDataTableSource({
     required JobsFilterBloc jobsFilterBloc,
     required JobsRepository jobsRepository,
     required RuntimeJobRepository runtimeJobRepository,
     required BuildContext context,
+    required JobsFilter filter,
   })  : _jobsRepository = jobsRepository,
         _runtimeJobRepository = runtimeJobRepository,
         _context = context,
+        _filter = filter,
         _jobsFilterBloc = jobsFilterBloc {
     _jobsFilterBloc.stream.listen((event) {
       switch (event) {
@@ -336,8 +338,14 @@ String timeAgo(DateTime date) {
   if (difference.inSeconds < 60) {
     return 'a moment ago';
   } else if (difference.inMinutes < 60) {
+    if (difference.inMinutes == 1) {
+      return 'a minute ago';
+    }
     return '${difference.inMinutes} minutes ago';
   } else if (difference.inHours < 24) {
+    if (difference.inHours == 1) {
+      return 'an hour ago';
+    }
     return '${difference.inHours} hours ago';
   } else if (difference.inDays == 1) {
     return 'Yesterday';
