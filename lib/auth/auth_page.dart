@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,6 +52,8 @@ class _AuthPageState extends State<AuthPage> {
               MacosTheme.of(context).typography.largeTitle,
             TargetPlatform.iOS =>
               cupertino.CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+            TargetPlatform.windows =>
+              fluent.FluentTheme.of(context).typography.title,
             _ => Theme.of(context).textTheme.headlineLarge,
           },
         ),
@@ -101,8 +104,29 @@ class _AuthPageState extends State<AuthPage> {
                 child: const Text("Login"),
               ),
             ],
+          TargetPlatform.windows => [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: fluent.TextBox(
+                  controller: _controller,
+                  placeholder: "API Token",
+                  onSubmitted: (_) {
+                    if (_valid) {
+                      context.read<AuthCubit>().tokenLogin(_controller.text);
+                    }
+                  },
+                ),
+              ),
+              fluent.FilledButton(
+                onPressed: _valid
+                    ? () =>
+                        context.read<AuthCubit>().tokenLogin(_controller.text)
+                    : null,
+                child: const Text("Login"),
+              ),
+            ],
           _ => [
-              cupertino.Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: _controller,
@@ -127,7 +151,7 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ],
         },
-        cupertino.Padding(
+        Padding(
           padding: const EdgeInsets.all(8.0),
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
@@ -141,6 +165,7 @@ class _AuthPageState extends State<AuthPage> {
                     TargetPlatform.macOS => const ProgressCircle(),
                     TargetPlatform.linux =>
                       const YaruCircularProgressIndicator(),
+                    TargetPlatform.windows => const fluent.ProgressRing(),
                     _ => const CircularProgressIndicator.adaptive()
                   },
                 TokenLoginFailure(message: var message) => Text(message),
@@ -161,10 +186,7 @@ class _AuthPageState extends State<AuthPage> {
       child: BlocConsumer<UserInfoCubit, UserInfoState>(
         listener: (context, state) {
           switch (state) {
-            case UserInfoLoadSuccess(
-                user: var user,
-                accessToken: var accessToken
-              ):
+            case UserInfoLoadSuccess(:final user, :final accessToken):
               context.read<DataClientsCubit>().createDataClients(
                     accessToken: accessToken,
                     httpBaseUrl: user.urls.http,
@@ -198,6 +220,13 @@ class _AuthPageState extends State<AuthPage> {
                       child: YaruCircularProgressIndicator(),
                     ),
                   ),
+                TargetPlatform.windows => fluent.NavigationView(
+                    content: fluent.ScaffoldPage.withPadding(
+                      content: const Center(
+                        child: fluent.ProgressRing(),
+                      ),
+                    ),
+                  ),
                 _ => const Scaffold(
                     body: Center(
                       child: CircularProgressIndicator(),
@@ -224,6 +253,11 @@ class _AuthPageState extends State<AuthPage> {
                 TargetPlatform.linux => Scaffold(
                     body: Center(
                       child: Text('Failed to load user info: $message'),
+                    ),
+                  ),
+                TargetPlatform.windows => fluent.NavigationView(
+                    content: fluent.ScaffoldPage.withPadding(
+                      content: Text('Failed to load user info: $message'),
                     ),
                   ),
                 _ => Scaffold(
@@ -275,6 +309,13 @@ class _AuthPageState extends State<AuthPage> {
                             child: YaruCircularProgressIndicator(),
                           ),
                         ),
+                      TargetPlatform.windows => fluent.NavigationView(
+                          content: fluent.ScaffoldPage.withPadding(
+                            content: const Center(
+                              child: fluent.ProgressRing(),
+                            ),
+                          ),
+                        ),
                       _ => const Scaffold(
                           body: Center(
                             child: CircularProgressIndicator(),
@@ -303,6 +344,13 @@ class _AuthPageState extends State<AuthPage> {
                       TargetPlatform.linux => const Scaffold(
                           body: Center(
                             child: Text('Failed to load credentials'),
+                          ),
+                        ),
+                      TargetPlatform.windows => fluent.NavigationView(
+                          content: fluent.ScaffoldPage.withPadding(
+                            header: const fluent.PageHeader(
+                                title: Text("IBM Quantum")),
+                            content: const Text("Failed to load credentials"),
                           ),
                         ),
                       _ => const Scaffold(
@@ -345,6 +393,13 @@ class _AuthPageState extends State<AuthPage> {
                           body: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: body,
+                          ),
+                        ),
+                      TargetPlatform.windows => fluent.NavigationView(
+                          content: fluent.ScaffoldPage.withPadding(
+                            header: const fluent.PageHeader(
+                                title: Text("IBM Quantum")),
+                            content: body,
                           ),
                         ),
                       _ => Scaffold(

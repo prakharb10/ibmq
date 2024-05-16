@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' hide IconButton;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +116,13 @@ class MyApp extends StatelessWidget {
                 darkTheme: theme.darkTheme,
                 routerConfig: router,
               ),
+            ),
+          TargetPlatform.windows => FluentApp.router(
+              title: 'IBM Quantum',
+              themeMode: ThemeMode.system,
+              routerConfig: router,
+              theme: FluentThemeData.light(),
+              darkTheme: FluentThemeData.dark(),
             ),
           _ => MaterialApp.router(
               title: 'IBM Quantum',
@@ -263,6 +271,22 @@ class _AppShellState extends State<AppShell> {
             ),
             pageBuilder: (context, index) => widget.child,
           ),
+        TargetPlatform.windows => NavigationView(
+            pane: NavigationPane(
+              items: [
+                PaneItem(
+                  icon: const Icon(FluentIcons.project_collection),
+                  title: const Text('Jobs'),
+                  body: const SizedBox.shrink(),
+                ),
+                PaneItem(
+                  icon: const Icon(FluentIcons.processing),
+                  title: const Text('Backends'),
+                  body: const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          ),
         _ => Scaffold(
             appBar: AppBar(
               title: const Text('IBM Quantum Dashboard'),
@@ -275,23 +299,6 @@ class _AppShellState extends State<AppShell> {
               ],
             ),
             body: widget.child,
-            // body: appState.pageIndex == 0
-            //     ? MultiBlocProvider(
-            //         providers: [
-            //           BlocProvider(
-            //             create: (context) => CursorsBloc(),
-            //           ),
-            //           BlocProvider(
-            //             create: (context) => JobsCacheCubit(),
-            //           ),
-            //         ],
-            //         child: JobsPage(
-            //           dio: dio,
-            //           runtimeDio: runtimeDio,
-            //           appState: appState,
-            //         ),
-            //       )
-            //     : const Center(child: Text('Backends')),
             drawer: const NavigationDrawer(
               // selectedIndex: appState.pageIndex,
               // onDestinationSelected: (index) {

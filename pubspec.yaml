@@ -59,6 +59,8 @@ dependencies:
   web_socket_client: ^0.1.0
   flutter_local_notifications: ^17.1.0
   yaru: ^4.1.0
+  fluent_ui: ^4.8.7
+  fluentui_system_icons: ^1.1.238
 
 dev_dependencies:
   flutter_test:
