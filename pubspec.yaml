@@ -44,7 +44,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   data_table_2: ^2.5.10
-  intl: ^0.18.0
+  intl: ^0.19.0
   timelines: ^0.1.0
   flutter_markdown: ^0.6.18
   go_router: ^13.2.0
@@ -58,7 +58,6 @@ dependencies:
   freezed_annotation: ^2.4.1
   web_socket_client: ^0.1.0
   flutter_local_notifications: ^17.1.0
-  device_preview: ^1.1.0
   yaru: ^4.1.0
 
 dev_dependencies:

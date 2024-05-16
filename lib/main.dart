@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -36,12 +35,7 @@ void main() async {
   if (defaultTargetPlatform == TargetPlatform.linux) {
     await YaruWindowTitleBar.ensureInitialized();
   }
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 Future<void> _configureMacosWindowUtils() async {
@@ -117,9 +111,6 @@ class MyApp extends StatelessWidget {
               builder: (context, theme, child) => MaterialApp.router(
                 title: 'IBM Quantum',
                 themeMode: ThemeMode.system,
-                // TODO: Remove DevicePreview
-                locale: DevicePreview.locale(context),
-                builder: DevicePreview.appBuilder,
                 theme: theme.theme,
                 darkTheme: theme.darkTheme,
                 routerConfig: router,
@@ -128,8 +119,6 @@ class MyApp extends StatelessWidget {
           _ => MaterialApp.router(
               title: 'IBM Quantum',
               themeMode: ThemeMode.system,
-              locale: DevicePreview.locale(context),
-              builder: DevicePreview.appBuilder,
               theme: ThemeData(
                 brightness: Brightness.light,
                 colorSchemeSeed: const Color(0xFF491d8b),
