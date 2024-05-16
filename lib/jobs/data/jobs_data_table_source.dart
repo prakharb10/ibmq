@@ -67,9 +67,9 @@ class JobsDataTableSource extends AsyncDataTableSource {
               r.jobs
                   .map(
                     (a) => DataRow2(
-                      color: MaterialStateProperty.resolveWith<Color?>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.selected)) {
+                      color: WidgetStateProperty.resolveWith<Color?>(
+                        (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.selected)) {
                             return switch (Theme.of(_context).platform) {
                               TargetPlatform.macOS =>
                                 MacosColors.selectedTextBackgroundColor,
