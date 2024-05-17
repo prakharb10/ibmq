@@ -1,4 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,6 +77,8 @@ class _JobsDataTableState extends State<JobsDataTable> {
                     .typography
                     .title3
                     .copyWith(color: MacosTheme.of(context).primaryColor),
+                TargetPlatform.windows =>
+                  fluent.FluentTheme.of(context).typography.bodyLarge,
                 _ => Theme.of(context).textTheme.headlineMedium,
               },
               sortArrowIcon: switch (Theme.of(context).platform) {
@@ -82,6 +86,7 @@ class _JobsDataTableState extends State<JobsDataTable> {
                 TargetPlatform.iOS =>
                   CupertinoIcons.chevron_up,
                 TargetPlatform.linux => YaruIcons.pan_up,
+                TargetPlatform.windows => FluentIcons.arrow_up_24_regular,
                 _ => Icons.arrow_upward,
               },
               header: const Text("Jobs"),
@@ -136,6 +141,8 @@ class _JobsDataTableState extends State<JobsDataTable> {
                       TargetPlatform.macOS =>
                         const MacosIcon(CupertinoIcons.refresh),
                       TargetPlatform.linux => const Icon(YaruIcons.refresh),
+                      TargetPlatform.windows =>
+                        const Icon(FluentIcons.arrow_clockwise_24_filled),
                       _ => const Icon(Icons.refresh),
                     },
                     onPressed: () => _jobsDataTableSource.refreshDatasource(),
@@ -262,6 +269,7 @@ class _JobsDataTableState extends State<JobsDataTable> {
                 child: switch (Theme.of(context).platform) {
                   TargetPlatform.macOS => const ProgressCircle(),
                   TargetPlatform.linux => const YaruCircularProgressIndicator(),
+                  TargetPlatform.windows => const fluent.ProgressRing(),
                   _ => const CircularProgressIndicator.adaptive(),
                 },
               ),

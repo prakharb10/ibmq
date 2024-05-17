@@ -1,7 +1,10 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/user/info/cubit/user_info_cubit.dart';
+import 'package:ibmq/user/info/model/user.dart';
 import 'package:ibmq/user/info/user_info_dialog.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';
@@ -64,3 +67,15 @@ class UserInfoTile extends StatelessWidget {
     );
   }
 }
+
+fluent.PaneItem windowsUserInfoTile(
+        {required User user, required BuildContext context}) =>
+    fluent.PaneItem(
+      icon: const Icon(FluentIcons.person_24_regular),
+      title: Text("${user.firstName} ${user.lastName}"),
+      onTap: () => fluent.showDialog(
+        builder: (context) => UserInfoDialog(user: user),
+        context: context,
+      ),
+      body: const SizedBox.shrink(),
+    );

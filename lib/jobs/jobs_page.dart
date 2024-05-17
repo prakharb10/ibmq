@@ -1,3 +1,5 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,11 +123,7 @@ class _JobsPageState extends State<JobsPage> {
       TargetPlatform.linux => YaruDetailPage(
           appBar: YaruWindowTitleBar(
             actions: [
-              Builder(
-                builder: (context) {
-                  return const InstanceSelector();
-                },
-              ),
+              const InstanceSelector(),
               YaruIconButton(
                 icon: const Icon(YaruIcons.bell),
                 onPressed: () =>
@@ -154,6 +152,53 @@ class _JobsPageState extends State<JobsPage> {
                 ),
               InstancesLoadInProgress() => const Center(
                   child: YaruCircularProgressIndicator(),
+                ),
+              _ => const SizedBox.shrink(),
+            },
+          ),
+        ),
+      TargetPlatform.windows => fluent.ScaffoldPage.withPadding(
+          header: fluent.PageHeader(
+            commandBar: fluent.CommandBar(
+              mainAxisAlignment: fluent.MainAxisAlignment.end,
+              primaryItems: [
+                fluent.CommandBarBuilderItem(
+                  builder: (context, displayMode, child) => fluent.Tooltip(
+                    message: 'Current Instance',
+                    child: child,
+                  ),
+                  wrappedItem: WindowsInstanceSelector(),
+                ),
+                fluent.CommandBarButton(
+                  icon: const Icon(FluentIcons.alert_24_regular),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          content: BlocBuilder<InstancesCubit, InstancesState>(
+            builder: (context, state) => switch (state) {
+              InstancesLoadSuccess() => Theme(
+                  data: ThemeData(
+                    brightness: fluent.FluentTheme.of(context).brightness,
+                    colorSchemeSeed: fluent.FluentTheme.of(context).activeColor,
+                    canvasColor:
+                        fluent.FluentTheme.of(context).scaffoldBackgroundColor,
+                    iconTheme: IconThemeData(
+                      color: fluent.FluentTheme.of(context).iconTheme.color,
+                      opacity: fluent.FluentTheme.of(context).iconTheme.opacity,
+                      size: fluent.FluentTheme.of(context).iconTheme.size,
+                    ),
+                  ),
+                  child: const Material(
+                    child: JobsDataTable(),
+                  ),
+                ),
+              InstancesLoadInProgress() => const Center(
+                  child: fluent.Tooltip(
+                    message: "Loading Instances",
+                    child: fluent.ProgressRing(),
+                  ),
                 ),
               _ => const SizedBox.shrink(),
             },

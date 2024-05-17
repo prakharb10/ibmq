@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -152,6 +153,50 @@ class UserInfoDialog extends StatelessWidget {
               ),
             ],
             actionsAlignment: MainAxisAlignment.center,
+          ),
+        TargetPlatform.windows => fluent.ContentDialog(
+            title: const Text("Profile"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("${user.firstName} ${user.lastName}"),
+                Text(user.email),
+                Text(user.institution),
+                const fluent.Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: fluent.Divider(),
+                ),
+                BlocBuilder<VersionCubit, VersionState>(
+                  bloc: VersionCubit(context.read<AuthDataProvider>())
+                    ..getVersion(),
+                  builder: (context, state) {
+                    return switch (state) {
+                      VersionLoadSuccess(version: var version) =>
+                        Text("API Version: $version"),
+                      VersionLoadFailure(error: var error) =>
+                        Text("Failed to get API version: $error"),
+                      VersionLoadInProgress() => const Center(
+                          child: fluent.ProgressBar(),
+                        ),
+                      _ => const SizedBox.shrink(),
+                    };
+                  },
+                )
+              ],
+            ),
+            actions: [
+              fluent.Button(
+                child: const Text("Close"),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              fluent.FilledButton(
+                child: const Text("Logout"),
+                onPressed: () {
+                  context.read<CredentialsCubit>().deleteCredentials();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         _ => const SizedBox.shrink(),
       };

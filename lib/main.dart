@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart' hide IconButton;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -117,12 +118,12 @@ class MyApp extends StatelessWidget {
                 routerConfig: router,
               ),
             ),
-          TargetPlatform.windows => FluentApp.router(
+          TargetPlatform.windows => fluent.FluentApp.router(
               title: 'IBM Quantum',
               themeMode: ThemeMode.system,
               routerConfig: router,
-              theme: FluentThemeData.light(),
-              darkTheme: FluentThemeData.dark(),
+              theme: fluent.FluentThemeData.light(),
+              darkTheme: fluent.FluentThemeData.dark(),
             ),
           _ => MaterialApp.router(
               title: 'IBM Quantum',
@@ -271,21 +272,34 @@ class _AppShellState extends State<AppShell> {
             ),
             pageBuilder: (context, index) => widget.child,
           ),
-        TargetPlatform.windows => NavigationView(
-            pane: NavigationPane(
-              items: [
-                PaneItem(
-                  icon: const Icon(FluentIcons.project_collection),
-                  title: const Text('Jobs'),
-                  body: const SizedBox.shrink(),
+        TargetPlatform.windows => BlocBuilder<UserInfoCubit, UserInfoState>(
+            builder: (context, state) => switch (state) {
+              UserInfoLoadSuccess(:final user) => fluent.NavigationView(
+                  pane: fluent.NavigationPane(
+                    items: [
+                      fluent.PaneItem(
+                        icon: const Icon(FluentIcons.library_24_regular),
+                        title: const Text('Jobs'),
+                        body: const SizedBox.shrink(),
+                      ),
+                      fluent.PaneItem(
+                        icon:
+                            const Icon(FluentIcons.developer_board_24_regular),
+                        title: const Text('Backends'),
+                        body: const SizedBox.shrink(),
+                      ),
+                    ],
+                    footerItems: [
+                      windowsUserInfoTile(user: user, context: context),
+                    ],
+                  ),
+                  paneBodyBuilder: (item, body) => widget.child,
                 ),
-                PaneItem(
-                  icon: const Icon(FluentIcons.processing),
-                  title: const Text('Backends'),
-                  body: const SizedBox.shrink(),
+              UserInfoLoadInProgress() => const Center(
+                  child: fluent.ProgressBar(),
                 ),
-              ],
-            ),
+              _ => const SizedBox.shrink(),
+            },
           ),
         _ => Scaffold(
             appBar: AppBar(

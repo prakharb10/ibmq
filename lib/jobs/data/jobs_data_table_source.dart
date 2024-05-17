@@ -1,4 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,6 +77,10 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 MacosColors.selectedTextBackgroundColor,
                               TargetPlatform.linux =>
                                 YaruColors.of(_context).link.withOpacity(0.2),
+                              TargetPlatform.windows =>
+                                fluent.FluentTheme.of(_context)
+                                    .accentColor
+                                    .withOpacity(0.2),
                               _ => Theme.of(_context).colorScheme.surfaceTint,
                             };
                           }
@@ -91,6 +97,8 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 TargetPlatform.linux => YaruColors.of(_context)
                                     .error
                                     .withOpacity(0.2),
+                                TargetPlatform.windows =>
+                                  fluent.Colors.errorSecondaryColor,
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .error
@@ -104,6 +112,8 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 TargetPlatform.linux => YaruColors.of(_context)
                                     .success
                                     .withOpacity(0.2),
+                                TargetPlatform.windows =>
+                                  fluent.Colors.successSecondaryColor,
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .primary
@@ -117,6 +127,8 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 TargetPlatform.linux => YaruColors.of(_context)
                                     .warning
                                     .withOpacity(0.2),
+                                TargetPlatform.windows =>
+                                  fluent.Colors.warningSecondaryColor,
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .secondary
@@ -130,6 +142,8 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                   MacosColors.systemGrayColor.withOpacity(0.2),
                                 TargetPlatform.linux =>
                                   YaruColors.purple.withOpacity(0.2),
+                                TargetPlatform.windows =>
+                                  fluent.Colors.grey[110],
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .tertiary
@@ -158,6 +172,9 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                     icon: switch (Theme.of(_context).platform) {
                                       TargetPlatform.macOS => const MacosIcon(
                                           CupertinoIcons.square_on_square,
+                                        ),
+                                      TargetPlatform.windows => const Icon(
+                                          FluentIcons.copy_24_regular,
                                         ),
                                       _ => const Icon(Icons.copy),
                                     },
@@ -192,6 +209,10 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                                 const MacosIcon(
                                                   CupertinoIcons
                                                       .square_on_square,
+                                                ),
+                                              TargetPlatform.windows =>
+                                                const Icon(
+                                                  FluentIcons.copy_24_regular,
                                                 ),
                                               _ => const Icon(Icons.copy),
                                             },

@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
@@ -79,6 +80,19 @@ class InstanceSelector extends StatelessWidget {
                   onSelected: (value) =>
                       context.read<InstanceFilterCubit>().changeInstance(value),
                 ),
+              TargetPlatform.windows => fluent.ComboBox<String>(
+                  items: instances
+                      .map(
+                        (e) => fluent.ComboBoxItem(
+                          value: e.name,
+                          child: Text(e.name),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) =>
+                      context.read<InstanceFilterCubit>().changeInstance(value),
+                  value: state.toNullable(),
+                ),
               _ => const SizedBox.shrink(),
             },
           ),
@@ -88,10 +102,21 @@ class InstanceSelector extends StatelessWidget {
                 child: ProgressCircle(),
               ),
             TargetPlatform.linux => const YaruCircularProgressIndicator(),
+            TargetPlatform.windows => const fluent.ProgressBar(),
             _ => const CircularProgressIndicator.adaptive(),
           },
         _ => const SizedBox.shrink(),
       },
     );
+  }
+}
+
+class WindowsInstanceSelector extends fluent.CommandBarItem {
+  WindowsInstanceSelector({super.key});
+
+  @override
+  Widget build(
+      BuildContext context, fluent.CommandBarItemDisplayMode displayMode) {
+    return const fluent.CommandBarItemInPrimary(child: InstanceSelector());
   }
 }
