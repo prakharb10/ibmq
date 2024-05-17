@@ -140,12 +140,11 @@ class _JobsPageState extends State<JobsPage> {
                       AnimatedPositioned(
                         duration: const Duration(milliseconds: 300),
                         right: 0,
-                        child: Card(
-                          child: YaruSection(
-                            width: 200.0,
-                            height: MediaQuery.sizeOf(context).height - 96,
-                            child: const JobsUpdatesWidget(),
-                          ),
+                        child: YaruBorderContainer(
+                          width: 200.0,
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          height: MediaQuery.sizeOf(context).height - 96,
+                          child: const JobsUpdatesWidget(),
                         ),
                       ),
                   ],

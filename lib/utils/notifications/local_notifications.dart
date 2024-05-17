@@ -10,6 +10,7 @@ class LocalNotifications {
     presentBanner: true,
     presentList: true,
   );
+  static const linuxNotificationDetails = LinuxNotificationDetails();
 
   Future<void> initialize() async {
     const darwinInitializationSettings = DarwinInitializationSettings(
@@ -40,7 +41,10 @@ class LocalNotifications {
       id,
       title,
       body,
-      const NotificationDetails(macOS: darwinNotificationDetails),
+      const NotificationDetails(
+        macOS: darwinNotificationDetails,
+        linux: linuxNotificationDetails,
+      ),
     );
   }
 }

@@ -135,7 +135,7 @@ class UserInfoDialog extends StatelessWidget {
                       VersionLoadFailure(error: var error) =>
                         Text("Failed to get API version: $error"),
                       VersionLoadInProgress() => const Center(
-                          child: YaruCircularProgressIndicator(),
+                          child: YaruLinearProgressIndicator(),
                         ),
                       _ => const SizedBox.shrink(),
                     };
