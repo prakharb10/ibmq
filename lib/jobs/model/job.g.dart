@@ -72,14 +72,14 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
           instance.estimatedMaxRunningTimeSeconds.toJson(
         (value) => value,
       ),
-      'program': {
+      'program': <String, dynamic>{
         'id': instance.program.id,
       },
       'runtime': instance.runtime,
       'sessionId': instance.sessionId.toJson(
         (value) => value,
       ),
-      'state': {
+      'state': <String, dynamic>{
         'reason': instance.state.reason,
         'status': _$JobStatusEnumMap[instance.state.status]!,
       },

@@ -11,8 +11,8 @@ import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
 import 'package:ibmq/jobs/model/job.dart';
 import 'package:ibmq/jobs/model/job_status.dart';
-import 'package:ibmq/jobs/runtime_job/metrics/cubit/runtime_job_metrics_cubit.dart';
-import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
+import 'package:ibmq/jobs/job/runtime/metrics/cubit/runtime_job_metrics_cubit.dart';
+import 'package:ibmq/jobs/job/runtime/runtime_job_repository.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';
 

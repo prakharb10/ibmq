@@ -41,7 +41,7 @@ UserUrls _$UserUrlsFromJson(Map<String, dynamic> json) => UserUrls(
 Map<String, dynamic> _$UserUrlsToJson(UserUrls instance) => <String, dynamic>{
       'http': instance.http.toString(),
       'ws': instance.ws.toString(),
-      'services': {
+      'services': <String, dynamic>{
         'quantumLab': instance.services.quantumLab.toString(),
         'runtime': instance.services.runtime.toString(),
       },

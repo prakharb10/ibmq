@@ -144,6 +144,40 @@ class RuntimeDataProvider {
         return 'Failed to list user jobs';
       });
 
+  /// Get Runtime Job information
+  ///
+  /// [jobId] is the job ID
+  ///
+  /// Returns the Runtime Job information if the request is successful, otherwise
+  /// returns an error message.
+  TaskEither<String, Map<String, dynamic>> getRuntimeJob(String jobId) =>
+      TaskEither.tryCatch(() async {
+        final resp = await _dio.get('/jobs/$jobId');
+        return switch (resp.statusCode) {
+          200 => switch (Option<Map<String, dynamic>>.safeCast(resp.data)) {
+              Some(value: final d) => d,
+              None() => throw Exception('Failed to parse runtime job'),
+            },
+          401 || 404 || 500 => switch (
+                Option<List>.safeCast(resp.data['errors']).flatMap(
+              (t) => t
+                  .traverseIOOption(
+                    (a) => IOOption.tryCatch(
+                      () => RuntimeAPIError.fromJson(a),
+                    ),
+                  )
+                  .run(),
+            )) {
+              Some(value: final d) => throw Exception(d.first.message),
+              None() => throw Exception('Failed to parse errors'),
+            },
+          _ => throw Exception('Failed to get runtime job'),
+        };
+      }, (error, stackTrace) {
+        talker.handle(error, stackTrace, 'Failed to get runtime job');
+        return 'Failed to get runtime job';
+      });
+
   /// Get job metrics
   ///
   /// [jobId] is the job ID

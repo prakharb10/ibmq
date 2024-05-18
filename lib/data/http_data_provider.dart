@@ -34,4 +34,25 @@ class HTTPDataProvider {
           return 'Failed to get H/G/P information';
         },
       );
+
+  /// Get IQX Job information
+  ///
+  /// [jobId] is the job ID
+  ///
+  /// Returns the IQX Job information if the request is successful, otherwise
+  /// returns an error message.
+  TaskEither<String, Map<String, dynamic>> getIQXJob(String jobId) =>
+      TaskEither.tryCatch(
+        () async {
+          final resp = await _dio.get('/Jobs/$jobId/v/1');
+          return switch (Option<Map<String, dynamic>>.safeCast(resp.data)) {
+            Some(value: final d) => d,
+            None() => throw Exception('Failed to parse response data'),
+          };
+        },
+        (error, stackTrace) {
+          talker.handle(error, stackTrace, 'Failed to get IQX Job information');
+          return 'Failed to get IQX Job information';
+        },
+      );
 }

@@ -9,7 +9,7 @@ import 'package:ibmq/jobs/bloc/jobs_filter.dart';
 import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/data/jobs_data_table_source.dart';
 import 'package:ibmq/jobs/data/jobs_repository.dart';
-import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
+import 'package:ibmq/jobs/job/runtime/runtime_job_repository.dart';
 import 'package:ibmq/utils/notifications/bloc/notifications_bloc.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';

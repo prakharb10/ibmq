@@ -1,6 +1,6 @@
 import 'package:ibmq/jobs/model/job.dart';
-import 'package:ibmq/jobs/model/runtime_job.dart';
-import 'package:ibmq/jobs/runtime_job/metrics/model/runtime_job_metrics.dart';
+// import 'package:ibmq/jobs/model/runtime_job.dart';
+import 'package:ibmq/jobs/job/runtime/metrics/model/runtime_job_metrics.dart';
 
 /// The runtime data
 ///
@@ -9,16 +9,16 @@ import 'package:ibmq/jobs/runtime_job/metrics/model/runtime_job_metrics.dart';
 /// Used to pass the data to the [RuntimeJobPage].
 class RuntimeData extends BaseJob {
   /// The job data
-  final RuntimeJob job;
+  // final RuntimeJob job;
 
   /// The job metrics
   final RuntimeJobMetrics metrics;
 
   const RuntimeData({
-    required this.job,
+    // required this.job,
     required this.metrics,
   });
 
   @override
-  List<Object> get props => [job, metrics];
+  List<Object> get props => [metrics];
 }

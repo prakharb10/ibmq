@@ -19,8 +19,8 @@ UserUsage _$UserUsageFromJson(Map<String, dynamic> json) => UserUsage(
                 e,
                 ($jsonValue) => (
                   instance: $jsonValue['instance'] as String,
-                  maxPendingJobs: $jsonValue['maxPendingJobs'] as int,
-                  pendingJobs: $jsonValue['pendingJobs'] as int,
+                  maxPendingJobs: ($jsonValue['maxPendingJobs'] as num).toInt(),
+                  pendingJobs: ($jsonValue['pendingJobs'] as num).toInt(),
                   quota: ($jsonValue['quota'] as num).toDouble(),
                   usage: ($jsonValue['usage'] as num).toDouble(),
                 ),

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ibmq/jobs/runtime_job/metrics/model/runtime_job_metrics.dart';
-import 'package:ibmq/jobs/runtime_job/runtime_job_repository.dart';
+import 'package:ibmq/jobs/job/runtime/metrics/model/runtime_job_metrics.dart';
+import 'package:ibmq/jobs/job/runtime/runtime_job_repository.dart';
 import 'package:ibmq/utils/talker.dart';
 
 part 'runtime_job_metrics_state.dart';

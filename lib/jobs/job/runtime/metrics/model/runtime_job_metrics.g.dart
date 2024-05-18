@@ -20,20 +20,24 @@ RuntimeJobMetrics _$RuntimeJobMetricsFromJson(Map<String, dynamic> json) =>
       ),
       bss: _$recordConvert(
         json['bss'],
-        ($jsonValue) => (seconds: $jsonValue['seconds'] as int,),
+        ($jsonValue) => (seconds: ($jsonValue['seconds'] as num).toInt(),),
       ),
       qiskitVersion: Option<String>.fromJson(
           json['qiskit_version'], (value) => value as String),
       usage: RuntimeJobMetrics._usageFromJson(
           json['usage'] as Map<String, dynamic>),
-      executions:
-          Option<int>.fromJson(json['executions'], (value) => value as int),
-      numCircuits:
-          Option<int>.fromJson(json['num_circuits'], (value) => value as int),
-      numQubits: Option<IList<int>>.fromJson(json['num_qubits'],
-          (value) => IList<int>.fromJson(value, (value) => value as int)),
-      circuitDepths: Option<IList<int>>.fromJson(json['circuit_depths'],
-          (value) => IList<int>.fromJson(value, (value) => value as int)),
+      executions: Option<int>.fromJson(
+          json['executions'], (value) => (value as num).toInt()),
+      numCircuits: Option<int>.fromJson(
+          json['num_circuits'], (value) => (value as num).toInt()),
+      numQubits: Option<IList<int>>.fromJson(
+          json['num_qubits'],
+          (value) =>
+              IList<int>.fromJson(value, (value) => (value as num).toInt())),
+      circuitDepths: Option<IList<int>>.fromJson(
+          json['circuit_depths'],
+          (value) =>
+              IList<int>.fromJson(value, (value) => (value as num).toInt())),
       estimatedStartTime: Option<DateTime>.fromJson(
           json['estimated_start_time'],
           (value) => DateTime.parse(value as String)),
@@ -41,9 +45,9 @@ RuntimeJobMetrics _$RuntimeJobMetricsFromJson(Map<String, dynamic> json) =>
           json['estimated_completion_time'],
           (value) => DateTime.parse(value as String)),
       positionInQueue: Option<int>.fromJson(
-          json['position_in_queue'], (value) => value as int),
+          json['position_in_queue'], (value) => (value as num).toInt()),
       positionInProvider: Option<int>.fromJson(
-          json['position_in_provider'], (value) => value as int),
+          json['position_in_provider'], (value) => (value as num).toInt()),
     );
 
 $Rec _$recordConvert<$Rec>(

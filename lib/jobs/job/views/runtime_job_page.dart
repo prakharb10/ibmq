@@ -20,18 +20,18 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<RuntimeBloc>()
-        .add(RuntimeResultFetched(jobId: widget.data.job.id));
+    // context
+    //     .read<RuntimeBloc>()
+    //     .add(RuntimeResultFetched(jobId: widget.data.job.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    final job = widget.data.job;
+    // final job = widget.data.job;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.data.job.id),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.data.job.id),
+      // ),
       body: ListView(
         children: [
           Card(
@@ -63,51 +63,51 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
                       //       )
                       //     ],
                       //   ),
-                      if (job.backend != null)
-                        Column(
-                          children: [
-                            Text(job.backend!),
-                            Text(
-                              "Compute resource",
-                              style: Theme.of(context).textTheme.labelMedium,
-                            )
-                          ],
-                        )
+                      // if (job.backend != null)
+                      //   Column(
+                      //     children: [
+                      //       Text(job.backend!),
+                      //       Text(
+                      //         "Compute resource",
+                      //         style: Theme.of(context).textTheme.labelMedium,
+                      //       )
+                      //     ],
+                      //   )
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("Status"),
-                      Text(job.status.name),
+                      // Text(job.status.name),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("Provider"),
-                      Text("${job.hub}/${job.group}/${job.project}"),
+                      // Text("${job.hub}/${job.group}/${job.project}"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("Program"),
-                      Text(job.program),
+                      // Text(job.program),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("# of shots"),
-                      Text(job.shots.toString()),
+                      // Text(job.shots.toString()),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("# of circuits"),
-                      Text(job.circuits.toString()),
+                      // Text(job.circuits.toString()),
                     ],
                   ),
                 ],
