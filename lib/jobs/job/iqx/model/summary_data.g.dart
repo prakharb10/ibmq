@@ -10,8 +10,8 @@ SummaryData _$SummaryDataFromJson(Map<String, dynamic> json) => SummaryData(
       size: _$recordConvert(
         json['size'],
         ($jsonValue) => (
-          $jsonValue[r'$1'] as num,
-          $jsonValue[r'$2'] as num,
+          input: ($jsonValue['input'] as num).toInt(),
+          output: ($jsonValue['output'] as num).toInt(),
         ),
       ),
       success: json['success'] as bool,

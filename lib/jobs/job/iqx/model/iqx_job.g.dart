@@ -11,8 +11,8 @@ _$IQXJobImpl _$$IQXJobImplFromJson(Map<String, dynamic> json) => _$IQXJobImpl(
       backend: _$recordConvert(
         json['backend'],
         ($jsonValue) => (
-          $jsonValue[r'$1'] as String,
-          $jsonValue[r'$2'] as String,
+          id: $jsonValue['id'] as String,
+          name: $jsonValue['name'] as String,
         ),
       ),
       status: $enumDecode(_$JobStatusEnumMap, json['status']),
@@ -25,17 +25,17 @@ _$IQXJobImpl _$$IQXJobImplFromJson(Map<String, dynamic> json) => _$IQXJobImpl(
       hubInfo: _$recordConvert(
         json['hubInfo'],
         ($jsonValue) => (
-          _$recordConvert(
-            $jsonValue[r'$1'],
-            ($jsonValue) => ($jsonValue[r'$1'] as String,),
+          group: _$recordConvert(
+            $jsonValue['group'],
+            ($jsonValue) => (name: $jsonValue['name'] as String,),
           ),
-          _$recordConvert(
-            $jsonValue[r'$2'],
-            ($jsonValue) => ($jsonValue[r'$1'] as String,),
+          hub: _$recordConvert(
+            $jsonValue['hub'],
+            ($jsonValue) => (name: $jsonValue['name'] as String,),
           ),
-          _$recordConvert(
-            $jsonValue[r'$3'],
-            ($jsonValue) => ($jsonValue[r'$1'] as String,),
+          project: _$recordConvert(
+            $jsonValue['project'],
+            ($jsonValue) => (name: $jsonValue['name'] as String,),
           ),
         ),
       ),
@@ -89,8 +89,7 @@ const _$RunModeEnumMap = {
 
 _$TimePerStepImpl _$$TimePerStepImplFromJson(Map<String, dynamic> json) =>
     _$TimePerStepImpl(
-      creating: Option<DateTime>.fromJson(
-          json['CREATING'], (value) => DateTime.parse(value as String)),
+      creating: DateTime.parse(json['CREATING'] as String),
       created: Option<DateTime>.fromJson(
           json['CREATED'], (value) => DateTime.parse(value as String)),
       transpiling: Option<DateTime>.fromJson(

@@ -26,7 +26,7 @@ class IQXJob extends Equatable with _$IQXJob {
     required String kind,
 
     /// The job backend
-    required (String id, String name) backend,
+    required ({String id, String name}) backend,
 
     /// The job status
     ///
@@ -52,11 +52,17 @@ class IQXJob extends Equatable with _$IQXJob {
     /// Hub Information
     ///
     /// Contains the hub/group/project information
-    required (
-      (String name,) hub,
-      (String name,) group,
-      (String name,) project
-    ) hubInfo,
+    required ({
+      ({
+        String name,
+      }) hub,
+      ({
+        String name,
+      }) group,
+      ({
+        String name,
+      }) project
+    }) hubInfo,
 
     /// The job end date
     required Option<DateTime> endDate,
@@ -82,7 +88,22 @@ class IQXJob extends Equatable with _$IQXJob {
   const IQXJob._();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        kind,
+        backend,
+        status,
+        creationDate,
+        deleted,
+        summaryData,
+        timePerStep,
+        hubInfo,
+        endDate,
+        tags,
+        runMode,
+        id,
+        userId,
+        createdBy,
+      ];
 }
 
 /// Model class for time per step
@@ -93,7 +114,7 @@ class TimePerStep extends Equatable with _$TimePerStep {
   @JsonSerializable(
       fieldRename: FieldRename.screamingSnake, createToJson: false)
   const factory TimePerStep({
-    required Option<DateTime> creating,
+    required DateTime creating,
     required Option<DateTime> created,
     required Option<DateTime> transpiling,
     required Option<DateTime> transpiled,

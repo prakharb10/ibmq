@@ -24,7 +24,7 @@ mixin _$IQXJob {
   String get kind => throw _privateConstructorUsedError;
 
   /// The job backend
-  (String, String) get backend => throw _privateConstructorUsedError;
+  ({String id, String name}) get backend => throw _privateConstructorUsedError;
 
   /// The job status
   ///
@@ -50,8 +50,8 @@ mixin _$IQXJob {
   /// Hub Information
   ///
   /// Contains the hub/group/project information
-  ((String,), (String,), (String,)) get hubInfo =>
-      throw _privateConstructorUsedError;
+  ({({String name}) group, ({String name}) hub, ({String name}) project})
+      get hubInfo => throw _privateConstructorUsedError;
 
   /// The job end date
   Option<DateTime> get endDate => throw _privateConstructorUsedError;
@@ -82,13 +82,17 @@ abstract class $IQXJobCopyWith<$Res> {
   @useResult
   $Res call(
       {String kind,
-      (String, String) backend,
+      ({String id, String name}) backend,
       JobStatus status,
       DateTime creationDate,
       bool deleted,
       SummaryData summaryData,
       TimePerStep timePerStep,
-      ((String,), (String,), (String,)) hubInfo,
+      ({
+        ({String name}) group,
+        ({String name}) hub,
+        ({String name}) project
+      }) hubInfo,
       Option<DateTime> endDate,
       IList<String> tags,
       Option<RunMode> runMode,
@@ -135,7 +139,7 @@ class _$IQXJobCopyWithImpl<$Res, $Val extends IQXJob>
       backend: null == backend
           ? _value.backend
           : backend // ignore: cast_nullable_to_non_nullable
-              as (String, String),
+              as ({String id, String name}),
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -159,7 +163,11 @@ class _$IQXJobCopyWithImpl<$Res, $Val extends IQXJob>
       hubInfo: null == hubInfo
           ? _value.hubInfo
           : hubInfo // ignore: cast_nullable_to_non_nullable
-              as ((String,), (String,), (String,)),
+              as ({
+              ({String name}) group,
+              ({String name}) hub,
+              ({String name}) project
+            }),
       endDate: null == endDate
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
@@ -205,13 +213,17 @@ abstract class _$$IQXJobImplCopyWith<$Res> implements $IQXJobCopyWith<$Res> {
   @useResult
   $Res call(
       {String kind,
-      (String, String) backend,
+      ({String id, String name}) backend,
       JobStatus status,
       DateTime creationDate,
       bool deleted,
       SummaryData summaryData,
       TimePerStep timePerStep,
-      ((String,), (String,), (String,)) hubInfo,
+      ({
+        ({String name}) group,
+        ({String name}) hub,
+        ({String name}) project
+      }) hubInfo,
       Option<DateTime> endDate,
       IList<String> tags,
       Option<RunMode> runMode,
@@ -257,7 +269,7 @@ class __$$IQXJobImplCopyWithImpl<$Res>
       backend: null == backend
           ? _value.backend
           : backend // ignore: cast_nullable_to_non_nullable
-              as (String, String),
+              as ({String id, String name}),
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -281,7 +293,11 @@ class __$$IQXJobImplCopyWithImpl<$Res>
       hubInfo: null == hubInfo
           ? _value.hubInfo
           : hubInfo // ignore: cast_nullable_to_non_nullable
-              as ((String,), (String,), (String,)),
+              as ({
+              ({String name}) group,
+              ({String name}) hub,
+              ({String name}) project
+            }),
       endDate: null == endDate
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
@@ -339,7 +355,7 @@ class _$IQXJobImpl extends _IQXJob {
 
   /// The job backend
   @override
-  final (String, String) backend;
+  final ({String id, String name}) backend;
 
   /// The job status
   ///
@@ -371,7 +387,11 @@ class _$IQXJobImpl extends _IQXJob {
   ///
   /// Contains the hub/group/project information
   @override
-  final ((String,), (String,), (String,)) hubInfo;
+  final ({
+    ({String name}) group,
+    ({String name}) hub,
+    ({String name}) project
+  }) hubInfo;
 
   /// The job end date
   @override
@@ -407,13 +427,17 @@ class _$IQXJobImpl extends _IQXJob {
 abstract class _IQXJob extends IQXJob {
   const factory _IQXJob(
       {required final String kind,
-      required final (String, String) backend,
+      required final ({String id, String name}) backend,
       required final JobStatus status,
       required final DateTime creationDate,
       required final bool deleted,
       required final SummaryData summaryData,
       required final TimePerStep timePerStep,
-      required final ((String,), (String,), (String,)) hubInfo,
+      required final ({
+        ({String name}) group,
+        ({String name}) hub,
+        ({String name}) project
+      }) hubInfo,
       required final Option<DateTime> endDate,
       required final IList<String> tags,
       required final Option<RunMode> runMode,
@@ -431,7 +455,7 @@ abstract class _IQXJob extends IQXJob {
   @override
 
   /// The job backend
-  (String, String) get backend;
+  ({String id, String name}) get backend;
   @override
 
   /// The job status
@@ -463,7 +487,8 @@ abstract class _IQXJob extends IQXJob {
   /// Hub Information
   ///
   /// Contains the hub/group/project information
-  ((String,), (String,), (String,)) get hubInfo;
+  ({({String name}) group, ({String name}) hub, ({String name}) project})
+      get hubInfo;
   @override
 
   /// The job end date
@@ -500,7 +525,7 @@ TimePerStep _$TimePerStepFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TimePerStep {
-  Option<DateTime> get creating => throw _privateConstructorUsedError;
+  DateTime get creating => throw _privateConstructorUsedError;
   Option<DateTime> get created => throw _privateConstructorUsedError;
   Option<DateTime> get transpiling => throw _privateConstructorUsedError;
   Option<DateTime> get transpiled => throw _privateConstructorUsedError;
@@ -522,7 +547,7 @@ abstract class $TimePerStepCopyWith<$Res> {
       _$TimePerStepCopyWithImpl<$Res, TimePerStep>;
   @useResult
   $Res call(
-      {Option<DateTime> creating,
+      {DateTime creating,
       Option<DateTime> created,
       Option<DateTime> transpiling,
       Option<DateTime> transpiled,
@@ -560,7 +585,7 @@ class _$TimePerStepCopyWithImpl<$Res, $Val extends TimePerStep>
       creating: null == creating
           ? _value.creating
           : creating // ignore: cast_nullable_to_non_nullable
-              as Option<DateTime>,
+              as DateTime,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -606,7 +631,7 @@ abstract class _$$TimePerStepImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Option<DateTime> creating,
+      {DateTime creating,
       Option<DateTime> created,
       Option<DateTime> transpiling,
       Option<DateTime> transpiled,
@@ -642,7 +667,7 @@ class __$$TimePerStepImplCopyWithImpl<$Res>
       creating: null == creating
           ? _value.creating
           : creating // ignore: cast_nullable_to_non_nullable
-              as Option<DateTime>,
+              as DateTime,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -699,7 +724,7 @@ class _$TimePerStepImpl extends _TimePerStep {
       _$$TimePerStepImplFromJson(json);
 
   @override
-  final Option<DateTime> creating;
+  final DateTime creating;
   @override
   final Option<DateTime> created;
   @override
@@ -726,7 +751,7 @@ class _$TimePerStepImpl extends _TimePerStep {
 
 abstract class _TimePerStep extends TimePerStep {
   const factory _TimePerStep(
-      {required final Option<DateTime> creating,
+      {required final DateTime creating,
       required final Option<DateTime> created,
       required final Option<DateTime> transpiling,
       required final Option<DateTime> transpiled,
@@ -741,7 +766,7 @@ abstract class _TimePerStep extends TimePerStep {
       _$TimePerStepImpl.fromJson;
 
   @override
-  Option<DateTime> get creating;
+  DateTime get creating;
   @override
   Option<DateTime> get created;
   @override

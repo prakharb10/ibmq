@@ -8,7 +8,7 @@ part 'summary_data.g.dart';
 @JsonSerializable(createToJson: false)
 class SummaryData extends Equatable {
   /// The job size
-  final (num input, num output) size;
+  final ({int input, int output}) size;
 
   /// Whether the job is success
   final bool success;
