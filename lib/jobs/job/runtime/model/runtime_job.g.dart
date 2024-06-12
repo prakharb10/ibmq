@@ -16,18 +16,23 @@ _$RuntimeJobImpl _$$RuntimeJobImplFromJson(Map<String, dynamic> json) =>
       state: _$recordConvert(
         json['state'],
         ($jsonValue) => (
-          $enumDecode(_$RuntimeJobStatusEnumMap, $jsonValue[r'$1']),
-          $jsonValue[r'$2'] as String,
+          reason: $jsonValue['reason'] as String,
+          status: $enumDecode(_$RuntimeJobStatusEnumMap, $jsonValue['status']),
         ),
       ),
       status: $enumDecode(_$RuntimeJobStatusEnumMap, json['status']),
-      params: IMap<String, dynamic>.fromJson(
-          json['params'] as Map<String, dynamic>,
-          (value) => value as String,
-          (value) => value),
+      params: _$recordConvert(
+        json['params'],
+        ($jsonValue) => (
+          circuits: ($jsonValue['circuits'] as List<dynamic>)
+              .map((e) => e as Map<String, dynamic>)
+              .toList(),
+          shots: ($jsonValue['shots'] as num).toInt(),
+        ),
+      ),
       program: _$recordConvert(
         json['program'],
-        ($jsonValue) => ($jsonValue[r'$1'] as String,),
+        ($jsonValue) => (id: $jsonValue['id'] as String,),
       ),
       created: DateTime.parse(json['created'] as String),
       ended: Option<DateTime>.fromJson(
@@ -35,11 +40,13 @@ _$RuntimeJobImpl _$$RuntimeJobImplFromJson(Map<String, dynamic> json) =>
       runtime: json['runtime'] as String,
       cost:
           Option<int>.fromJson(json['cost'], (value) => (value as num).toInt()),
-      tags: IList<String>.fromJson(json['tags'], (value) => value as String),
-      sessionId: json['session_id'] as String,
-      usage: _$recordConvert(
+      tags: Option<IList<String>>.fromJson(json['tags'],
+          (value) => IList<String>.fromJson(value, (value) => value as String)),
+      sessionId: Option<String>.fromJson(
+          json['session_id'], (value) => value as String),
+      usage: _$recordConvertNullable(
         json['usage'],
-        ($jsonValue) => (($jsonValue[r'$1'] as num).toDouble(),),
+        ($jsonValue) => (seconds: ($jsonValue['seconds'] as num).toDouble(),),
       ),
       estimatedRunningTimeSeconds: Option<double>.fromJson(
           json['estimated_running_time_seconds'],
@@ -57,16 +64,16 @@ Map<String, dynamic> _$$RuntimeJobImplToJson(_$RuntimeJobImpl instance) =>
       'project': instance.project,
       'backend': instance.backend,
       'state': <String, dynamic>{
-        r'$1': _$RuntimeJobStatusEnumMap[instance.state.$1]!,
-        r'$2': instance.state.$2,
+        'reason': instance.state.reason,
+        'status': _$RuntimeJobStatusEnumMap[instance.state.status]!,
       },
       'status': _$RuntimeJobStatusEnumMap[instance.status]!,
-      'params': instance.params.toJson(
-        (value) => value,
-        (value) => value,
-      ),
+      'params': <String, dynamic>{
+        'circuits': instance.params.circuits,
+        'shots': instance.params.shots,
+      },
       'program': <String, dynamic>{
-        r'$1': instance.program.$1,
+        'id': instance.program.id,
       },
       'created': instance.created.toIso8601String(),
       'ended': instance.ended.toJson(
@@ -77,12 +84,18 @@ Map<String, dynamic> _$$RuntimeJobImplToJson(_$RuntimeJobImpl instance) =>
         (value) => value,
       ),
       'tags': instance.tags.toJson(
+        (value) => value.toJson(
+          (value) => value,
+        ),
+      ),
+      'session_id': instance.sessionId.toJson(
         (value) => value,
       ),
-      'session_id': instance.sessionId,
-      'usage': <String, dynamic>{
-        r'$1': instance.usage.$1,
-      },
+      'usage': instance.usage == null
+          ? null
+          : <String, dynamic>{
+              'seconds': instance.usage!.seconds,
+            },
       'estimated_running_time_seconds':
           instance.estimatedRunningTimeSeconds.toJson(
         (value) => value,
@@ -107,3 +120,9 @@ $Rec _$recordConvert<$Rec>(
   $Rec Function(Map) convert,
 ) =>
     convert(value as Map<String, dynamic>);
+
+$Rec? _$recordConvertNullable<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) =>
+    value == null ? null : convert(value as Map<String, dynamic>);

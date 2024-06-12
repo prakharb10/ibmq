@@ -55,7 +55,7 @@ SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   macos_ui: 6229a8922cd97bafb7d9636c8eb8dfb0744183ca
   macos_window_utils: 933f91f64805e2eb91a5bd057cf97cd097276663
-  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
   share_plus: 36537c04ce0c3e3f5bd297ce4318b6d5ee5fd6cf
   window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8

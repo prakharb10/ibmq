@@ -61,6 +61,7 @@ dependencies:
   yaru: ^4.1.0
   fluent_ui: ^4.8.7
   fluentui_system_icons: ^1.1.238
+  timeago_flutter: ^3.6.0
 
 dev_dependencies:
   flutter_test:

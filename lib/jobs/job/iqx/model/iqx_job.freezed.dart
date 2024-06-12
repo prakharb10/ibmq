@@ -57,7 +57,7 @@ mixin _$IQXJob {
   Option<DateTime> get endDate => throw _privateConstructorUsedError;
 
   /// List of tags associated with the job.
-  IList<String> get tags => throw _privateConstructorUsedError;
+  Option<IList<String>> get tags => throw _privateConstructorUsedError;
 
   /// The job run mode
   Option<RunMode> get runMode => throw _privateConstructorUsedError;
@@ -94,7 +94,7 @@ abstract class $IQXJobCopyWith<$Res> {
         ({String name}) project
       }) hubInfo,
       Option<DateTime> endDate,
-      IList<String> tags,
+      Option<IList<String>> tags,
       Option<RunMode> runMode,
       String id,
       String userId,
@@ -175,7 +175,7 @@ class _$IQXJobCopyWithImpl<$Res, $Val extends IQXJob>
       tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
-              as IList<String>,
+              as Option<IList<String>>,
       runMode: null == runMode
           ? _value.runMode
           : runMode // ignore: cast_nullable_to_non_nullable
@@ -225,7 +225,7 @@ abstract class _$$IQXJobImplCopyWith<$Res> implements $IQXJobCopyWith<$Res> {
         ({String name}) project
       }) hubInfo,
       Option<DateTime> endDate,
-      IList<String> tags,
+      Option<IList<String>> tags,
       Option<RunMode> runMode,
       String id,
       String userId,
@@ -305,7 +305,7 @@ class __$$IQXJobImplCopyWithImpl<$Res>
       tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
-              as IList<String>,
+              as Option<IList<String>>,
       runMode: null == runMode
           ? _value.runMode
           : runMode // ignore: cast_nullable_to_non_nullable
@@ -399,7 +399,7 @@ class _$IQXJobImpl extends _IQXJob {
 
   /// List of tags associated with the job.
   @override
-  final IList<String> tags;
+  final Option<IList<String>> tags;
 
   /// The job run mode
   @override
@@ -439,7 +439,7 @@ abstract class _IQXJob extends IQXJob {
         ({String name}) project
       }) hubInfo,
       required final Option<DateTime> endDate,
-      required final IList<String> tags,
+      required final Option<IList<String>> tags,
       required final Option<RunMode> runMode,
       required final String id,
       required final String userId,
@@ -496,7 +496,7 @@ abstract class _IQXJob extends IQXJob {
   @override
 
   /// List of tags associated with the job.
-  IList<String> get tags;
+  Option<IList<String>> get tags;
   @override
 
   /// The job run mode

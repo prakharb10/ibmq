@@ -68,7 +68,7 @@ class IQXJob extends Equatable with _$IQXJob {
     required Option<DateTime> endDate,
 
     /// List of tags associated with the job.
-    required IList<String> tags,
+    required Option<IList<String>> tags,
 
     /// The job run mode
     required Option<RunMode> runMode,

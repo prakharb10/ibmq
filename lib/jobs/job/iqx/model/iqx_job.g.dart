@@ -41,7 +41,8 @@ _$IQXJobImpl _$$IQXJobImplFromJson(Map<String, dynamic> json) => _$IQXJobImpl(
       ),
       endDate: Option<DateTime>.fromJson(
           json['endDate'], (value) => DateTime.parse(value as String)),
-      tags: IList<String>.fromJson(json['tags'], (value) => value as String),
+      tags: Option<IList<String>>.fromJson(json['tags'],
+          (value) => IList<String>.fromJson(value, (value) => value as String)),
       runMode: Option<RunMode>.fromJson(
           json['runMode'], (value) => $enumDecode(_$RunModeEnumMap, value)),
       id: json['id'] as String,

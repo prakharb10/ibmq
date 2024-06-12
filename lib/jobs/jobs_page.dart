@@ -73,21 +73,9 @@ class _JobsPageState extends State<JobsPage> {
               builder: (context, scrollController) =>
                   BlocBuilder<InstancesCubit, InstancesState>(
                 builder: (context, state) => switch (state) {
-                  InstancesLoadSuccess() => Theme(
-                      data: ThemeData(
-                        brightness: MacosTheme.brightnessOf(context),
-                        colorSchemeSeed: MacosTheme.of(context).primaryColor,
-                        canvasColor: MacosTheme.of(context).canvasColor,
-                        iconTheme: IconThemeData(
-                          color: MacosTheme.of(context).iconTheme.color,
-                          opacity: MacosTheme.of(context).iconTheme.opacity,
-                          size: MacosTheme.of(context).iconTheme.size,
-                        ),
-                      ),
-                      child: Material(
-                        child: JobsDataTable(
-                          scrollController: scrollController,
-                        ),
+                  InstancesLoadSuccess() => Material(
+                      child: JobsDataTable(
+                        scrollController: scrollController,
                       ),
                     ),
                   InstancesLoadInProgress() => const Center(

@@ -36,7 +36,8 @@ mixin _$RuntimeJob {
   String get backend => throw _privateConstructorUsedError;
 
   /// The job state.
-  (RuntimeJobStatus, String) get state => throw _privateConstructorUsedError;
+  ({String reason, RuntimeJobStatus status}) get state =>
+      throw _privateConstructorUsedError;
 
   /// The job status.
   ///
@@ -44,10 +45,11 @@ mixin _$RuntimeJob {
   RuntimeJobStatus get status => throw _privateConstructorUsedError;
 
   /// Parameters of the job.
-  IMap<String, dynamic> get params => throw _privateConstructorUsedError;
+  ({List<Map<dynamic, dynamic>> circuits, int shots}) get params =>
+      throw _privateConstructorUsedError;
 
   /// Program associated with the job.
-  (String,) get program => throw _privateConstructorUsedError;
+  ({String id}) get program => throw _privateConstructorUsedError;
 
   /// Timestamp of when the job was created.
   DateTime get created => throw _privateConstructorUsedError;
@@ -62,13 +64,13 @@ mixin _$RuntimeJob {
   Option<int> get cost => throw _privateConstructorUsedError;
 
   /// List of tags associated with the job.
-  IList<String> get tags => throw _privateConstructorUsedError;
+  Option<IList<String>> get tags => throw _privateConstructorUsedError;
 
   /// Identifier of the session where the job was executed.
-  String get sessionId => throw _privateConstructorUsedError;
+  Option<String> get sessionId => throw _privateConstructorUsedError;
 
   /// Usage in seconds of the job.
-  (double,) get usage => throw _privateConstructorUsedError;
+  ({double seconds})? get usage => throw _privateConstructorUsedError;
 
   /// estimated running time of the job in seconds
   Option<double> get estimatedRunningTimeSeconds =>
@@ -96,17 +98,17 @@ abstract class $RuntimeJobCopyWith<$Res> {
       String group,
       String project,
       String backend,
-      (RuntimeJobStatus, String) state,
+      ({String reason, RuntimeJobStatus status}) state,
       RuntimeJobStatus status,
-      IMap<String, dynamic> params,
-      (String,) program,
+      ({List<Map<dynamic, dynamic>> circuits, int shots}) params,
+      ({String id}) program,
       DateTime created,
       Option<DateTime> ended,
       String runtime,
       Option<int> cost,
-      IList<String> tags,
-      String sessionId,
-      (double,) usage,
+      Option<IList<String>> tags,
+      Option<String> sessionId,
+      ({double seconds})? usage,
       Option<double> estimatedRunningTimeSeconds,
       Option<double> estimatedMaxRunningTimeSeconds});
 }
@@ -139,7 +141,7 @@ class _$RuntimeJobCopyWithImpl<$Res, $Val extends RuntimeJob>
     Object? cost = null,
     Object? tags = null,
     Object? sessionId = null,
-    Object? usage = null,
+    Object? usage = freezed,
     Object? estimatedRunningTimeSeconds = null,
     Object? estimatedMaxRunningTimeSeconds = null,
   }) {
@@ -167,7 +169,7 @@ class _$RuntimeJobCopyWithImpl<$Res, $Val extends RuntimeJob>
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
-              as (RuntimeJobStatus, String),
+              as ({String reason, RuntimeJobStatus status}),
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -175,11 +177,11 @@ class _$RuntimeJobCopyWithImpl<$Res, $Val extends RuntimeJob>
       params: null == params
           ? _value.params
           : params // ignore: cast_nullable_to_non_nullable
-              as IMap<String, dynamic>,
+              as ({List<Map<dynamic, dynamic>> circuits, int shots}),
       program: null == program
           ? _value.program
           : program // ignore: cast_nullable_to_non_nullable
-              as (String,),
+              as ({String id}),
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -199,15 +201,15 @@ class _$RuntimeJobCopyWithImpl<$Res, $Val extends RuntimeJob>
       tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
-              as IList<String>,
+              as Option<IList<String>>,
       sessionId: null == sessionId
           ? _value.sessionId
           : sessionId // ignore: cast_nullable_to_non_nullable
-              as String,
-      usage: null == usage
+              as Option<String>,
+      usage: freezed == usage
           ? _value.usage
           : usage // ignore: cast_nullable_to_non_nullable
-              as (double,),
+              as ({double seconds})?,
       estimatedRunningTimeSeconds: null == estimatedRunningTimeSeconds
           ? _value.estimatedRunningTimeSeconds
           : estimatedRunningTimeSeconds // ignore: cast_nullable_to_non_nullable
@@ -234,17 +236,17 @@ abstract class _$$RuntimeJobImplCopyWith<$Res>
       String group,
       String project,
       String backend,
-      (RuntimeJobStatus, String) state,
+      ({String reason, RuntimeJobStatus status}) state,
       RuntimeJobStatus status,
-      IMap<String, dynamic> params,
-      (String,) program,
+      ({List<Map<dynamic, dynamic>> circuits, int shots}) params,
+      ({String id}) program,
       DateTime created,
       Option<DateTime> ended,
       String runtime,
       Option<int> cost,
-      IList<String> tags,
-      String sessionId,
-      (double,) usage,
+      Option<IList<String>> tags,
+      Option<String> sessionId,
+      ({double seconds})? usage,
       Option<double> estimatedRunningTimeSeconds,
       Option<double> estimatedMaxRunningTimeSeconds});
 }
@@ -275,7 +277,7 @@ class __$$RuntimeJobImplCopyWithImpl<$Res>
     Object? cost = null,
     Object? tags = null,
     Object? sessionId = null,
-    Object? usage = null,
+    Object? usage = freezed,
     Object? estimatedRunningTimeSeconds = null,
     Object? estimatedMaxRunningTimeSeconds = null,
   }) {
@@ -303,7 +305,7 @@ class __$$RuntimeJobImplCopyWithImpl<$Res>
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
-              as (RuntimeJobStatus, String),
+              as ({String reason, RuntimeJobStatus status}),
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -311,11 +313,11 @@ class __$$RuntimeJobImplCopyWithImpl<$Res>
       params: null == params
           ? _value.params
           : params // ignore: cast_nullable_to_non_nullable
-              as IMap<String, dynamic>,
+              as ({List<Map<dynamic, dynamic>> circuits, int shots}),
       program: null == program
           ? _value.program
           : program // ignore: cast_nullable_to_non_nullable
-              as (String,),
+              as ({String id}),
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
@@ -335,15 +337,15 @@ class __$$RuntimeJobImplCopyWithImpl<$Res>
       tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
-              as IList<String>,
+              as Option<IList<String>>,
       sessionId: null == sessionId
           ? _value.sessionId
           : sessionId // ignore: cast_nullable_to_non_nullable
-              as String,
-      usage: null == usage
+              as Option<String>,
+      usage: freezed == usage
           ? _value.usage
           : usage // ignore: cast_nullable_to_non_nullable
-              as (double,),
+              as ({double seconds})?,
       estimatedRunningTimeSeconds: null == estimatedRunningTimeSeconds
           ? _value.estimatedRunningTimeSeconds
           : estimatedRunningTimeSeconds // ignore: cast_nullable_to_non_nullable
@@ -406,7 +408,7 @@ class _$RuntimeJobImpl extends _RuntimeJob {
 
   /// The job state.
   @override
-  final (RuntimeJobStatus, String) state;
+  final ({String reason, RuntimeJobStatus status}) state;
 
   /// The job status.
   ///
@@ -416,11 +418,11 @@ class _$RuntimeJobImpl extends _RuntimeJob {
 
   /// Parameters of the job.
   @override
-  final IMap<String, dynamic> params;
+  final ({List<Map<dynamic, dynamic>> circuits, int shots}) params;
 
   /// Program associated with the job.
   @override
-  final (String,) program;
+  final ({String id}) program;
 
   /// Timestamp of when the job was created.
   @override
@@ -440,15 +442,15 @@ class _$RuntimeJobImpl extends _RuntimeJob {
 
   /// List of tags associated with the job.
   @override
-  final IList<String> tags;
+  final Option<IList<String>> tags;
 
   /// Identifier of the session where the job was executed.
   @override
-  final String sessionId;
+  final Option<String> sessionId;
 
   /// Usage in seconds of the job.
   @override
-  final (double,) usage;
+  final ({double seconds})? usage;
 
   /// estimated running time of the job in seconds
   @override
@@ -474,25 +476,25 @@ class _$RuntimeJobImpl extends _RuntimeJob {
 
 abstract class _RuntimeJob extends RuntimeJob {
   factory _RuntimeJob(
-          {required final String id,
-          required final String hub,
-          required final String group,
-          required final String project,
-          required final String backend,
-          required final (RuntimeJobStatus, String) state,
-          required final RuntimeJobStatus status,
-          required final IMap<String, dynamic> params,
-          required final (String,) program,
-          required final DateTime created,
-          required final Option<DateTime> ended,
-          required final String runtime,
-          required final Option<int> cost,
-          required final IList<String> tags,
-          required final String sessionId,
-          required final (double,) usage,
-          required final Option<double> estimatedRunningTimeSeconds,
-          required final Option<double> estimatedMaxRunningTimeSeconds}) =
-      _$RuntimeJobImpl;
+      {required final String id,
+      required final String hub,
+      required final String group,
+      required final String project,
+      required final String backend,
+      required final ({String reason, RuntimeJobStatus status}) state,
+      required final RuntimeJobStatus status,
+      required final ({List<Map<dynamic, dynamic>> circuits, int shots}) params,
+      required final ({String id}) program,
+      required final DateTime created,
+      required final Option<DateTime> ended,
+      required final String runtime,
+      required final Option<int> cost,
+      required final Option<IList<String>> tags,
+      required final Option<String> sessionId,
+      required final ({double seconds})? usage,
+      required final Option<double> estimatedRunningTimeSeconds,
+      required final Option<double>
+          estimatedMaxRunningTimeSeconds}) = _$RuntimeJobImpl;
   _RuntimeJob._() : super._();
 
   factory _RuntimeJob.fromJson(Map<String, dynamic> json) =
@@ -521,7 +523,7 @@ abstract class _RuntimeJob extends RuntimeJob {
   @override
 
   /// The job state.
-  (RuntimeJobStatus, String) get state;
+  ({String reason, RuntimeJobStatus status}) get state;
   @override
 
   /// The job status.
@@ -531,11 +533,11 @@ abstract class _RuntimeJob extends RuntimeJob {
   @override
 
   /// Parameters of the job.
-  IMap<String, dynamic> get params;
+  ({List<Map<dynamic, dynamic>> circuits, int shots}) get params;
   @override
 
   /// Program associated with the job.
-  (String,) get program;
+  ({String id}) get program;
   @override
 
   /// Timestamp of when the job was created.
@@ -555,15 +557,15 @@ abstract class _RuntimeJob extends RuntimeJob {
   @override
 
   /// List of tags associated with the job.
-  IList<String> get tags;
+  Option<IList<String>> get tags;
   @override
 
   /// Identifier of the session where the job was executed.
-  String get sessionId;
+  Option<String> get sessionId;
   @override
 
   /// Usage in seconds of the job.
-  (double,) get usage;
+  ({double seconds})? get usage;
   @override
 
   /// estimated running time of the job in seconds

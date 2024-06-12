@@ -14,13 +14,13 @@ class RuntimeJobBloc extends Bloc<RuntimeJobEvent, RuntimeJobState> {
       : _repository = runtimeJobRepository,
         super(const _Initial()) {
     on<_Loaded>((event, emit) async {
-      emit(const _Loading());
+      emit(const Loading());
       switch (await _repository.getRuntimeJob(jobId: event.jobId).run()) {
         case Left(:final value):
-          emit(_Failure(value));
+          emit(Failure(value));
           break;
         case Right(:final value):
-          emit(_Success(value));
+          emit(Success(value));
           break;
       }
     });

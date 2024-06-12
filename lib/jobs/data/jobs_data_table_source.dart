@@ -13,7 +13,9 @@ import 'package:ibmq/jobs/model/job.dart';
 import 'package:ibmq/jobs/model/job_status.dart';
 import 'package:ibmq/jobs/job/runtime/metrics/cubit/runtime_job_metrics_cubit.dart';
 import 'package:ibmq/jobs/job/runtime/runtime_job_repository.dart';
+import 'package:ibmq/router.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:timeago_flutter/timeago_flutter.dart';
 import 'package:yaru/yaru.dart';
 
 class JobsDataTableSource extends AsyncDataTableSource {
@@ -69,6 +71,11 @@ class JobsDataTableSource extends AsyncDataTableSource {
               r.jobs
                   .map(
                     (a) => DataRow2(
+                      onTap: () => switch (a.type) {
+                        JobType.iqx => IQXJobRoute(jobId: a.id).go(_context),
+                        JobType.runtime =>
+                          RuntimeJobRoute(jobId: a.id).go(_context),
+                      },
                       color: WidgetStateProperty.resolveWith<Color?>(
                         (Set<WidgetState> states) {
                           if (states.contains(WidgetState.selected)) {
@@ -250,13 +257,19 @@ class JobsDataTableSource extends AsyncDataTableSource {
                           },
                         ),
                         DataCell(
-                          Text(timeAgo(a.created.toLocal())),
+                          Timeago(
+                            builder: (context, value) => Text(value),
+                            date: a.created.toLocal(),
+                          ),
                         ),
                         DataCell(
-                          Text(switch (a.endTime) {
-                            None() => '',
-                            Some(:final value) => timeAgo(value.toLocal()),
-                          }),
+                          switch (a.endTime) {
+                            None() => const Text(''),
+                            Some(:final value) => Timeago(
+                                builder: (context, value) => Text(value),
+                                date: value.toLocal(),
+                              ),
+                          },
                         ),
                         DataCell(Text(a.program.id)),
                         // TODO: Navigate to backend details
@@ -351,30 +364,4 @@ class JobsDataTableSource extends AsyncDataTableSource {
           )
           .getOrElse((l) => AsyncRowsResponse(0, []))
           .run();
-}
-
-String timeAgo(DateTime date) {
-  final Duration difference = DateTime.now().difference(date);
-
-  if (difference.inSeconds < 60) {
-    return 'a moment ago';
-  } else if (difference.inMinutes < 60) {
-    if (difference.inMinutes == 1) {
-      return 'a minute ago';
-    }
-    return '${difference.inMinutes} minutes ago';
-  } else if (difference.inHours < 24) {
-    if (difference.inHours == 1) {
-      return 'an hour ago';
-    }
-    return '${difference.inHours} hours ago';
-  } else if (difference.inDays == 1) {
-    return 'Yesterday';
-  } else if (difference.inDays < 30) {
-    return '${difference.inDays} days ago';
-  } else if (difference.inDays < 365) {
-    return '${(difference.inDays / 30).floor()} months ago';
-  } else {
-    return '${(difference.inDays / 365).floor()} years ago';
-  }
 }

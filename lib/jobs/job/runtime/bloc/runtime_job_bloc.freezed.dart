@@ -339,25 +339,25 @@ mixin _$RuntimeJobState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_Failure value) failure,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Success value) success,
+    required TResult Function(Failure value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_Failure value)? failure,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Success value)? success,
+    TResult? Function(Failure value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_Failure value)? failure,
+    TResult Function(Loading value)? loading,
+    TResult Function(Success value)? success,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -457,9 +457,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_Failure value) failure,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Success value) success,
+    required TResult Function(Failure value) failure,
   }) {
     return initial(this);
   }
@@ -468,9 +468,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_Failure value)? failure,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Success value)? success,
+    TResult? Function(Failure value)? failure,
   }) {
     return initial?.call(this);
   }
@@ -479,9 +479,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_Failure value)? failure,
+    TResult Function(Loading value)? loading,
+    TResult Function(Success value)? success,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -513,7 +513,7 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
+class _$LoadingImpl implements Loading {
   const _$LoadingImpl();
 
   @override
@@ -571,9 +571,9 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_Failure value) failure,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Success value) success,
+    required TResult Function(Failure value) failure,
   }) {
     return loading(this);
   }
@@ -582,9 +582,9 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_Failure value)? failure,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Success value)? success,
+    TResult? Function(Failure value)? failure,
   }) {
     return loading?.call(this);
   }
@@ -593,9 +593,9 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_Failure value)? failure,
+    TResult Function(Loading value)? loading,
+    TResult Function(Success value)? success,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -605,8 +605,8 @@ class _$LoadingImpl implements _Loading {
   }
 }
 
-abstract class _Loading implements RuntimeJobState {
-  const factory _Loading() = _$LoadingImpl;
+abstract class Loading implements RuntimeJobState {
+  const factory Loading() = _$LoadingImpl;
 }
 
 /// @nodoc
@@ -652,7 +652,7 @@ class __$$SuccessImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SuccessImpl implements _Success {
+class _$SuccessImpl implements Success {
   const _$SuccessImpl(this.job);
 
   @override
@@ -721,9 +721,9 @@ class _$SuccessImpl implements _Success {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_Failure value) failure,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Success value) success,
+    required TResult Function(Failure value) failure,
   }) {
     return success(this);
   }
@@ -732,9 +732,9 @@ class _$SuccessImpl implements _Success {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_Failure value)? failure,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Success value)? success,
+    TResult? Function(Failure value)? failure,
   }) {
     return success?.call(this);
   }
@@ -743,9 +743,9 @@ class _$SuccessImpl implements _Success {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_Failure value)? failure,
+    TResult Function(Loading value)? loading,
+    TResult Function(Success value)? success,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -755,8 +755,8 @@ class _$SuccessImpl implements _Success {
   }
 }
 
-abstract class _Success implements RuntimeJobState {
-  const factory _Success(final RuntimeJob job) = _$SuccessImpl;
+abstract class Success implements RuntimeJobState {
+  const factory Success(final RuntimeJob job) = _$SuccessImpl;
 
   RuntimeJob get job;
   @JsonKey(ignore: true)
@@ -797,7 +797,7 @@ class __$$FailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FailureImpl implements _Failure {
+class _$FailureImpl implements Failure {
   const _$FailureImpl(this.message);
 
   @override
@@ -866,9 +866,9 @@ class _$FailureImpl implements _Failure {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_Failure value) failure,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Success value) success,
+    required TResult Function(Failure value) failure,
   }) {
     return failure(this);
   }
@@ -877,9 +877,9 @@ class _$FailureImpl implements _Failure {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_Failure value)? failure,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Success value)? success,
+    TResult? Function(Failure value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -888,9 +888,9 @@ class _$FailureImpl implements _Failure {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_Failure value)? failure,
+    TResult Function(Loading value)? loading,
+    TResult Function(Success value)? success,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -900,8 +900,8 @@ class _$FailureImpl implements _Failure {
   }
 }
 
-abstract class _Failure implements RuntimeJobState {
-  const factory _Failure(final String message) = _$FailureImpl;
+abstract class Failure implements RuntimeJobState {
+  const factory Failure(final String message) = _$FailureImpl;
 
   String get message;
   @JsonKey(ignore: true)
