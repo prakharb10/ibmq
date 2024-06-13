@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/auth/data/creds_repository.dart';
 import 'package:ibmq/data/auth_data_provider.dart';
 import 'package:ibmq/data/hive_data_provider.dart';
+import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/router.dart';
 import 'package:ibmq/user/info/cubit/user_info_cubit.dart';
 import 'package:ibmq/user/info/user_info_tile.dart';
@@ -159,6 +161,7 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
+    context.read<InstancesCubit>().loadInstances();
     context.read<LocalNotifications>().initialize();
     context.read<UserUsageCubit>().loadUsage();
     context
@@ -184,8 +187,12 @@ class _AppShellState extends State<AppShell> {
                     label: Text('Backends'),
                   ),
                 ],
-                currentIndex: 0,
-                onChanged: (value) {},
+                currentIndex: currentIndex(context),
+                onChanged: (value) => switch (value) {
+                  0 => JobsRoute().go(context),
+                  1 => BackendsRoute().go(context),
+                  _ => null,
+                },
               ),
               minWidth: 200,
               bottom: const Column(
@@ -245,6 +252,12 @@ class _AppShellState extends State<AppShell> {
                   label: 'Backends',
                 ),
               ],
+              onTap: (value) => switch (value) {
+                0 => JobsRoute().go(context),
+                1 => BackendsRoute().go(context),
+                _ => null,
+              },
+              currentIndex: currentIndex(context),
             ),
             tabBuilder: (context, index) => widget.child,
           ),
@@ -263,6 +276,11 @@ class _AppShellState extends State<AppShell> {
                   selected: selected,
                 ),
               _ => const SizedBox.shrink(),
+            },
+            onSelected: (value) => switch (value) {
+              0 => JobsRoute().go(context),
+              1 => BackendsRoute().go(context),
+              _ => null,
             },
             bottomBar: const Column(
               children: [
@@ -292,6 +310,12 @@ class _AppShellState extends State<AppShell> {
                     footerItems: [
                       windowsUserInfoTile(user: user, context: context),
                     ],
+                    onChanged: (value) => switch (value) {
+                      0 => JobsRoute().go(context),
+                      1 => BackendsRoute().go(context),
+                      _ => null,
+                    },
+                    selected: currentIndex(context),
                   ),
                   paneBodyBuilder: (item, body) => widget.child,
                 ),
@@ -306,20 +330,20 @@ class _AppShellState extends State<AppShell> {
               title: const Text('IBM Quantum Dashboard'),
               actions: [
                 IconButton(
-                  // onPressed: () => appState.showProfile = true,
                   onPressed: () {},
                   icon: const Icon(Icons.person),
                 )
               ],
             ),
             body: widget.child,
-            drawer: const NavigationDrawer(
-              // selectedIndex: appState.pageIndex,
-              // onDestinationSelected: (index) {
-              //   appState.pageIndex = index;
-              //   Navigator.of(context).pop();
-              // },
-              children: [
+            drawer: NavigationDrawer(
+              selectedIndex: currentIndex(context),
+              onDestinationSelected: (index) => switch (index) {
+                0 => JobsRoute().go(context),
+                1 => BackendsRoute().go(context),
+                _ => null,
+              },
+              children: const [
                 NavigationDrawerDestination(
                   icon: Icon(Icons.webhook),
                   label: Text("Jobs"),
@@ -332,4 +356,12 @@ class _AppShellState extends State<AppShell> {
             ),
           ),
       };
+
+  int currentIndex(BuildContext context) {
+    return GoRouterState.of(context).matchedLocation.contains(
+              'backends',
+            )
+        ? 1
+        : 0;
+  }
 }

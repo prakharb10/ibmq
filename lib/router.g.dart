@@ -28,6 +28,10 @@ RouteBase get $appShellRouteData => ShellRouteData.$route(
             ),
           ],
         ),
+        GoRouteData.$route(
+          path: '/backends',
+          factory: $BackendsRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -79,6 +83,23 @@ extension $RuntimeJobRouteExtension on RuntimeJobRoute {
 
   String get location => GoRouteData.$location(
         '/jobs/runtime/${Uri.encodeComponent(jobId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $BackendsRouteExtension on BackendsRoute {
+  static BackendsRoute _fromState(GoRouterState state) => BackendsRoute();
+
+  String get location => GoRouteData.$location(
+        '/backends',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -55,4 +55,22 @@ class HTTPDataProvider {
           return 'Failed to get IQX Job information';
         },
       );
+
+  /// Get all Backends/Systems
+  ///
+  /// Returns the IBM Backends if the request is successful, otherwise
+  /// returns an error message.
+  TaskEither<String, List> getBackends() => TaskEither.tryCatch(
+        () async {
+          final resp = await _dio.get('/users/backends');
+          return switch (Option<List>.safeCast(resp.data)) {
+            Some(value: final d) => d,
+            None() => throw Exception('Failed to parse response data'),
+          };
+        },
+        (error, stackTrace) {
+          talker.handle(error, stackTrace, 'Failed to get IBM Backends');
+          return 'Failed to get IBM Backends';
+        },
+      );
 }

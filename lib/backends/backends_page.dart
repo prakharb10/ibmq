@@ -3,23 +3,15 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibmq/backends/backends_data_table.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instance_selector.dart';
-import 'package:ibmq/jobs/jobs_data_table.dart';
 import 'package:ibmq/user/info/user_info_tile.dart';
-import 'package:ibmq/user/jobs_updates/jobs_updates_widget.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';
 
-class JobsPage extends StatefulWidget {
-  const JobsPage({super.key});
-
-  @override
-  State<JobsPage> createState() => _JobsPageState();
-}
-
-class _JobsPageState extends State<JobsPage> {
-  bool _isSidebarOpen = false;
+class BackendsPage extends StatelessWidget {
+  const BackendsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +60,7 @@ class _JobsPageState extends State<JobsPage> {
                   BlocBuilder<InstancesCubit, InstancesState>(
                 builder: (context, state) => switch (state) {
                   InstancesLoadSuccess() => Material(
-                      child: JobsDataTable(
+                      child: BackendsDataTable(
                         scrollController: scrollController,
                       ),
                     ),
@@ -85,7 +77,7 @@ class _JobsPageState extends State<JobsPage> {
           ],
         ),
       TargetPlatform.iOS => CupertinoTabView(
-          defaultTitle: 'Jobs',
+          defaultTitle: 'Backends',
           builder: (context) => const CupertinoPageScaffold(
             child: CustomScrollView(
               slivers: <Widget>[
@@ -95,7 +87,7 @@ class _JobsPageState extends State<JobsPage> {
                 ),
                 SliverFillRemaining(
                   child: Center(
-                    child: Text('Jobs Page'),
+                    child: Text('Backends Page'),
                   ),
                 ),
               ],
@@ -103,34 +95,14 @@ class _JobsPageState extends State<JobsPage> {
           ),
         ),
       TargetPlatform.linux => YaruDetailPage(
-          appBar: YaruWindowTitleBar(
+          appBar: const YaruWindowTitleBar(
             actions: [
-              const InstanceSelector(),
-              YaruIconButton(
-                icon: const Icon(YaruIcons.bell),
-                onPressed: () =>
-                    setState(() => _isSidebarOpen = !_isSidebarOpen),
-              ),
+              InstanceSelector(),
             ],
           ),
           body: BlocBuilder<InstancesCubit, InstancesState>(
             builder: (context, state) => switch (state) {
-              InstancesLoadSuccess() => Stack(
-                  children: [
-                    const JobsDataTable(),
-                    if (_isSidebarOpen)
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 300),
-                        right: 0,
-                        child: YaruBorderContainer(
-                          width: 200.0,
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          height: MediaQuery.sizeOf(context).height - 96,
-                          child: const JobsUpdatesWidget(),
-                        ),
-                      ),
-                  ],
-                ),
+              InstancesLoadSuccess() => const BackendsDataTable(),
               InstancesLoadInProgress() => const Center(
                   child: YaruCircularProgressIndicator(),
                 ),
@@ -160,7 +132,7 @@ class _JobsPageState extends State<JobsPage> {
           content: BlocBuilder<InstancesCubit, InstancesState>(
             builder: (context, state) => switch (state) {
               InstancesLoadSuccess() => const Material(
-                  child: JobsDataTable(),
+                  child: BackendsDataTable(),
                 ),
               InstancesLoadInProgress() => const Center(
                   child: fluent.Tooltip(
@@ -173,7 +145,7 @@ class _JobsPageState extends State<JobsPage> {
           ),
         ),
       _ => const Center(
-          child: Text('Jobs Page'),
+          child: Text('Backends Page'),
         ),
     };
   }

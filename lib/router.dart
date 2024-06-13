@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,9 @@ import 'package:ibmq/auth/auth_page.dart';
 import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
+import 'package:ibmq/backends/backends_page.dart';
+import 'package:ibmq/backends/bloc/backends_bloc.dart';
+import 'package:ibmq/backends/data/backends_repository.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instances_repository.dart';
@@ -37,7 +41,8 @@ part 'router.g.dart';
       TypedGoRoute<IQXJobRoute>(path: 'iqx/:jobId'),
       TypedGoRoute<RuntimeJobRoute>(path: 'runtime/:jobId'),
     ],
-  )
+  ),
+  TypedGoRoute<BackendsRoute>(path: '/backends'),
 ])
 class AppShellRouteData extends ShellRouteData {
   @override
@@ -97,6 +102,20 @@ class AppShellRouteData extends ShellRouteData {
                 ),
                 child: AppShell(child: navigator),
               ),
+            TargetPlatform.windows => Theme(
+                data: ThemeData(
+                  brightness: fluent.FluentTheme.of(context).brightness,
+                  colorSchemeSeed: fluent.FluentTheme.of(context).activeColor,
+                  canvasColor:
+                      fluent.FluentTheme.of(context).scaffoldBackgroundColor,
+                  iconTheme: IconThemeData(
+                    color: fluent.FluentTheme.of(context).iconTheme.color,
+                    opacity: fluent.FluentTheme.of(context).iconTheme.opacity,
+                    size: fluent.FluentTheme.of(context).iconTheme.size,
+                  ),
+                ),
+                child: AppShell(child: navigator),
+              ),
             _ => AppShell(child: navigator)
           },
         ),
@@ -139,6 +158,26 @@ class JobsRoute extends GoRouteData {
       child: BlocProvider(
         create: (context) => JobsFilterBloc(),
         child: const JobsPage(),
+      ),
+    );
+  }
+}
+
+class BackendsRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return RepositoryProvider(
+      create: (context) => BackendsRepository(
+        httpDataProvider:
+            (context.read<DataClientsCubit>().state as DataClientsCreateSuccess)
+                .httpDataProvider,
+      ),
+      child: BlocProvider(
+        create: (context) => BackendsBloc(
+          backendsRepository:
+              RepositoryProvider.of<BackendsRepository>(context),
+        ),
+        child: const BackendsPage(),
       ),
     );
   }
