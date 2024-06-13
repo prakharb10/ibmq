@@ -34,19 +34,32 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 part 'router.g.dart';
 
-@TypedShellRoute<AppShellRouteData>(routes: [
-  TypedGoRoute<JobsRoute>(
-    path: '/jobs',
-    routes: [
-      TypedGoRoute<IQXJobRoute>(path: 'iqx/:jobId'),
-      TypedGoRoute<RuntimeJobRoute>(path: 'runtime/:jobId'),
-    ],
-  ),
-  TypedGoRoute<BackendsRoute>(path: '/backends'),
-])
-class AppShellRouteData extends ShellRouteData {
+@TypedStatefulShellRoute<AppShellRouteData>(
+  branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
+    TypedStatefulShellBranch<JobsBranchData>(
+      routes: [
+        TypedGoRoute<JobsRoute>(
+          path: '/jobs',
+          routes: [
+            TypedGoRoute<IQXJobRoute>(path: 'iqx/:jobId'),
+            TypedGoRoute<RuntimeJobRoute>(path: 'runtime/:jobId'),
+          ],
+        ),
+      ],
+    ),
+    TypedStatefulShellBranch<BackendsBranchData>(
+      routes: [
+        TypedGoRoute<BackendsRoute>(path: '/backends'),
+      ],
+    )
+  ],
+)
+class AppShellRouteData extends StatefulShellRouteData {
+  const AppShellRouteData();
+
   @override
-  Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
+  Widget builder(BuildContext context, GoRouterState state,
+      StatefulNavigationShell navigationShell) {
     return BlocListener<CredentialsCubit, CredentialsState>(
       listener: (context, state) {
         AuthRoute().go(context);
@@ -100,7 +113,7 @@ class AppShellRouteData extends ShellRouteData {
                     size: MacosTheme.of(context).iconTheme.size,
                   ),
                 ),
-                child: AppShell(child: navigator),
+                child: AppShell(navigationShell: navigationShell),
               ),
             TargetPlatform.windows => Theme(
                 data: ThemeData(
@@ -114,9 +127,9 @@ class AppShellRouteData extends ShellRouteData {
                     size: fluent.FluentTheme.of(context).iconTheme.size,
                   ),
                 ),
-                child: AppShell(child: navigator),
+                child: AppShell(navigationShell: navigationShell),
               ),
-            _ => AppShell(child: navigator)
+            _ => AppShell(navigationShell: navigationShell)
           },
         ),
       ),
@@ -133,6 +146,14 @@ class AuthRoute extends GoRouteData {
       child: const AuthPage(),
     );
   }
+}
+
+class JobsBranchData extends StatefulShellBranchData {
+  const JobsBranchData();
+}
+
+class BackendsBranchData extends StatefulShellBranchData {
+  const BackendsBranchData();
 }
 
 class JobsRoute extends GoRouteData {

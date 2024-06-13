@@ -147,10 +147,10 @@ class MyApp extends StatelessWidget {
 }
 
 class AppShell extends StatefulWidget {
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
   const AppShell({
     super.key,
-    required this.child,
+    required this.navigationShell,
   });
 
   @override
@@ -187,12 +187,8 @@ class _AppShellState extends State<AppShell> {
                     label: Text('Backends'),
                   ),
                 ],
-                currentIndex: currentIndex(context),
-                onChanged: (value) => switch (value) {
-                  0 => JobsRoute().go(context),
-                  1 => BackendsRoute().go(context),
-                  _ => null,
-                },
+                currentIndex: widget.navigationShell.currentIndex,
+                onChanged: widget.navigationShell.goBranch,
               ),
               minWidth: 200,
               bottom: const Column(
@@ -238,7 +234,7 @@ class _AppShellState extends State<AppShell> {
                 },
               ),
             ),
-            child: widget.child,
+            child: widget.navigationShell,
           ),
         TargetPlatform.iOS => CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
@@ -252,14 +248,13 @@ class _AppShellState extends State<AppShell> {
                   label: 'Backends',
                 ),
               ],
-              onTap: (value) => switch (value) {
-                0 => JobsRoute().go(context),
-                1 => BackendsRoute().go(context),
-                _ => null,
-              },
-              currentIndex: currentIndex(context),
+              onTap: (value) => widget.navigationShell.goBranch(
+                value,
+                initialLocation: value == widget.navigationShell.currentIndex,
+              ),
+              currentIndex: widget.navigationShell.currentIndex,
             ),
-            tabBuilder: (context, index) => widget.child,
+            tabBuilder: (context, index) => widget.navigationShell,
           ),
         TargetPlatform.linux => YaruMasterDetailPage(
             length: 2,
@@ -278,9 +273,8 @@ class _AppShellState extends State<AppShell> {
               _ => const SizedBox.shrink(),
             },
             onSelected: (value) => switch (value) {
-              0 => JobsRoute().go(context),
-              1 => BackendsRoute().go(context),
-              _ => null,
+              null => null,
+              _ => widget.navigationShell.goBranch(value),
             },
             bottomBar: const Column(
               children: [
@@ -288,7 +282,7 @@ class _AppShellState extends State<AppShell> {
                 UserInfoTile(),
               ],
             ),
-            pageBuilder: (context, index) => widget.child,
+            pageBuilder: (context, index) => widget.navigationShell,
           ),
         TargetPlatform.windows => BlocBuilder<UserInfoCubit, UserInfoState>(
             builder: (context, state) => switch (state) {
@@ -310,14 +304,10 @@ class _AppShellState extends State<AppShell> {
                     footerItems: [
                       windowsUserInfoTile(user: user, context: context),
                     ],
-                    onChanged: (value) => switch (value) {
-                      0 => JobsRoute().go(context),
-                      1 => BackendsRoute().go(context),
-                      _ => null,
-                    },
-                    selected: currentIndex(context),
+                    onChanged: widget.navigationShell.goBranch,
+                    selected: widget.navigationShell.currentIndex,
                   ),
-                  paneBodyBuilder: (item, body) => widget.child,
+                  paneBodyBuilder: (item, body) => widget.navigationShell,
                 ),
               UserInfoLoadInProgress() => const Center(
                   child: fluent.ProgressBar(),
@@ -335,14 +325,10 @@ class _AppShellState extends State<AppShell> {
                 )
               ],
             ),
-            body: widget.child,
+            body: widget.navigationShell,
             drawer: NavigationDrawer(
-              selectedIndex: currentIndex(context),
-              onDestinationSelected: (index) => switch (index) {
-                0 => JobsRoute().go(context),
-                1 => BackendsRoute().go(context),
-                _ => null,
-              },
+              selectedIndex: widget.navigationShell.currentIndex,
+              onDestinationSelected: widget.navigationShell.goBranch,
               children: const [
                 NavigationDrawerDestination(
                   icon: Icon(Icons.webhook),
@@ -356,12 +342,4 @@ class _AppShellState extends State<AppShell> {
             ),
           ),
       };
-
-  int currentIndex(BuildContext context) {
-    return GoRouterState.of(context).matchedLocation.contains(
-              'backends',
-            )
-        ? 1
-        : 0;
-  }
 }

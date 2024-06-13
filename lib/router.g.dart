@@ -11,33 +11,41 @@ List<RouteBase> get $appRoutes => [
       $authRoute,
     ];
 
-RouteBase get $appShellRouteData => ShellRouteData.$route(
+RouteBase get $appShellRouteData => StatefulShellRouteData.$route(
       factory: $AppShellRouteDataExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: '/jobs',
-          factory: $JobsRouteExtension._fromState,
+      branches: [
+        StatefulShellBranchData.$branch(
           routes: [
             GoRouteData.$route(
-              path: 'iqx/:jobId',
-              factory: $IQXJobRouteExtension._fromState,
-            ),
-            GoRouteData.$route(
-              path: 'runtime/:jobId',
-              factory: $RuntimeJobRouteExtension._fromState,
+              path: '/jobs',
+              factory: $JobsRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'iqx/:jobId',
+                  factory: $IQXJobRouteExtension._fromState,
+                ),
+                GoRouteData.$route(
+                  path: 'runtime/:jobId',
+                  factory: $RuntimeJobRouteExtension._fromState,
+                ),
+              ],
             ),
           ],
         ),
-        GoRouteData.$route(
-          path: '/backends',
-          factory: $BackendsRouteExtension._fromState,
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/backends',
+              factory: $BackendsRouteExtension._fromState,
+            ),
+          ],
         ),
       ],
     );
 
 extension $AppShellRouteDataExtension on AppShellRouteData {
   static AppShellRouteData _fromState(GoRouterState state) =>
-      AppShellRouteData();
+      const AppShellRouteData();
 }
 
 extension $JobsRouteExtension on JobsRoute {
