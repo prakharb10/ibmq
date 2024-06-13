@@ -31,6 +31,7 @@ import 'package:ibmq/utils/notifications/permissions/cubit/notification_permissi
 import 'package:ibmq/utils/talker.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:yaru/yaru.dart';
 
 part 'router.g.dart';
 
@@ -226,6 +227,14 @@ class IQXJobRoute extends GoRouteData {
               )
             ],
           ),
+        TargetPlatform.linux => YaruDetailPage(
+            appBar: YaruWindowTitleBar(
+              title: Text(jobId),
+              leading: const YaruBackButton(),
+              centerTitle: false,
+            ),
+            body: body(),
+          ),
         _ => Scaffold(
             appBar: AppBar(
               title: Text(jobId),
@@ -271,6 +280,14 @@ class RuntimeJobRoute extends GoRouteData {
                 builder: (context, scrollController) => body(scrollController),
               )
             ],
+          ),
+        TargetPlatform.linux => YaruDetailPage(
+            appBar: YaruWindowTitleBar(
+              title: Text(jobId),
+              leading: const YaruBackButton(),
+              centerTitle: false,
+            ),
+            body: body(),
           ),
         _ => Scaffold(
             appBar: AppBar(

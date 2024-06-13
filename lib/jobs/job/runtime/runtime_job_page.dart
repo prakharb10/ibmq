@@ -41,6 +41,11 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
                   padding: const EdgeInsets.all(16),
                   child: child(job),
                 ),
+              TargetPlatform.linux => SingleChildScrollView(
+                  controller: widget.scrollController,
+                  padding: const EdgeInsets.all(16),
+                  child: child(job),
+                ),
               _ => child(job),
               // ListView(
               //     children: [

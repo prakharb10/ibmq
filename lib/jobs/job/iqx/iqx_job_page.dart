@@ -30,6 +30,11 @@ class _IQXJobPageState extends State<IQXJobPage> {
                     padding: const EdgeInsets.all(16),
                     child: IQXJobDetails(job: job),
                   ),
+                TargetPlatform.linux => SingleChildScrollView(
+                    controller: widget.scrollController,
+                    padding: const EdgeInsets.all(16),
+                    child: IQXJobDetails(job: job),
+                  ),
                 _ => Center(
                     child: Text(job.userId),
                   ),
