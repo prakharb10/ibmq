@@ -1,3 +1,5 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/jobs/job/runtime/bloc/runtime_job_bloc.dart';
@@ -6,15 +8,11 @@ import 'package:ibmq/jobs/job/runtime/model/runtime_job.dart';
 import 'package:ibmq/jobs/job/runtime/runtime_job_repository.dart';
 import 'package:ibmq/jobs/job/runtime/widgets/runtime_job_details.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:yaru/yaru.dart';
 
 class RuntimeJobPage extends StatefulWidget {
   final String jobId;
-  final ScrollController? scrollController;
-  const RuntimeJobPage({
-    super.key,
-    required this.jobId,
-    this.scrollController,
-  });
+  const RuntimeJobPage({super.key, required this.jobId});
 
   @override
   State<RuntimeJobPage> createState() => _RuntimeJobPageState();
@@ -36,17 +34,51 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
       builder: (context, state) {
         return switch (state) {
           Success(:final job) => switch (Theme.of(context).platform) {
-              TargetPlatform.macOS => SingleChildScrollView(
-                  controller: widget.scrollController,
-                  padding: const EdgeInsets.all(16),
-                  child: child(job),
+              TargetPlatform.macOS => MacosScaffold(
+                  toolBar: ToolBar(
+                    title: Text(widget.jobId),
+                  ),
+                  children: [
+                    ContentArea(
+                      builder: (context, scrollController) =>
+                          SingleChildScrollView(
+                        controller: scrollController,
+                        padding: const EdgeInsets.all(16),
+                        child: child(job),
+                      ),
+                    )
+                  ],
                 ),
-              TargetPlatform.linux => SingleChildScrollView(
-                  controller: widget.scrollController,
-                  padding: const EdgeInsets.all(16),
-                  child: child(job),
+              TargetPlatform.linux => YaruDetailPage(
+                  appBar: YaruWindowTitleBar(
+                    title: Text(widget.jobId),
+                    leading: const YaruBackButton(),
+                    centerTitle: false,
+                  ),
+                  body: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: child(job),
+                  ),
                 ),
-              _ => child(job),
+              TargetPlatform.windows => fluent.ScaffoldPage.scrollable(
+                  padding: const EdgeInsets.all(16),
+                  header: fluent.PageHeader(
+                    leading: fluent.IconButton(
+                      icon: const Icon(FluentIcons.arrow_left_24_regular),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    title: Text(widget.jobId),
+                  ),
+                  children: [
+                    child(job),
+                  ],
+                ),
+              _ => Scaffold(
+                  appBar: AppBar(
+                    title: Text(widget.jobId),
+                  ),
+                  body: child(job),
+                ),
               // ListView(
               //     children: [
               // BlocBuilder<RuntimeBloc, RuntimeState>(
@@ -142,14 +174,14 @@ class _RuntimeJobPageState extends State<RuntimeJobPage> {
           Failure(:final message) => Center(
               child: Text(message),
             ),
-          Loading() => switch (Theme.of(context).platform) {
-              TargetPlatform.macOS => const Center(
-                  child: ProgressCircle(),
-                ),
-              _ => const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-            },
+          Loading() => Center(
+              child: switch (Theme.of(context).platform) {
+                TargetPlatform.macOS => const ProgressCircle(),
+                TargetPlatform.linux => const YaruCircularProgressIndicator(),
+                TargetPlatform.windows => const fluent.ProgressRing(),
+                _ => const CircularProgressIndicator.adaptive(),
+              },
+            ),
           _ => const SizedBox.shrink(),
         };
       },

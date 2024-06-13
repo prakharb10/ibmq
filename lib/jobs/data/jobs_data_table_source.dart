@@ -104,8 +104,9 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 TargetPlatform.linux => YaruColors.of(_context)
                                     .error
                                     .withOpacity(0.2),
-                                TargetPlatform.windows =>
-                                  fluent.Colors.errorSecondaryColor,
+                                TargetPlatform.windows => fluent
+                                    .Colors.errorPrimaryColor
+                                    .withOpacity(0.2),
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .error
@@ -119,8 +120,9 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 TargetPlatform.linux => YaruColors.of(_context)
                                     .success
                                     .withOpacity(0.2),
-                                TargetPlatform.windows =>
-                                  fluent.Colors.successSecondaryColor,
+                                TargetPlatform.windows => fluent
+                                    .Colors.successPrimaryColor
+                                    .withOpacity(0.2),
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .primary
@@ -134,8 +136,9 @@ class JobsDataTableSource extends AsyncDataTableSource {
                                 TargetPlatform.linux => YaruColors.of(_context)
                                     .warning
                                     .withOpacity(0.2),
-                                TargetPlatform.windows =>
-                                  fluent.Colors.warningSecondaryColor,
+                                TargetPlatform.windows => fluent
+                                    .Colors.warningPrimaryColor
+                                    .withOpacity(0.2),
                                 _ => Theme.of(_context)
                                     .colorScheme
                                     .secondary

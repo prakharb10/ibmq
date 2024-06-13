@@ -304,7 +304,10 @@ class _AppShellState extends State<AppShell> {
                     footerItems: [
                       windowsUserInfoTile(user: user, context: context),
                     ],
-                    onChanged: widget.navigationShell.goBranch,
+                    onChanged: (value) => switch (value) {
+                      0 || 1 => widget.navigationShell.goBranch(value),
+                      _ => null,
+                    },
                     selected: widget.navigationShell.currentIndex,
                   ),
                   paneBodyBuilder: (item, body) => widget.navigationShell,

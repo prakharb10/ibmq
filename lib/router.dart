@@ -31,7 +31,6 @@ import 'package:ibmq/utils/notifications/permissions/cubit/notification_permissi
 import 'package:ibmq/utils/talker.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:yaru/yaru.dart';
 
 part 'router.g.dart';
 
@@ -216,43 +215,11 @@ class IQXJobRoute extends GoRouteData {
           httpDataProvider: (context.read<DataClientsCubit>().state
                   as DataClientsCreateSuccess)
               .httpDataProvider),
-      child: switch (Theme.of(context).platform) {
-        TargetPlatform.macOS => MacosScaffold(
-            toolBar: ToolBar(
-              title: Text(jobId),
-            ),
-            children: [
-              ContentArea(
-                builder: (context, scrollController) => body(scrollController),
-              )
-            ],
-          ),
-        TargetPlatform.linux => YaruDetailPage(
-            appBar: YaruWindowTitleBar(
-              title: Text(jobId),
-              leading: const YaruBackButton(),
-              centerTitle: false,
-            ),
-            body: body(),
-          ),
-        _ => Scaffold(
-            appBar: AppBar(
-              title: Text(jobId),
-            ),
-            body: body(),
-          ),
-      },
-    );
-  }
-
-  BlocProvider<IqxJobCubit> body([ScrollController? scrollController]) {
-    return BlocProvider(
-      create: (context) => IqxJobCubit(
-        iqxJobRepository: RepositoryProvider.of<IQXJobRepository>(context),
-      ),
-      child: IQXJobPage(
-        jobId: jobId,
-        scrollController: scrollController,
+      child: BlocProvider(
+        create: (context) => IqxJobCubit(
+          iqxJobRepository: RepositoryProvider.of<IQXJobRepository>(context),
+        ),
+        child: IQXJobPage(jobId: jobId),
       ),
     );
   }
@@ -270,44 +237,12 @@ class RuntimeJobRoute extends GoRouteData {
             (context.read<DataClientsCubit>().state as DataClientsCreateSuccess)
                 .runtimeDataProvider,
       ),
-      child: switch (Theme.of(context).platform) {
-        TargetPlatform.macOS => MacosScaffold(
-            toolBar: ToolBar(
-              title: Text(jobId),
-            ),
-            children: [
-              ContentArea(
-                builder: (context, scrollController) => body(scrollController),
-              )
-            ],
-          ),
-        TargetPlatform.linux => YaruDetailPage(
-            appBar: YaruWindowTitleBar(
-              title: Text(jobId),
-              leading: const YaruBackButton(),
-              centerTitle: false,
-            ),
-            body: body(),
-          ),
-        _ => Scaffold(
-            appBar: AppBar(
-              title: Text(jobId),
-            ),
-            body: body(),
-          ),
-      },
-    );
-  }
-
-  BlocProvider<RuntimeJobBloc> body([ScrollController? scrollController]) {
-    return BlocProvider(
-      create: (context) => RuntimeJobBloc(
-        runtimeJobRepository:
-            RepositoryProvider.of<RuntimeJobRepository>(context),
-      ),
-      child: RuntimeJobPage(
-        jobId: jobId,
-        scrollController: scrollController,
+      child: BlocProvider(
+        create: (context) => RuntimeJobBloc(
+          runtimeJobRepository:
+              RepositoryProvider.of<RuntimeJobRepository>(context),
+        ),
+        child: RuntimeJobPage(jobId: jobId),
       ),
     );
   }

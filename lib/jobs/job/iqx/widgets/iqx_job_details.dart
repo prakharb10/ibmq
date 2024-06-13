@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/jobs/job/iqx/model/iqx_job.dart';
@@ -20,6 +21,8 @@ class IQXJobDetails extends StatelessWidget {
           "Details",
           style: switch (Theme.of(context).platform) {
             TargetPlatform.macOS => MacosTheme.of(context).typography.title2,
+            TargetPlatform.windows =>
+              fluent.FluentTheme.of(context).typography.title,
             _ => Theme.of(context).textTheme.titleMedium,
           },
         ),
@@ -40,6 +43,8 @@ class IQXJobDetails extends StatelessWidget {
                           style: switch (Theme.of(context).platform) {
                             TargetPlatform.macOS =>
                               MacosTheme.of(context).typography.caption1,
+                            TargetPlatform.windows =>
+                              fluent.FluentTheme.of(context).typography.caption,
                             _ => Theme.of(context).textTheme.labelMedium,
                           },
                         )
@@ -53,6 +58,8 @@ class IQXJobDetails extends StatelessWidget {
                         style: switch (Theme.of(context).platform) {
                           TargetPlatform.macOS =>
                             MacosTheme.of(context).typography.caption1,
+                          TargetPlatform.windows =>
+                            fluent.FluentTheme.of(context).typography.caption,
                           _ => Theme.of(context).textTheme.labelMedium,
                         },
                       )
@@ -113,6 +120,10 @@ class IQXJobDetails extends StatelessWidget {
           ),
         ),
       TargetPlatform.linux => YaruSection(child: column),
+      TargetPlatform.windows => fluent.Card(
+          padding: const EdgeInsets.all(16.0),
+          child: column,
+        ),
       _ => Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

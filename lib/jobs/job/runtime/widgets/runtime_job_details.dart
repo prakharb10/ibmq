@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,8 @@ class _RuntimeJobDetailsState extends State<RuntimeJobDetails> {
           "Details",
           style: switch (Theme.of(context).platform) {
             TargetPlatform.macOS => MacosTheme.of(context).typography.title2,
+            TargetPlatform.windows =>
+              fluent.FluentTheme.of(context).typography.title,
             _ => Theme.of(context).textTheme.titleMedium,
           },
         ),
@@ -52,6 +55,8 @@ class _RuntimeJobDetailsState extends State<RuntimeJobDetails> {
                           style: switch (Theme.of(context).platform) {
                             TargetPlatform.macOS =>
                               MacosTheme.of(context).typography.caption1,
+                            TargetPlatform.windows =>
+                              fluent.FluentTheme.of(context).typography.caption,
                             _ => Theme.of(context).textTheme.labelMedium,
                           },
                         )
@@ -65,6 +70,8 @@ class _RuntimeJobDetailsState extends State<RuntimeJobDetails> {
                         style: switch (Theme.of(context).platform) {
                           TargetPlatform.macOS =>
                             MacosTheme.of(context).typography.caption1,
+                          TargetPlatform.windows =>
+                            fluent.FluentTheme.of(context).typography.caption,
                           _ => Theme.of(context).textTheme.labelMedium,
                         },
                       )
@@ -135,6 +142,10 @@ class _RuntimeJobDetailsState extends State<RuntimeJobDetails> {
           ),
         ),
       TargetPlatform.linux => YaruSection(child: column),
+      TargetPlatform.windows => fluent.Card(
+          padding: const EdgeInsets.all(16.0),
+          child: column,
+        ),
       _ => Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
