@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ibmq/jobs/bloc/jobs_filter.dart';
+import 'package:ibmq/jobs/filter/jobs_filter.dart';
 
 part 'jobs_filter_event.dart';
 part 'jobs_filter_state.dart';

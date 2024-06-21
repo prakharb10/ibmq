@@ -1,4 +1,4 @@
-part of 'backends_bloc.dart';
+part of 'backends_cubit.dart';
 
 @freezed
 class BackendsState with _$BackendsState {

@@ -7,12 +7,12 @@ import 'package:ibmq/auth/cubit/auth_cubit.dart';
 import 'package:ibmq/auth/cubit/credentials_cubit.dart';
 import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/backends/backends_page.dart';
-import 'package:ibmq/backends/bloc/backends_bloc.dart';
+import 'package:ibmq/backends/cubit/backends_cubit.dart';
 import 'package:ibmq/backends/data/backends_repository.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instances_repository.dart';
-import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
+import 'package:ibmq/jobs/filter/bloc/jobs_filter_bloc.dart';
 import 'package:ibmq/jobs/job/iqx/cubit/iqx_job_cubit.dart';
 import 'package:ibmq/jobs/job/iqx/iqx_job_page.dart';
 import 'package:ibmq/jobs/job/iqx/iqx_job_repository.dart';
@@ -194,7 +194,7 @@ class BackendsRoute extends GoRouteData {
                 .httpDataProvider,
       ),
       child: BlocProvider(
-        create: (context) => BackendsBloc(
+        create: (context) => BackendsCubit(
           backendsRepository:
               RepositoryProvider.of<BackendsRepository>(context),
         ),

@@ -28,7 +28,14 @@ class BackendsDataTableSource extends DataTableSource {
       DataRow2.byIndex(
         index: index,
         cells: [
-          DataCell(Text(backend.name)),
+          DataCell(
+            Row(
+              children: [
+                Text(backend.name),
+                if (!backend.hasAccess) const Icon(Icons.lock_outline),
+              ],
+            ),
+          ),
           DataCell(Text(backend.qubits.toString())),
           DataCell(Text(
               "${(backend.performance.eplg * 100).toStringAsPrecision(3)}%")),
@@ -40,7 +47,7 @@ class BackendsDataTableSource extends DataTableSource {
               Some(:final value) => "${value / 1000}K",
             }),
           ),
-          DataCell(Text(backend.deviceStatus.status)),
+          DataCell(Text(backend.deviceStatus.message)),
           DataCell(Text(backend.queueLength.toString())),
           DataCell(Text(
               "${backend.processorType.family} r${backend.processorType.revision}")),

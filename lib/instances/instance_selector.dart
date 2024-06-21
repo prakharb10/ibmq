@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
-import 'package:ibmq/jobs/bloc/jobs_filter_bloc.dart';
+import 'package:ibmq/jobs/filter/bloc/jobs_filter_bloc.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';
 
