@@ -19,7 +19,7 @@ class LocalNotifications {
       requestSoundPermission: true,
     );
     const linuxInitializationSettings =
-        LinuxInitializationSettings(defaultActionName: 'default');
+        LinuxInitializationSettings(defaultActionName: 'Open Notification');
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         macOS: darwinInitializationSettings,

@@ -101,7 +101,10 @@ class _RuntimeJobDetailsState extends State<RuntimeJobDetails> {
                   const Text("# of shots"),
                   Text(widget.job.params.shots.toString()),
                   const Text("# of circuits"),
-                  Text(widget.job.params.circuits.length.toString()),
+                  Text(switch (widget.job.params.circuits) {
+                    Some(:final value) => value.length.toString(),
+                    None() => "",
+                  }),
                 ],
               ),
             ),

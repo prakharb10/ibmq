@@ -24,10 +24,13 @@ _$RuntimeJobImpl _$$RuntimeJobImplFromJson(Map<String, dynamic> json) =>
       params: _$recordConvert(
         json['params'],
         ($jsonValue) => (
-          circuits: ($jsonValue['circuits'] as List<dynamic>)
-              .map((e) => e as Map<String, dynamic>)
-              .toList(),
-          shots: ($jsonValue['shots'] as num).toInt(),
+          circuits: Option<List<Map<dynamic, dynamic>>>.fromJson(
+              $jsonValue['circuits'],
+              (value) => (value as List<dynamic>)
+                  .map((e) => e as Map<String, dynamic>)
+                  .toList()),
+          shots: Option<int>.fromJson(
+              $jsonValue['shots'], (value) => (value as num).toInt()),
         ),
       ),
       program: _$recordConvert(
@@ -69,8 +72,12 @@ Map<String, dynamic> _$$RuntimeJobImplToJson(_$RuntimeJobImpl instance) =>
       },
       'status': _$RuntimeJobStatusEnumMap[instance.status]!,
       'params': <String, dynamic>{
-        'circuits': instance.params.circuits,
-        'shots': instance.params.shots,
+        'circuits': instance.params.circuits.toJson(
+          (value) => value,
+        ),
+        'shots': instance.params.shots.toJson(
+          (value) => value,
+        ),
       },
       'program': <String, dynamic>{
         'id': instance.program.id,

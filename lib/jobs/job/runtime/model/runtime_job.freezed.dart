@@ -42,11 +42,11 @@ mixin _$RuntimeJob {
   /// The job status.
   ///
   /// See [RuntimeJobStatus] for possible values.
-  RuntimeJobStatus get status => throw _privateConstructorUsedError;
-
+  RuntimeJobStatus get status =>
+      throw _privateConstructorUsedError; // TODO: Add PUBs field
   /// Parameters of the job.
-  ({List<Map<dynamic, dynamic>> circuits, int shots}) get params =>
-      throw _privateConstructorUsedError;
+  ({Option<List<Map<dynamic, dynamic>>> circuits, Option<int> shots})
+      get params => throw _privateConstructorUsedError;
 
   /// Program associated with the job.
   ({String id}) get program => throw _privateConstructorUsedError;
@@ -100,7 +100,10 @@ abstract class $RuntimeJobCopyWith<$Res> {
       String backend,
       ({String reason, RuntimeJobStatus status}) state,
       RuntimeJobStatus status,
-      ({List<Map<dynamic, dynamic>> circuits, int shots}) params,
+      ({
+        Option<List<Map<dynamic, dynamic>>> circuits,
+        Option<int> shots
+      }) params,
       ({String id}) program,
       DateTime created,
       Option<DateTime> ended,
@@ -177,7 +180,10 @@ class _$RuntimeJobCopyWithImpl<$Res, $Val extends RuntimeJob>
       params: null == params
           ? _value.params
           : params // ignore: cast_nullable_to_non_nullable
-              as ({List<Map<dynamic, dynamic>> circuits, int shots}),
+              as ({
+              Option<List<Map<dynamic, dynamic>>> circuits,
+              Option<int> shots
+            }),
       program: null == program
           ? _value.program
           : program // ignore: cast_nullable_to_non_nullable
@@ -238,7 +244,10 @@ abstract class _$$RuntimeJobImplCopyWith<$Res>
       String backend,
       ({String reason, RuntimeJobStatus status}) state,
       RuntimeJobStatus status,
-      ({List<Map<dynamic, dynamic>> circuits, int shots}) params,
+      ({
+        Option<List<Map<dynamic, dynamic>>> circuits,
+        Option<int> shots
+      }) params,
       ({String id}) program,
       DateTime created,
       Option<DateTime> ended,
@@ -313,7 +322,10 @@ class __$$RuntimeJobImplCopyWithImpl<$Res>
       params: null == params
           ? _value.params
           : params // ignore: cast_nullable_to_non_nullable
-              as ({List<Map<dynamic, dynamic>> circuits, int shots}),
+              as ({
+              Option<List<Map<dynamic, dynamic>>> circuits,
+              Option<int> shots
+            }),
       program: null == program
           ? _value.program
           : program // ignore: cast_nullable_to_non_nullable
@@ -415,10 +427,13 @@ class _$RuntimeJobImpl extends _RuntimeJob {
   /// See [RuntimeJobStatus] for possible values.
   @override
   final RuntimeJobStatus status;
-
+// TODO: Add PUBs field
   /// Parameters of the job.
   @override
-  final ({List<Map<dynamic, dynamic>> circuits, int shots}) params;
+  final ({
+    Option<List<Map<dynamic, dynamic>>> circuits,
+    Option<int> shots
+  }) params;
 
   /// Program associated with the job.
   @override
@@ -476,25 +491,28 @@ class _$RuntimeJobImpl extends _RuntimeJob {
 
 abstract class _RuntimeJob extends RuntimeJob {
   factory _RuntimeJob(
-      {required final String id,
-      required final String hub,
-      required final String group,
-      required final String project,
-      required final String backend,
-      required final ({String reason, RuntimeJobStatus status}) state,
-      required final RuntimeJobStatus status,
-      required final ({List<Map<dynamic, dynamic>> circuits, int shots}) params,
-      required final ({String id}) program,
-      required final DateTime created,
-      required final Option<DateTime> ended,
-      required final String runtime,
-      required final Option<int> cost,
-      required final Option<IList<String>> tags,
-      required final Option<String> sessionId,
-      required final ({double seconds})? usage,
-      required final Option<double> estimatedRunningTimeSeconds,
-      required final Option<double>
-          estimatedMaxRunningTimeSeconds}) = _$RuntimeJobImpl;
+          {required final String id,
+          required final String hub,
+          required final String group,
+          required final String project,
+          required final String backend,
+          required final ({String reason, RuntimeJobStatus status}) state,
+          required final RuntimeJobStatus status,
+          required final ({
+            Option<List<Map<dynamic, dynamic>>> circuits,
+            Option<int> shots
+          }) params,
+          required final ({String id}) program,
+          required final DateTime created,
+          required final Option<DateTime> ended,
+          required final String runtime,
+          required final Option<int> cost,
+          required final Option<IList<String>> tags,
+          required final Option<String> sessionId,
+          required final ({double seconds})? usage,
+          required final Option<double> estimatedRunningTimeSeconds,
+          required final Option<double> estimatedMaxRunningTimeSeconds}) =
+      _$RuntimeJobImpl;
   _RuntimeJob._() : super._();
 
   factory _RuntimeJob.fromJson(Map<String, dynamic> json) =
@@ -530,10 +548,10 @@ abstract class _RuntimeJob extends RuntimeJob {
   ///
   /// See [RuntimeJobStatus] for possible values.
   RuntimeJobStatus get status;
-  @override
-
+  @override // TODO: Add PUBs field
   /// Parameters of the job.
-  ({List<Map<dynamic, dynamic>> circuits, int shots}) get params;
+  ({Option<List<Map<dynamic, dynamic>>> circuits, Option<int> shots})
+      get params;
   @override
 
   /// Program associated with the job.

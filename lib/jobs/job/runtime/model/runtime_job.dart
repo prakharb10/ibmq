@@ -33,8 +33,9 @@ class RuntimeJob extends Equatable with _$RuntimeJob {
     /// See [RuntimeJobStatus] for possible values.
     required RuntimeJobStatus status,
 
+    // TODO: Add PUBs field
     /// Parameters of the job.
-    required ({int shots, List<Map> circuits}) params,
+    required ({Option<int> shots, Option<List<Map>> circuits}) params,
 
     /// Program associated with the job.
     required ({
