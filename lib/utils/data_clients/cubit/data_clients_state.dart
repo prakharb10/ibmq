@@ -12,10 +12,12 @@ final class DataClientsInitial extends DataClientsState {}
 final class DataClientsCreateSuccess extends DataClientsState {
   final HTTPDataProvider httpDataProvider;
   final RuntimeDataProvider runtimeDataProvider;
+  final WssDataProvider wssDataProvider;
 
   const DataClientsCreateSuccess({
     required this.httpDataProvider,
     required this.runtimeDataProvider,
+    required this.wssDataProvider,
   });
 
   @override

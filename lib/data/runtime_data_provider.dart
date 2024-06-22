@@ -248,6 +248,10 @@ class RuntimeDataProvider {
 
   /// Get user jobs state updates
   ///
+  /// Returns the user jobs state updates if the request is successful, otherwise
+  /// returns an error message.
+  ///
+  /// The user jobs state updates are returned as a stream of messages.
   TaskEither<String, Stream> getUserJobsStateUpdates() =>
       TaskEither.tryCatch(() async {
         final socket = WebSocket(_baseUrl.replace(

@@ -9,6 +9,7 @@ import 'package:ibmq/auth/data/auth_repository.dart';
 import 'package:ibmq/backends/backends_page.dart';
 import 'package:ibmq/backends/cubit/backends_cubit.dart';
 import 'package:ibmq/backends/data/backends_repository.dart';
+import 'package:ibmq/backends/status/bloc/backends_status_updates_bloc.dart';
 import 'package:ibmq/instances/cubit/instance_fliter_cubit.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instances_repository.dart';
@@ -193,11 +194,22 @@ class BackendsRoute extends GoRouteData {
             (context.read<DataClientsCubit>().state as DataClientsCreateSuccess)
                 .httpDataProvider,
       ),
-      child: BlocProvider(
-        create: (context) => BackendsCubit(
-          backendsRepository:
-              RepositoryProvider.of<BackendsRepository>(context),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => BackendsCubit(
+              backendsRepository:
+                  RepositoryProvider.of<BackendsRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => BackendsStatusUpdatesBloc(
+              wssDataProvider: (context.read<DataClientsCubit>().state
+                      as DataClientsCreateSuccess)
+                  .wssDataProvider,
+            ),
+          ),
+        ],
         child: const BackendsPage(),
       ),
     );

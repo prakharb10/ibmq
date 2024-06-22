@@ -4,7 +4,6 @@ import 'package:ibmq/user/jobs_updates/bloc/user_jobs_updates_bloc.dart';
 import 'package:ibmq/user/jobs_updates/job_updates_list.dart';
 import 'package:ibmq/utils/notifications/bloc/notifications_bloc.dart';
 import 'package:ibmq/utils/notifications/local_notifications.dart';
-import 'package:ibmq/utils/talker.dart';
 
 class JobsUpdatesWidget extends StatelessWidget {
   const JobsUpdatesWidget({
@@ -19,7 +18,6 @@ class JobsUpdatesWidget extends StatelessWidget {
       listener: (context, state) async {
         switch (state) {
           case Listening(:final jobStatusUpdate):
-            talker.debug("Received job status update: $jobStatusUpdate");
             context
                 .read<NotificationsBloc>()
                 .add(NotificationsEvent.received(jobStatusUpdate));

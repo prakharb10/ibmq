@@ -4,14 +4,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibmq/backends/backends_data_table.dart';
+import 'package:ibmq/backends/status/bloc/backends_status_updates_bloc.dart';
 import 'package:ibmq/instances/cubit/instances_cubit.dart';
 import 'package:ibmq/instances/instance_selector.dart';
 import 'package:ibmq/user/info/user_info_tile.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:yaru/yaru.dart';
 
-class BackendsPage extends StatelessWidget {
+class BackendsPage extends StatefulWidget {
   const BackendsPage({super.key});
+
+  @override
+  State<BackendsPage> createState() => _BackendsPageState();
+}
+
+class _BackendsPageState extends State<BackendsPage> {
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<BackendsStatusUpdatesBloc>()
+        .add(const BackendsStatusUpdatesEvent.started());
+  }
 
   @override
   Widget build(BuildContext context) {
